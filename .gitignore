@@ -1,0 +1,23 @@
+.env
+.env.local
+.env.*.local
+node_modules/
+__pycache__/
+*.pyc
+.DS_Store
+.context/
+
+# graphify: machine-specific paths and scratch state. The graph itself
+# (graph.json, graph.html, GRAPH_REPORT.md, cache/) is committed on purpose so
+# a fresh clone can query it without paying to re-extract.
+graphify-out/.graphify_python
+graphify-out/.graphify_root
+graphify-out/.graphify_chunk_*.json
+graphify-out/.graphify_detect.json
+graphify-out/.graphify_extract.json
+graphify-out/.graphify_ast.json
+graphify-out/.graphify_semantic*.json
+graphify-out/.graphify_analysis.json
+graphify-out/.graphify_cached.json
+graphify-out/.graphify_uncached.txt
+graphify-out/.codex-sync.*

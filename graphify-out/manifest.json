@@ -1,0 +1,74 @@
+{
+  "/Users/deepdave/conductor/workspaces/jev-playground/victoria/week-01-lead-triage/results/results.json": {
+    "mtime": 1790123940.1264458,
+    "seen": 1790124917.132875,
+    "ast_hash": "172cb4864b0275ec60efc87b9fb1ab30",
+    "semantic_hash": "172cb4864b0275ec60efc87b9fb1ab30"
+  },
+  "/Users/deepdave/conductor/workspaces/jev-playground/victoria/week-01-lead-triage/src/bench.py": {
+    "mtime": 1790114247.4136455,
+    "seen": 1790124917.132878,
+    "ast_hash": "24f2a29729d1dba87c33070565f418ab",
+    "semantic_hash": "24f2a29729d1dba87c33070565f418ab"
+  },
+  "/Users/deepdave/conductor/workspaces/jev-playground/victoria/week-01-lead-triage/src/build_dataset.py": {
+    "mtime": 1790113309.8154378,
+    "seen": 1790124917.132879,
+    "ast_hash": "395fc0b2abf3dbb49289409af2d41ed1",
+    "semantic_hash": "395fc0b2abf3dbb49289409af2d41ed1"
+  },
+  "/Users/deepdave/conductor/workspaces/jev-playground/victoria/week-01-lead-triage/src/claude_runner.py": {
+    "mtime": 1790114644.0639727,
+    "seen": 1790124917.132879,
+    "ast_hash": "86c20023f9b4d5d904f7a0d05317b790",
+    "semantic_hash": "86c20023f9b4d5d904f7a0d05317b790"
+  },
+  "/Users/deepdave/conductor/workspaces/jev-playground/victoria/week-01-lead-triage/src/jev_runner.py": {
+    "mtime": 1790114247.4133794,
+    "seen": 1790124917.13288,
+    "ast_hash": "24a78506cf983551f5eb6d6daa05052d",
+    "semantic_hash": "24a78506cf983551f5eb6d6daa05052d"
+  },
+  "/Users/deepdave/conductor/workspaces/jev-playground/victoria/week-01-lead-triage/src/score.py": {
+    "mtime": 1790116738.602652,
+    "seen": 1790124917.13288,
+    "ast_hash": "829185c4038401c64953ee550df37822",
+    "semantic_hash": "829185c4038401c64953ee550df37822"
+  },
+  "/Users/deepdave/conductor/workspaces/jev-playground/victoria/week-01-lead-triage/src/spec.py": {
+    "mtime": 1790114230.4179459,
+    "seen": 1790124917.132881,
+    "ast_hash": "95256bf183711fd3a0af874665d002ae",
+    "semantic_hash": "95256bf183711fd3a0af874665d002ae"
+  },
+  "/Users/deepdave/conductor/workspaces/jev-playground/victoria/week-01-lead-triage/src/split_runner.py": {
+    "mtime": 1790123093.9487767,
+    "seen": 1790124917.132881,
+    "ast_hash": "5d1684411ada9e72028e903086e6a90c",
+    "semantic_hash": "5d1684411ada9e72028e903086e6a90c"
+  },
+  "/Users/deepdave/conductor/workspaces/jev-playground/victoria/week-01-lead-triage/src/step6_email.py": {
+    "mtime": 1790114644.0651696,
+    "seen": 1790124917.1328819,
+    "ast_hash": "6058cdabfbf0d8eb92766bb7e2833598",
+    "semantic_hash": "6058cdabfbf0d8eb92766bb7e2833598"
+  },
+  "/Users/deepdave/conductor/workspaces/jev-playground/victoria/README.md": {
+    "mtime": 1790124025.0265589,
+    "seen": 1790124917.1328819,
+    "ast_hash": "025052855aedb1dccf59c847815a7bf1",
+    "semantic_hash": "025052855aedb1dccf59c847815a7bf1"
+  },
+  "/Users/deepdave/conductor/workspaces/jev-playground/victoria/week-01-lead-triage/README.md": {
+    "mtime": 1790124246.1636567,
+    "seen": 1790124917.1328828,
+    "ast_hash": "ebff0ed10f80dac45acaf88e805bca3f",
+    "semantic_hash": "ebff0ed10f80dac45acaf88e805bca3f"
+  },
+  "/Users/deepdave/conductor/workspaces/jev-playground/victoria/week-01-lead-triage/rubric.md": {
+    "mtime": 1790113653.6921964,
+    "seen": 1790124917.1328828,
+    "ast_hash": "0dcc291df092991d3ca6b0289349ab5a",
+    "semantic_hash": "0dcc291df092991d3ca6b0289349ab5a"
+  }
+}

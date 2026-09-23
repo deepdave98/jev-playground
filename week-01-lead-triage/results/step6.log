@@ -1,0 +1,35 @@
+29 of 60 leads earned an email (48%). Writing those.
+
+  L009 Clay                   4315ms  $0.00250
+  L013 Siemens                3961ms  $0.00270
+  L014 Workday                3059ms  $0.00220
+  L015 Shopify                3453ms  $0.00262
+  L016 Cisco                  5522ms  $0.00260
+  L017 Atlassian              3163ms  $0.00240
+  L018 Adobe                  3654ms  $0.00255
+  L019 ServiceNow             4659ms  $0.00260
+  L024 Gusto                  5216ms  $0.00427
+  L025 Vanta                  4409ms  $0.00413
+  L026 Ramp                   3151ms  $0.00384
+  L027 Linear                 3919ms  $0.00219
+  L028 Notion                 4237ms  $0.00224
+  L029 Rippling               3734ms  $0.00251
+  L030 Airtable               3461ms  $0.00226
+  L034 Cal.com                4435ms  $0.00273
+  L035 Resend                 3890ms  $0.00210
+  L036 Dub                    3818ms  $0.00375
+  L037 Liveblocks             4682ms  $0.00237
+  L047 Zapier                 2946ms  $0.00223
+  L049 Braze                  3695ms  $0.00240
+  L051 Twilio                 5984ms  $0.00234
+  L053 Loom                   3398ms  $0.00235
+  L054 Webflow                4202ms  $0.00247
+  L056 Census                 3736ms  $0.00240
+  L057 Hex                    4028ms  $0.00233
+  L058 Modal                  4737ms  $0.00242
+  L059 Baseten                4539ms  $0.00250
+  L060 Warp                   3499ms  $0.00216
+
+wrote 29 emails -> /Users/deepdave/conductor/workspaces/jev-playground/victoria/week-01-lead-triage/results/raw/step6-emails.jsonl
+mean latency 4052 ms, total $0.0762, $0.00263 per email
+per 1,000 inbound leads at this qualify rate: $1.27 of email writing

@@ -1,0 +1,32 @@
+60 leads
+
+[jev] measuring TCP+TLS handshake cost...
+[jev] cold connect = 600 ms (paid once, connection is reused)
+[jev] 10/60  (4s elapsed)
+[jev] 20/60  (8s elapsed)
+[jev] 30/60  (11s elapsed)
+[jev] 40/60  (15s elapsed)
+[jev] 50/60  (19s elapsed)
+[jev] 60/60  (22s elapsed)
+[jev] done in 22s, 0 errors -> /Users/deepdave/conductor/workspaces/jev-playground/victoria/week-01-lead-triage/results/raw/jev.jsonl
+
+[claude-haiku-4-5] calibrating CLI token overhead...
+[claude-haiku-4-5] overhead = 1613 input tokens (subtracted from every call)
+[claude-haiku-4-5] 10/60  (70s elapsed)
+[claude-haiku-4-5] 20/60  (139s elapsed)
+[claude-haiku-4-5] 30/60  (206s elapsed)
+[claude-haiku-4-5] 40/60  (274s elapsed)
+[claude-haiku-4-5] 50/60  (340s elapsed)
+[claude-haiku-4-5] 60/60  (407s elapsed)
+[claude-haiku-4-5] done in 407s, 0 errors -> /Users/deepdave/conductor/workspaces/jev-playground/victoria/week-01-lead-triage/results/raw/claude-haiku-4-5.jsonl
+
+[claude-sonnet-5] calibrating CLI token overhead...
+[claude-sonnet-5] overhead = 2 input tokens (subtracted from every call)
+[claude-sonnet-5] 10/60  (72s elapsed)
+[claude-sonnet-5] 20/60  (141s elapsed)
+[claude-sonnet-5] 30/60  (211s elapsed)
+[claude-sonnet-5] 40/60  (280s elapsed)
+[claude-sonnet-5] 50/60  (349s elapsed)
+[claude-sonnet-5] 60/60  (424s elapsed)
+[claude-sonnet-5] done in 424s, 0 errors -> /Users/deepdave/conductor/workspaces/jev-playground/victoria/week-01-lead-triage/results/raw/claude-sonnet-5.jsonl
+

@@ -1,0 +1,6 @@
+[claude-haiku-4-5-split] resuming: 44 done, 16 left
+[claude-haiku-4-5-split] calibrating...
+[claude-haiku-4-5-split] overhead = 1997 tokens
+[claude-haiku-4-5-split] 10/16 (425s)
+[claude-haiku-4-5-split] 16/16 (691s)
+[claude-haiku-4-5-split] done in 691s -> /Users/deepdave/conductor/workspaces/jev-playground/victoria/week-01-lead-triage/results/raw/claude-haiku-4-5-split.jsonl
