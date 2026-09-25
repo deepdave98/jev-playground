@@ -1,0 +1,36 @@
+20 deals, 73 events
+
+[jev] 5/20 deals (8s)
+[jev] 10/20 deals (15s)
+[jev] 15/20 deals (20s)
+[jev] 20/20 deals (26s)
+
+[jev-per-deal] 5/20 deals (2s)
+[jev-per-deal] 10/20 deals (4s)
+[jev-per-deal] 15/20 deals (5s)
+[jev-per-deal] 20/20 deals (7s)
+
+[claude-haiku-4-5] CLI overhead 2822 tokens, subtracted from every call
+[claude-haiku-4-5] 5/20 deals (167s)
+[claude-haiku-4-5] 10/20 deals (291s)
+[claude-haiku-4-5] 15/20 deals (402s)
+[claude-haiku-4-5] 20/20 deals (505s)
+
+[claude-sonnet-5] CLI overhead 3823 tokens, subtracted from every call
+[claude-sonnet-5] 5/20 deals (177s)
+[claude-sonnet-5] 10/20 deals (308s)
+[claude-sonnet-5] 15/20 deals (425s)
+[claude-sonnet-5] 20/20 deals (546s)
+
+[claude-sonnet-5-per-deal] CLI overhead 3823 tokens, subtracted from every call
+[claude-sonnet-5-per-deal] 5/20 deals (44s)
+[claude-sonnet-5-per-deal] 10/20 deals (87s)
+[claude-sonnet-5-per-deal] 15/20 deals (137s)
+[claude-sonnet-5-per-deal] 20/20 deals (180s)
+
+[claude-sonnet-5-ledger] CLI overhead 3823 tokens, subtracted from every call
+[claude-sonnet-5-ledger] 5/20 deals (45s)
+[claude-sonnet-5-ledger] 10/20 deals (91s)
+[claude-sonnet-5-ledger] 15/20 deals (138s)
+[claude-sonnet-5-ledger] 20/20 deals (175s)
+

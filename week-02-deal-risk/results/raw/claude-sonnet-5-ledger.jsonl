@@ -1,0 +1,21 @@
+{"_meta": {"run": "claude-sonnet-5-ledger", "started": "2026-09-25T08:59:01-0400", "cli_overhead_samples": [3823, 3051, 3823, 3823, 3761], "cli_overhead": 3823}}
+{"deal": "D01", "calls": [{"ms": 3548.0, "in": 2025, "out": 31, "usd": 0.0053721537277701785}], "error": null, "p_at_risk": 0.75, "reasons": ["no_exec_30d"]}
+{"deal": "D02", "calls": [{"ms": 3607.0, "in": 1846, "out": 27, "usd": 0.0048846743693773155}], "error": null, "p_at_risk": 0.85, "reasons": ["escalations"]}
+{"deal": "D03", "calls": [{"ms": 3130.0, "in": 1120, "out": 27, "usd": 0.003069773416953267}], "error": null, "p_at_risk": 0.7, "reasons": ["competitor"]}
+{"deal": "D04", "calls": [{"ms": 3760.0, "in": 279, "out": 36, "usd": 0.0010574319843978546}], "error": null, "p_at_risk": 0.9, "reasons": ["closing_with_issues", "escalations"]}
+{"deal": "D05", "calls": [{"ms": 3004.0, "in": 179, "out": 37, "usd": 0.000817455272363818}], "error": null, "p_at_risk": 0.92, "reasons": ["champion_left", "no_exec_30d"]}
+{"deal": "D06", "calls": [{"ms": 3807.0, "in": 1002, "out": 27, "usd": 0.002774792331606217}], "error": null, "p_at_risk": 0.97, "reasons": ["stalled"]}
+{"deal": "D07", "calls": [{"ms": 2699.0, "in": 862, "out": 36, "usd": 0.002514816008537887}], "error": null, "p_at_risk": 0.9, "reasons": ["no_exec_30d", "stalled"]}
+{"deal": "D08", "calls": [{"ms": 4265.0, "in": 138, "out": 27, "usd": 0.0006149651603130522}], "error": null, "p_at_risk": 0.98, "reasons": ["competitor"]}
+{"deal": "D09", "calls": [{"ms": 2914.0, "in": 948, "out": 21, "usd": 0.002579801299517921}], "error": null, "p_at_risk": 0.15, "reasons": []}
+{"deal": "D10", "calls": [{"ms": 4083.0, "in": 224, "out": 31, "usd": 0.0008699446503582901}], "error": null, "p_at_risk": 0.6, "reasons": ["no_exec_30d"]}
+{"deal": "D11", "calls": [{"ms": 2688.0, "in": 1016, "out": 21, "usd": 0.0027497900392643108}], "error": null, "p_at_risk": 0.05, "reasons": []}
+{"deal": "D12", "calls": [{"ms": 5658.0, "in": 7031, "out": 39, "usd": 0.009883534227013083}], "error": null, "p_at_risk": 0.75, "reasons": ["no_exec_30d"]}
+{"deal": "D13", "calls": [{"ms": 2664.0, "in": 1651, "out": 31, "usd": 0.004437198392400438}], "error": null, "p_at_risk": 0.6, "reasons": ["no_exec_30d"]}
+{"deal": "D14", "calls": [{"ms": 2647.0, "in": 898, "out": 21, "usd": 0.0024548097860622752}], "error": null, "p_at_risk": 0.1, "reasons": []}
+{"deal": "D15", "calls": [{"ms": 3585.0, "in": 765, "out": 21, "usd": 0.002122333260680035}], "error": null, "p_at_risk": 0.1, "reasons": []}
+{"deal": "D16", "calls": [{"ms": 2897.0, "in": 95, "out": 21, "usd": 0.000447475752935171}], "error": null, "p_at_risk": 0.15, "reasons": []}
+{"deal": "D17", "calls": [{"ms": 4468.0, "in": 906, "out": 31, "usd": 0.002574808416155635}], "error": null, "p_at_risk": 0.75, "reasons": ["no_exec_30d"]}
+{"deal": "D18", "calls": [{"ms": 2518.0, "in": 900, "out": 21, "usd": 0.00245980944315054}], "error": null, "p_at_risk": 0.15, "reasons": []}
+{"deal": "D19", "calls": [{"ms": 2619.0, "in": 807, "out": 31, "usd": 0.0023273257019438445}], "error": null, "p_at_risk": 0.75, "reasons": ["no_exec_30d"]}
+{"deal": "D20", "calls": [{"ms": 2981.0, "in": 897, "out": 31, "usd": 0.0025523099576271182}], "error": null, "p_at_risk": 0.75, "reasons": ["no_exec_30d"]}

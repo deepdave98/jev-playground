@@ -1,0 +1,56 @@
+#!/usr/bin/env python3
+"""Refuses a commit if any staged text file contains an em or en dash.
+
+    git config core.hooksPath .githooks                 # once per clone
+    python3 .githooks/pre-commit --fix <file> [...]     # clean generated files
+
+The repo keeps a no-dash rule, and it has to cover files nobody hand-writes.
+graphify's report and HTML templates put em dashes in every regenerated
+graph, and the first push of this repo shipped eight of them that way.
+--fix is only for generated output. In prose, a dash usually means the
+sentence wants rewriting, and a mechanical swap won't do that.
+"""
+
+import re
+import subprocess
+import sys
+
+# Built from code points so this file never contains the characters it bans.
+EM, EN = chr(0x2014), chr(0x2013)
+DASH = re.compile(f"[{EM}{EN}]")
+
+
+def fix(path):
+    text = open(path, encoding="utf-8").read()
+    text = text.replace(f"** {EM} ", "**: ")  # graphify: a bold label, a dash, the node list
+    text = re.sub(f" [{EM}{EN}] ", ", ", text)
+    text = DASH.sub("-", text)
+    open(path, "w", encoding="utf-8").write(text)
+
+
+def staged():
+    out = subprocess.run(["git", "diff", "--cached", "--name-only", "--diff-filter=ACM"],
+                         capture_output=True, text=True).stdout
+    return [p for p in out.splitlines() if p]
+
+
+if __name__ == "__main__":
+    if sys.argv[1:2] == ["--fix"]:
+        for p in sys.argv[2:]:
+            fix(p)
+        sys.exit(0)
+
+    bad = []
+    for p in staged():
+        blob = subprocess.run(["git", "show", f":{p}"], capture_output=True).stdout
+        try:
+            text = blob.decode("utf-8")
+        except UnicodeDecodeError:
+            continue
+        bad += [f"{p}:{n}" for n, line in enumerate(text.splitlines(), 1) if DASH.search(line)]
+
+    if bad:
+        print("em or en dashes in staged files:", *bad[:20], sep="\n  ")
+        print("\nRewrite the sentence. For graphify output:"
+              "\n  python3 .githooks/pre-commit --fix graphify-out/GRAPH_REPORT.md graphify-out/graph.html")
+        sys.exit(1)

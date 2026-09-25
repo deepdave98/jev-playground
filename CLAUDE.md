@@ -20,7 +20,12 @@ After changing code, refresh it:
 
 ```bash
 graphify update
+python3 .githooks/pre-commit --fix graphify-out/GRAPH_REPORT.md graphify-out/graph.html
 ```
+
+The second line is not optional. graphify's report and HTML templates write
+em dashes into every regenerated graph, and the first push of this repo
+shipped eight of them that way.
 
 ## House rules
 
@@ -33,9 +38,23 @@ Never hand-edit a results table. If a number changes, re-run and re-score.
 write down that you fixed it.** Week 01 has three of these in its README.
 That section is the reason to trust the rest of the file.
 
+**Keep arithmetic out of prompts.** Thresholds, date windows and counts go in
+code. Week 02 measured what happens otherwise: the same model scored 100%
+when code applied the rule and 70% when it applied the rule itself.
+
+## The MCP server
+
+`mcp-server/jev_server.py` loads its questions from each week's `spec.py`, so
+changing a prompt changes the tool. Re-run that week's benchmark afterwards
+or the README numbers stop describing the tool. `uv run mcp-server/check.py`
+starts it and calls every tool against the live API.
+
 ## Writing
 
 Plain English, the way an engineer writes notes for another engineer.
+
+`.githooks/pre-commit` refuses any commit with an em or en dash in a staged
+file. Turn it on once per clone with `git config core.hooksPath .githooks`.
 
 No em dashes. No "it is not X, it is Y". No "unlock", "leverage", "seamless",
 "robust", "comprehensive", "game changer", "dive in". No section that exists

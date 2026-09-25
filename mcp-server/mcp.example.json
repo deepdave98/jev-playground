@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "jev-gtm": {
+      "command": "uv",
+      "args": ["run", "--quiet", "/path/to/jev-playground/mcp-server/jev_server.py"],
+      "env": {
+        "TYPESAFE_API_KEY": "your key",
+        "JEV_LEDGER_DIR": "/path/to/where/your/ledger/exports/land"
+      }
+    }
+  }
+}

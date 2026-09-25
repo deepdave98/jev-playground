@@ -1,7 +1,7 @@
 {
   "/Users/deepdave/conductor/workspaces/jev-playground/victoria/week-01-lead-triage/results/results.json": {
-    "mtime": 1790123940.1264458,
-    "seen": 1790124917.132875,
+    "mtime": 1790343703.6969264,
+    "seen": 1790345654.9238908,
     "ast_hash": "172cb4864b0275ec60efc87b9fb1ab30",
     "semantic_hash": "172cb4864b0275ec60efc87b9fb1ab30"
   },
@@ -12,16 +12,16 @@
     "semantic_hash": "24f2a29729d1dba87c33070565f418ab"
   },
   "/Users/deepdave/conductor/workspaces/jev-playground/victoria/week-01-lead-triage/src/build_dataset.py": {
-    "mtime": 1790113309.8154378,
-    "seen": 1790124917.132879,
-    "ast_hash": "395fc0b2abf3dbb49289409af2d41ed1",
-    "semantic_hash": "395fc0b2abf3dbb49289409af2d41ed1"
+    "mtime": 1790193976.061264,
+    "seen": 1790345654.923893,
+    "ast_hash": "3d12b193ca6be7c2d813992c22f71093",
+    "semantic_hash": "3d12b193ca6be7c2d813992c22f71093"
   },
   "/Users/deepdave/conductor/workspaces/jev-playground/victoria/week-01-lead-triage/src/claude_runner.py": {
-    "mtime": 1790114644.0639727,
-    "seen": 1790124917.132879,
-    "ast_hash": "86c20023f9b4d5d904f7a0d05317b790",
-    "semantic_hash": "86c20023f9b4d5d904f7a0d05317b790"
+    "mtime": 1790194298.5449345,
+    "seen": 1790345654.923894,
+    "ast_hash": "e8487d55048a838c3f0ab904cb24691f",
+    "semantic_hash": "e8487d55048a838c3f0ab904cb24691f"
   },
   "/Users/deepdave/conductor/workspaces/jev-playground/victoria/week-01-lead-triage/src/jev_runner.py": {
     "mtime": 1790114247.4133794,
@@ -54,21 +54,111 @@
     "semantic_hash": "6058cdabfbf0d8eb92766bb7e2833598"
   },
   "/Users/deepdave/conductor/workspaces/jev-playground/victoria/README.md": {
-    "mtime": 1790124025.0265589,
-    "seen": 1790124917.1328819,
-    "ast_hash": "025052855aedb1dccf59c847815a7bf1",
-    "semantic_hash": "025052855aedb1dccf59c847815a7bf1"
+    "mtime": 1790343609.0352056,
+    "seen": 1790345654.923904,
+    "ast_hash": "6f372ee9136d06b0eca5d736617b7118",
+    "semantic_hash": "6f372ee9136d06b0eca5d736617b7118"
   },
   "/Users/deepdave/conductor/workspaces/jev-playground/victoria/week-01-lead-triage/README.md": {
-    "mtime": 1790124246.1636567,
-    "seen": 1790124917.1328828,
-    "ast_hash": "ebff0ed10f80dac45acaf88e805bca3f",
-    "semantic_hash": "ebff0ed10f80dac45acaf88e805bca3f"
+    "mtime": 1790193943.0392787,
+    "seen": 1790345654.9239051,
+    "ast_hash": "998253ff73ac39a4194ca6d2341d168e",
+    "semantic_hash": "998253ff73ac39a4194ca6d2341d168e"
   },
   "/Users/deepdave/conductor/workspaces/jev-playground/victoria/week-01-lead-triage/rubric.md": {
-    "mtime": 1790113653.6921964,
-    "seen": 1790124917.1328828,
-    "ast_hash": "0dcc291df092991d3ca6b0289349ab5a",
-    "semantic_hash": "0dcc291df092991d3ca6b0289349ab5a"
+    "mtime": 1790194288.7577786,
+    "seen": 1790345654.923906,
+    "ast_hash": "cfab5161a81c7d35600c239f665d33f3",
+    "semantic_hash": "cfab5161a81c7d35600c239f665d33f3"
+  },
+  "/Users/deepdave/conductor/workspaces/jev-playground/victoria/mcp-server/check.py": {
+    "mtime": 1790343537.6696987,
+    "seen": 1790345654.923884,
+    "ast_hash": "ef349db9fbc52a6d605c3f0eb133fb7e",
+    "semantic_hash": "ef349db9fbc52a6d605c3f0eb133fb7e"
+  },
+  "/Users/deepdave/conductor/workspaces/jev-playground/victoria/mcp-server/jev_server.py": {
+    "mtime": 1790343568.919858,
+    "seen": 1790345654.9238882,
+    "ast_hash": "40c99cdef5df1f32d85148826f708bff",
+    "semantic_hash": "40c99cdef5df1f32d85148826f708bff"
+  },
+  "/Users/deepdave/conductor/workspaces/jev-playground/victoria/mcp-server/mcp.example.json": {
+    "mtime": 1790340272.2935028,
+    "seen": 1790345654.923889,
+    "ast_hash": "6983c3717da94b642982db9f0d55ab1d",
+    "semantic_hash": "6983c3717da94b642982db9f0d55ab1d"
+  },
+  "/Users/deepdave/conductor/workspaces/jev-playground/victoria/week-02-deal-risk/results/results.json": {
+    "mtime": 1790345536.6467612,
+    "seen": 1790345654.9238982,
+    "ast_hash": "570c80ac6166b287dc7fb383979d448e",
+    "semantic_hash": "570c80ac6166b287dc7fb383979d448e"
+  },
+  "/Users/deepdave/conductor/workspaces/jev-playground/victoria/week-02-deal-risk/src/bench.py": {
+    "mtime": 1790339320.1398494,
+    "seen": 1790345654.9238982,
+    "ast_hash": "7a05edddfc01b9b31b25eeba58d91360",
+    "semantic_hash": "7a05edddfc01b9b31b25eeba58d91360"
+  },
+  "/Users/deepdave/conductor/workspaces/jev-playground/victoria/week-02-deal-risk/src/brief.py": {
+    "mtime": 1790343063.8562548,
+    "seen": 1790345654.923899,
+    "ast_hash": "8a2b63b301b069aaed7360baec74d37b",
+    "semantic_hash": "8a2b63b301b069aaed7360baec74d37b"
+  },
+  "/Users/deepdave/conductor/workspaces/jev-playground/victoria/week-02-deal-risk/src/claude.py": {
+    "mtime": 1790339284.7285063,
+    "seen": 1790345654.923899,
+    "ast_hash": "b3ed9caa9d69f6df66b3b2d3675625c0",
+    "semantic_hash": "b3ed9caa9d69f6df66b3b2d3675625c0"
+  },
+  "/Users/deepdave/conductor/workspaces/jev-playground/victoria/week-02-deal-risk/src/jev.py": {
+    "mtime": 1790339259.9108148,
+    "seen": 1790345654.9239,
+    "ast_hash": "f503b2c1e37ff36c3733a53776774054",
+    "semantic_hash": "f503b2c1e37ff36c3733a53776774054"
+  },
+  "/Users/deepdave/conductor/workspaces/jev-playground/victoria/week-02-deal-risk/src/ledger.py": {
+    "mtime": 1790339320.139719,
+    "seen": 1790345654.9239008,
+    "ast_hash": "dcdb74fa04f457149cab3f3abb3d3f39",
+    "semantic_hash": "dcdb74fa04f457149cab3f3abb3d3f39"
+  },
+  "/Users/deepdave/conductor/workspaces/jev-playground/victoria/week-02-deal-risk/src/score.py": {
+    "mtime": 1790339590.384529,
+    "seen": 1790345654.9239008,
+    "ast_hash": "995c5051ca18784dd315bf4def1583de",
+    "semantic_hash": "995c5051ca18784dd315bf4def1583de"
+  },
+  "/Users/deepdave/conductor/workspaces/jev-playground/victoria/week-02-deal-risk/src/spec.py": {
+    "mtime": 1790345618.698478,
+    "seen": 1790345654.923902,
+    "ast_hash": "3babbe7774f76560a0c72e2150fdc99e",
+    "semantic_hash": "3babbe7774f76560a0c72e2150fdc99e"
+  },
+  "/Users/deepdave/conductor/workspaces/jev-playground/victoria/CLAUDE.md": {
+    "mtime": 1790343594.8527706,
+    "seen": 1790345654.923902,
+    "ast_hash": "aa34f437387a54fb1f73b5be8757f2df",
+    "semantic_hash": "aa34f437387a54fb1f73b5be8757f2df"
+  },
+  "/Users/deepdave/conductor/workspaces/jev-playground/victoria/mcp-server/README.md": {
+    "mtime": 1790345547.828224,
+    "seen": 1790345654.9239051,
+    "ast_hash": "fea7acae8add72015da6b69b1bb8c18e",
+    "semantic_hash": "fea7acae8add72015da6b69b1bb8c18e"
+  },
+  "/Users/deepdave/conductor/workspaces/jev-playground/victoria/week-02-deal-risk/README.md": {
+    "mtime": 1790343675.6068852,
+    "seen": 1790345654.923906,
+    "ast_hash": "12440652c950213b0237a516f1b25f5c",
+    "semantic_hash": "12440652c950213b0237a516f1b25f5c"
+  },
+  "/Users/deepdave/conductor/workspaces/jev-playground/victoria/week-02-deal-risk/rubric.md": {
+    "mtime": 1790340254.999535,
+    "seen": 1790345654.923907,
+    "ast_hash": "544885ab24420aba2c150d16f4de2acf",
+    "semantic_hash": "544885ab24420aba2c150d16f4de2acf"
   }
 }

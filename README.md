@@ -18,6 +18,15 @@ decisions. Each week here measures that on something I would ship.
 | week | use case | headline |
 |---|---|---|
 | [01](week-01-lead-triage/) | Inbound lead triage and routing | Jev routed 90% of leads correctly at 366ms and $0.04 per thousand. Sonnet 5 got 78% at 2.6s and $3.01. Haiku 4.5 binned 7 of 16 funded buyers. Then Sonnet wrote the emails, because Jev structurally cannot. |
+| [02](week-02-deal-risk/) | Deal risk from an AckDB activity ledger | Every setup caught all 8 at-risk deals. Jev did the whole ledger in 7.3s for $0.0023 with one false alarm. Sonnet had none, at 35 times the cost. Asked to apply the rule itself, Sonnet dropped from 100% to 70%. |
+
+## Using it from an agent
+
+[mcp-server/](mcp-server/) puts both weeks behind an MCP server with three
+tools: `triage_lead`, `deal_risk` and `deals_at_risk`. Add it next to the
+servers your agent already uses for enrichment, the CRM and Slack, and Jev
+takes the typed decisions off the agent. The README in there has setup, two
+worked workflows, and the mistakes I made building it.
 
 ## House rules for the benchmarks
 
@@ -63,14 +72,17 @@ python3 src/bench.py           # runs every model over every lead
 python3 src/score.py           # prints the tables
 ```
 
-No dependencies beyond the Python standard library. Nothing to install.
+Each week has its own run steps in its README. The benchmarks use nothing
+beyond the Python standard library. The MCP server needs
+[uv](https://docs.astral.sh/uv/), which fetches the MCP SDK on first run.
 
 ## A caveat on my numbers
 
-These were run from one laptop in one place on one afternoon, over 60 leads.
-Latency depends heavily on where you are relative to the API. Accuracy on 60
-cases has a confidence interval you should respect, roughly plus or minus 8
-points at 90%. The cost numbers are the solid ones, since those are token
-counts against published rates.
+Each week runs from one laptop in one place on one afternoon, on a small
+hand-labelled set: 60 leads in week 01, 20 deals and 73 events in week 02.
+Latency depends heavily on where you are relative to the API. Accuracy on
+sets this size has a wide confidence interval, roughly plus or minus 8 points
+at 90% on 60 cases and one deal is five points on 20. The cost numbers are
+the solid ones, since those are token counts against published rates.
 
 Take the shape of the result, not the third decimal place.
