@@ -16,9 +16,8 @@ as full ledgers. The rest are made up, as is every person in the set.
 
 The seller is never named. The three competitors are Hexline, Corvid and
 Tallyworks, which are invented, and both models are told who they are.
-Last week Jev couldn't recognise Clay or Apollo as competitors even when the
-prompt named them. That was worth knowing once. It isn't what this week is
-testing.
+Last week Jev couldn't recognise real competitors even when the prompt named
+them. That was worth knowing once. It isn't what this week is testing.
 
 ## Three questions per event
 
