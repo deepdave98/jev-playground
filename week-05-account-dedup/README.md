@@ -44,23 +44,23 @@ Leisure Group. Neither mistake merges anything.
 
 ## Haiku and Sonnet knew too
 
-Both got 10 of the 14, and they knew the answers. `src/why.py` asked each
-of them again about every miss, with the same prompt and one line of
-reasoning after the answer. Two of the eight came back right the second
-time, Sonnet on Instagram and Haiku on Tableau. Of the rest, Haiku wrote
-"While Microsoft acquired LinkedIn in 2016, they maintain distinct legal
-entities" and answered different. Sonnet called LinkedIn "a wholly-owned
-subsidiary" of Microsoft and answered different too. Slack and GitHub went
-the same way. Both models read "different" as "not the same company", with
-"related" sitting in the prompt and parent and subsidiary spelled out under
-it.
+Both got 10 of the 14, and they knew the answers. `src/why.py` asked each of
+them again about every miss, with the same prompt and one line of reasoning
+after the answer. Two of the eight came back right the second time, Sonnet
+on Instagram and Haiku on Tableau. Of the rest, Haiku wrote "While Microsoft
+acquired LinkedIn in 2016, they maintain distinct legal entities" and
+answered different. Sonnet called LinkedIn "a wholly-owned subsidiary" of
+Microsoft and answered different too. Haiku did the same with Slack, and
+Sonnet with GitHub. Both models read "different" as "not the same company",
+with "related" sitting in the prompt and parent and subsidiary spelled out
+under it.
 
 Google and Alphabet went the other way. Both merged them, and both argued
 that for a CRM they're one operating company, citing the 180,000 headcount
 on both records. The prompt says a parent and its subsidiary are two
 companies.
 
-## Thinking fixed it, at 468 times the price
+## Thinking fixed it, at about 470 times the price
 
 Every week so far has run Claude with thinking off, because nobody waits 22
 seconds for a lead to be routed. Dedup usually runs as a batch job, so I ran
@@ -68,7 +68,7 @@ Sonnet again with thinking on. At medium and high effort it still answered
 straight away. Only max effort made it think.
 
 With thinking, Sonnet got all 50 right. It took 10 seconds a pair at the
-median and cost $11.89 per 1,000 pairs, 468 times what Jev cost.
+median and cost $11.89 per 1,000 pairs, about 470 times what Jev cost.
 
 ## Whose confidence can gate a merge
 
