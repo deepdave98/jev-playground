@@ -1,113 +1,141 @@
-# Graph Report - victoria  (2026-09-25)
+# Graph Report - victoria  (2026-09-29)
 
 ## Corpus Check
-- Corpus is ~25,306 words - fits in a single context window. You may not need a graph.
+- 57 files · ~42,771 words
+- Verdict: corpus is large enough that graph structure adds value.
+- Unclassified: 49 file(s) not represented in the graph (top: .jsonl 35, .log 11, (none) 2)
 
 ## Summary
-- 289 nodes · 692 edges · 9 communities (8 shown, 1 thin omitted)
-- Extraction: 83% EXTRACTED · 17% INFERRED · 0% AMBIGUOUS · INFERRED: 116 edges (avg confidence: 0.9)
-- Token cost: 649,590 input · 0 output
+- 437 nodes · 831 edges · 15 communities (14 shown, 1 thin omitted)
+- Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 36 edges (avg confidence: 0.91)
+- Token cost: 0 input · 0 output
+
+## Graph Freshness
+- Built from commit: `af3e82f4`
+- Run `git rev-parse HEAD` and compare to check if the graph is stale.
+- Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
-- Week 02 Findings and Design Rules
-- Repo Setup and MCP Check
-- Week 02 Harness and Setups
-- Shared Specs and Benchmark Rules
-- Week 01 Claude Runs and Fairness
-- Jev Model, Cost and Results
-- House Rules and Writing
-- Week 02 Ledger and Answer Key
-- Segment Enum
+- Week 02: which deals are at risk, from an AckDB activity ledger
+- jev_server.py
+- week-02-deal-risk/src/bench.py
+- json
+- claude_runner.py
+- week-01-lead-triage/src/score.py
+- week-03-reply-triage/src/bench.py
+- Claude
+- Week 01: inbound lead triage and routing
+- Week 03: triaging replies to outbound sequences
+- Week 05: duplicate accounts in a CRM
+- Week 04: filling in MEDDPICC from call summaries
+- check.py
+- Working in this repo
+- README.md
 
 ## God Nodes (most connected - your core abstractions)
-1. `assess()` - 25 edges
-2. `build_questions()` - 19 edges
-3. `run()` - 18 edges
-4. `triage_lead()` - 16 edges
-5. `deals_at_risk()` - 15 edges
-6. `ClaudeRunner` - 15 edges
-7. `route()` - 14 edges
-8. `Claude` - 13 edges
-9. `judge_deal()` - 12 edges
-10. `score_file()` - 12 edges
+1. `Claude` - 18 edges
+2. `load()` - 14 edges
+3. `decode()` - 14 edges
+4. `Claude` - 13 edges
+5. `Week 02: which deals are at risk, from an AckDB activity ledger` - 13 edges
+6. `Jev` - 12 edges
+7. `read()` - 12 edges
+8. `ClaudeRunner` - 12 edges
+9. `deals_at_risk()` - 10 edges
+10. `run()` - 9 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `judge_deal()` --implements--> `Batch by deal (per-entity batching)`  [INFERRED]
-  mcp-server/jev_server.py → week-02-deal-risk/README.md
-- `triage_lead()` --conceptually_related_to--> `Jev's half-level intent optimism bias`  [INFERRED]
-  mcp-server/jev_server.py → week-01-lead-triage/README.md
-- `Finding: Sonnet applying the risk rule itself scored 70%, 100% when code applied it` --references--> `route()`  [INFERRED]
-  week-02-deal-risk/README.md → week-01-lead-triage/src/spec.py
-- `Review step: Claude checks Jev's flags and writes the deal-owner note` --references--> `prove_jev_cannot_write()`  [INFERRED]
-  week-02-deal-risk/README.md → week-01-lead-triage/src/step6_email.py
-- `Ledger JSONL input shape (one deal per line with its events)` --shares_data_with--> `main()`  [INFERRED]
-  mcp-server/README.md → week-02-deal-risk/src/ledger.py
+- `From events to a verdict` --references--> `assess()`  [INFERRED]
+  week-02-deal-risk/rubric.md → week-02-deal-risk/src/spec.py
+- `The forecast rule` --references--> `forecast_ready()`  [INFERRED]
+  week-04-meddpicc/rubric.md → week-04-meddpicc/src/spec.py
+- `The three labels` --references--> `action()`  [INFERRED]
+  week-05-account-dedup/rubric.md → week-05-account-dedup/src/spec.py
+- `run()` --uses--> `Claude`  [INFERRED]
+  week-02-deal-risk/src/bench.py → common/claude.py
+- `main()` --uses--> `Claude`  [INFERRED]
+  week-02-deal-risk/src/brief.py → common/claude.py
 
 ## Import Cycles
 - None detected.
 
-## Hyperedges (group relationships)
-- **Four typed judgments feed the deterministic routing rule**: src_spec_disqualify_question, src_spec_icp_fit_question, src_spec_segment_question, src_spec_intent_question, week_01_lead_triage_src_spec_route [EXTRACTED 1.00]
-- **Three per-event judgments feed the spec.assess risk rule**: week_02_deal_risk_src_spec_signal_judgment, week_02_deal_risk_src_spec_severity_judgment, week_02_deal_risk_src_spec_exec_engaged_judgment, week_02_deal_risk_src_spec_assess [EXTRACTED 1.00]
-- **Jev, Haiku and Sonnet per event miss the same four exec events**: week_02_deal_risk_readme_setup_jev, week_02_deal_risk_readme_setup_claude_haiku_4_5, week_02_deal_risk_readme_setup_claude_sonnet_5, week_02_deal_risk_readme_same_four_misses, week_02_deal_risk_src_spec_exec_engaged_judgment [EXTRACTED 1.00]
-- **Date and threshold arithmetic moved out of prompts into code**: week_02_deal_risk_readme_claude_applying_rule, week_02_deal_risk_readme_datacore_date_error, week_02_deal_risk_readme_keep_arithmetic_out_of_prompts, week_02_deal_risk_src_spec_reason_no_exec_30d, week_02_deal_risk_src_brief_facts, week_02_deal_risk_src_spec_assess [EXTRACTED 1.00]
-- **Claude-favouring fairness corrections applied before publishing**: week_01_lead_triage_readme_thinking_disabled_correction, week_01_lead_triage_readme_prompt_cache_pricing_correction, week_01_lead_triage_readme_cli_overhead_calibration_correction, week_01_lead_triage_readme_cli_instead_of_api_caveat, readme_fix_the_unfair_thing [EXTRACTED 1.00]
-- **Inbound lead agent workflow: CRM, enrichment, triage_lead, route in code, Slack**: mcp_server_readme_crm_server, mcp_server_readme_enrichment_server, mcp_server_jev_server_triage_lead, week_01_lead_triage_src_spec_route, mcp_server_readme_slack_server [EXTRACTED 1.00]
-- **Monday risk sweep: ledger export, deals_at_risk, week 02 rule, Slack**: week_02_deal_risk_readme_ackdb, mcp_server_jev_server_ledger_dir, mcp_server_jev_server_deals_at_risk, week_02_deal_risk_src_spec_assess, mcp_server_readme_slack_server [EXTRACTED 1.00]
+## Communities (15 total, 1 thin omitted)
 
-## Communities (9 total, 1 thin omitted)
+### Community 0 - "Week 02: which deals are at risk, from an AckDB activity ledger"
+Cohesion: 0.09
+Nodes (21): At the volume AckDB is drawn for, Caveats, Claude applying the rule is worse than code applying it, Results, Running it, The last step, and the mistake it made first, The trap that caught Sonnet, Three models, the same four misses (+13 more)
 
-### Community 0 - "Week 02 Findings and Design Rules"
-Cohesion: 0.10
-Nodes (45): House rule: keep arithmetic out of prompts, Hand the agent day counts instead of date arithmetic, Week 02 rule thresholds ($100K exec rule, 30 days, 7 days to close), AckDB (activity ledger and at-risk deals screen), Batch by deal (per-entity batching), Check the category before the magnitude, Finding: Sonnet applying the risk rule itself scored 70%, 100% when code applied it, Review step's date-arithmetic error on Datacore, fixed by passing computed facts (+37 more)
-
-### Community 1 - "Repo Setup and MCP Check"
-Cohesion: 0.10
-Nodes (41): Query the graphify graph before reading files, TYPESAFE_API_KEY (kept in gitignored .env.local), Working in this repo (CLAUDE.md), main(), Starts the server the way an agent would and calls each tool once. uv run mcp-…, show(), ask(), deal_risk() (+33 more)
-
-### Community 2 - "Week 02 Harness and Setups"
-Cohesion: 0.10
-Nodes (26): judge_deal(), Setup claude-sonnet-5-ledger: Sonnet 5 reads the whole ledger and applies the rule itself (20 calls), judged(), Label-leak guard: the answer lives next to the deal, never inside it, load(), main(), run(), main() (+18 more)
-
-### Community 3 - "Shared Specs and Benchmark Rules"
-Cohesion: 0.08
-Nodes (37): load(), Tools load their questions from each week's spec.py, House rule: the answer key is written by hand, House rule: both sides get the same words, RUNNERS registry, Sequential runs preserve latency validity, COMPETITOR_CLARIFICATION (v2 prompt delta), Typed judgment: disqualify (noul / probability) (+29 more)
-
-### Community 4 - "Week 01 Claude Runs and Fairness"
-Cohesion: 0.10
-Nodes (31): House rule: fix the unfair thing even when it helps the other side, Result record: claude-haiku-4-5-split, Result record: claude-sonnet-5, Correlated-error hypothesis (Haiku conflates disqualify and icp_fit), Emails written only for ae_now and sdr_sequence leads, Claude through the CLI instead of the API (duration_api_ms, scaffolding subtracted), Fairness correction: CLI token-overhead calibration, Do not read the partial run (+23 more)
-
-### Community 5 - "Jev Model, Cost and Results"
+### Community 1 - "jev_server.py"
 Cohesion: 0.07
-Nodes (33): Competitor list in the prompt (Hexline, Corvid, Tallyworks), Per-call cost, Jev against Sonnet 5, Path, Jev typed decision model, TypeSafe AI (Jev vendor), Result record: jev, noul probability with a 0.5 decision threshold, USD_PER_INPUT_TOKEN ($42 per billion, input only) (+25 more)
+Nodes (46): concurrent_futures, importlib_util, ask(), deal_risk(), DealRisk, deals_at_risk(), one(), dedup_pair() (+38 more)
 
-### Community 6 - "House Rules and Writing"
+### Community 2 - "week-02-deal-risk/src/bench.py"
+Cohesion: 0.07
+Nodes (34): datetime, The six setups, judged(), load(), main(), Runs every configuration over the ledger, one after another. python3…, run(), facts() (+26 more)
+
+### Community 3 - "json"
+Cohesion: 0.06
+Nodes (49): collections, load(), The loop every week's benchmark runs, one request at a time. Sequential on…, Per-item labels and every call, from a run file., brier(), pct(), The two numbers every week's scorer needs., Mean squared gap between a stated probability and what happened. pairs is… (+41 more)
+
+### Community 4 - "claude_runner.py"
+Cohesion: 0.07
+Nodes (38): time, load_leads(), main(), Runs the benchmark and writes results/raw/<runner>.jsonl. Sequential on…, run_one(), build_system_prompt(), build_user_prompt(), ClaudeRunner (+30 more)
+
+### Community 5 - "week-01-lead-triage/src/score.py"
+Cohesion: 0.11
+Nodes (21): Path, statistics, brier(), ece(), main(), pct(), Scores results/raw/*.jsonl into results/results.json and a printed table.…, Nearest-rank percentile. n=60, so interpolation would be false precision. (+13 more)
+
+### Community 6 - "week-03-reply-triage/src/bench.py"
+Cohesion: 0.08
+Nodes (46): Feed items to step() a batch at a time and write one line per request.…, run(), decode(), Jev, levels(), Jev over HTTP, with the connection kept warm between calls. Weeks 01 and 02…, One request. Returns the parsed body and the round trip in ms., Pay the TLS handshake before anything is timed. (+38 more)
+
+### Community 7 - "Claude"
+Cohesion: 0.13
+Nodes (10): Claude, parse(), Claude through the `claude` CLI, with the corrections from week 01. There's no…, Claude is asked for bare JSON. Tolerate a fence or a stray sentence., Tokens the CLI adds before our prompt, as the median of n empty calls., Dollars for one call and the input tokens our prompt accounts for., Send a JSON payload. Returns the parsed answer, ms, dollars and tokens., Refuses a commit if any staged text file contains an em or en dash. git config… (+2 more)
+
+### Community 8 - "Week 01: inbound lead triage and routing"
+Cohesion: 0.11
+Nodes (17): Caveats, Running it, Step 6, which Jev cannot do, The result, Week 01: inbound lead triage and routing, What I had to fix before any of this was fair, What I would ship, Where Jev loses (+9 more)
+
+### Community 9 - "Week 03: triaging replies to outbound sequences"
+Cohesion: 0.11
+Nodes (16): Batching unrelated replies costs a little accuracy, Both opt-out mistakes were coin flips, Haiku answered the wrong question six times, Jev's score answers run high, third week running, Results, Running it, The step Jev can't do, Week 03: triaging replies to outbound sequences (+8 more)
+
+### Community 10 - "Week 05: duplicate accounts in a CRM"
 Cohesion: 0.12
-Nodes (18): House rule: README numbers come from a committed run in results/raw/, Writing rules (plain English, no em dashes), Warm connection latency (979 ms first call, 360 ms median), House rules for the benchmarks, House rule: measure the network, not just the model, House rule: publish the failures, Sample-size caveat (60 leads, 20 deals, one laptop), House rule: say where the other thing wins (+10 more)
+Nodes (14): Haiku and Sonnet knew too, Jev knew who owns whom, Results, Running it, Thinking fixed it, at 468 times the price, Week 05: duplicate accounts in a CRM, What I'd ship, Whose confidence can gate a merge (+6 more)
 
-### Community 7 - "Week 02 Ledger and Answer Key"
-Cohesion: 0.17
-Nodes (12): Ledger JSONL input shape (one deal per line with its events), Answer key: eight at-risk deals ($1.145M of $2.79M), Answer key self-check: hand labels must reproduce each deal's intended verdict, main(), The ledger: 20 open deals, 73 events, every label written by hand. Events…, Deals with events as dicts, labels split out from what a model sees., rows(), main() (+4 more)
+### Community 11 - "Week 04: filling in MEDDPICC from call summaries"
+Cohesion: 0.13
+Nodes (13): Everyone reads MEDDPICC too generously, It didn't fix the one that mattered, Results, Running it, The bias correction worked, on a week it had never seen, Week 04: filling in MEDDPICC from call summaries, What does fix it, What I'd ship (+5 more)
+
+### Community 12 - "check.py"
+Cohesion: 0.32
+Nodes (7): asyncio, mcp, mcp_client_stdio, find(), main(), Starts the server the way an agent would and calls each tool once. uv run mcp-…, show()
+
+### Community 13 - "Working in this repo"
+Cohesion: 0.29
+Nodes (6): House rules, Secrets, The MCP server, Use the graph before reading files, Working in this repo, Writing
 
 ## Knowledge Gaps
-- **7 isolated node(s):** `Route accuracy (the end-to-end workflow metric)`, `SEGMENTS`, `Risk reason: competitor`, `Risk reason: escalations`, `Risk reason: stalled` (+2 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 55 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **79 isolated node(s):** `Use the graph before reading files`, `House rules`, `The MCP server`, `Writing`, `Secrets` (+74 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 201 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
 - **1 thin communities (<3 nodes) omitted from report**: run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `assess()` connect `Week 02 Findings and Design Rules` to `Repo Setup and MCP Check`, `Week 02 Harness and Setups`, `Week 02 Ledger and Answer Key`?**
-  _High betweenness centrality (0.106) - this node is a cross-community bridge._
-- **Why does `build_questions()` connect `Shared Specs and Benchmark Rules` to `Repo Setup and MCP Check`, `Week 01 Claude Runs and Fairness`, `Jev Model, Cost and Results`?**
-  _High betweenness centrality (0.104) - this node is a cross-community bridge._
-- **Why does `triage_lead()` connect `Repo Setup and MCP Check` to `Shared Specs and Benchmark Rules`, `Week 01 Claude Runs and Fairness`, `Jev Model, Cost and Results`?**
-  _High betweenness centrality (0.104) - this node is a cross-community bridge._
-- **Are the 2 inferred relationships involving `assess()` (e.g. with `House rule: keep arithmetic out of prompts` and `Week 02 rule thresholds ($100K exec rule, 30 days, 7 days to close)`) actually correct?**
-  _`assess()` has 2 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 2 inferred relationships involving `build_questions()` (e.g. with `build_system_prompt()` and `JevRunner`) actually correct?**
-  _`build_questions()` has 2 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 4 inferred relationships involving `triage_lead()` (e.g. with `ask()` and `Jev's half-level intent optimism bias`) actually correct?**
-  _`triage_lead()` has 4 INFERRED edges - model-reasoned connections that need verification._
-- **What connects `Route accuracy (the end-to-end workflow metric)`, `SEGMENTS`, `Risk reason: competitor` to the rest of the system?**
-  _7 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Why does `assess()` connect `week-02-deal-risk/src/bench.py` to `Week 02: which deals are at risk, from an AckDB activity ledger`?**
+  _High betweenness centrality (0.098) - this node is a cross-community bridge._
+- **Why does `action()` connect `json` to `Week 05: duplicate accounts in a CRM`?**
+  _High betweenness centrality (0.063) - this node is a cross-community bridge._
+- **Why does `forecast_ready()` connect `json` to `Week 04: filling in MEDDPICC from call summaries`?**
+  _High betweenness centrality (0.060) - this node is a cross-community bridge._
+- **Are the 2 inferred relationships involving `Claude` (e.g. with `run()` and `main()`) actually correct?**
+  _`Claude` has 2 INFERRED edges - model-reasoned connections that need verification._
+- **What connects `Use the graph before reading files`, `House rules`, `The MCP server` to the rest of the system?**
+  _79 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Should `Week 02: which deals are at risk, from an AckDB activity ledger` be split into smaller, more focused modules?**
+  _Cohesion score 0.08695652173913043 - nodes in this community are weakly interconnected._
+- **Should `jev_server.py` be split into smaller, more focused modules?**
+  _Cohesion score 0.07312925170068027 - nodes in this community are weakly interconnected._
