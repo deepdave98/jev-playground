@@ -4,8 +4,8 @@
     python3 src/bench.py jev jev-batched      # just these
 
 jev-batched puts ten replies in one request. Replies don't share context the
-way week 02's events did, so batching can't help accuracy here. What it tests
-is whether Jev keeps ten unrelated items apart when they arrive together.
+way week 02's events did, so batching can't help accuracy here. It tests
+whether Jev keeps ten unrelated items apart when they arrive together.
 """
 
 import json

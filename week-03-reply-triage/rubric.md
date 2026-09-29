@@ -14,7 +14,7 @@ in `src/spec.py`. Every prospect and company is made up.
 | `out_of_office` | an automatic away message |
 | `auto_reply` | any other automatic message |
 
-The edges that decide whether a triage system works:
+The hard cases:
 
 - R41 sounds like a wrong-person reply ("Dana moved to a different role") but
   the sender took over the territory and says no. `objection`.

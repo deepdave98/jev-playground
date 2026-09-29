@@ -15,7 +15,7 @@ carries. Labels were set in `src/pairs.py` before any model saw a pair.
 
 ## Same or related
 
-This is the line that matters, because a merge is hard to undo.
+A related pair read as same gets merged, and a merge is hard to undo.
 
 A renamed company is the same company: Facebook and Meta Platforms (P09),
 Square and Block (P15). A company another one bought is related to it, even

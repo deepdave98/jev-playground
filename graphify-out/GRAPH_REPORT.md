@@ -1,7 +1,7 @@
 # Graph Report - victoria  (2026-09-29)
 
 ## Corpus Check
-- 57 files · ~42,771 words
+- 57 files · ~42,707 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 49 file(s) not represented in the graph (top: .jsonl 35, .log 11, (none) 2)
 
@@ -11,7 +11,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `af3e82f4`
+- Built from commit: `3a7db0ed`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -99,15 +99,15 @@ Nodes (17): Caveats, Running it, Step 6, which Jev cannot do, The result, Week 0
 
 ### Community 9 - "Week 03: triaging replies to outbound sequences"
 Cohesion: 0.11
-Nodes (16): Batching unrelated replies costs a little accuracy, Both opt-out mistakes were coin flips, Haiku answered the wrong question six times, Jev's score answers run high, third week running, Results, Running it, The step Jev can't do, Week 03: triaging replies to outbound sequences (+8 more)
+Nodes (16): Batching unrelated replies costs a little accuracy, Both opt-out mistakes scored between 0.4 and 0.6, Haiku answered the wrong question six times, Jev's score answers run high, third week running, Pulling out return dates and new contacts, Results, Running it, Week 03: triaging replies to outbound sequences (+8 more)
 
 ### Community 10 - "Week 05: duplicate accounts in a CRM"
 Cohesion: 0.12
-Nodes (14): Haiku and Sonnet knew too, Jev knew who owns whom, Results, Running it, Thinking fixed it, at 468 times the price, Week 05: duplicate accounts in a CRM, What I'd ship, Whose confidence can gate a merge (+6 more)
+Nodes (14): Haiku and Sonnet knew too, Jev knew who owns whom, Results, Running it, Thinking fixed it, at about 470 times the price, Week 05: duplicate accounts in a CRM, What I'd ship, Whose confidence can gate a merge (+6 more)
 
 ### Community 11 - "Week 04: filling in MEDDPICC from call summaries"
 Cohesion: 0.13
-Nodes (13): Everyone reads MEDDPICC too generously, It didn't fix the one that mattered, Results, Running it, The bias correction worked, on a week it had never seen, Week 04: filling in MEDDPICC from call summaries, What does fix it, What I'd ship (+5 more)
+Nodes (13): A second opinion on the deals Jev marks ready, Everyone reads MEDDPICC too generously, It didn't fix Pinecrest, Results, Running it, The bias correction worked, on a week it had never seen, Week 04: filling in MEDDPICC from call summaries, What I'd ship (+5 more)
 
 ### Community 12 - "check.py"
 Cohesion: 0.32

@@ -6,7 +6,7 @@ the eight fields: metrics, economic buyer, decision criteria, decision
 process, paper process, pain, champion and competition, each as none,
 mentioned or established.
 
-The number that matters is the forecast. A deal goes in only when metrics,
+The forecast is where a mistake costs money. A deal goes in only when metrics,
 economic buyer and decision process are all established, so a model that
 reads a field one level too high puts an unready deal in the forecast.
 
@@ -44,18 +44,19 @@ that. Sonnet's six champion misses split three high and three low.
 
 ## The bias correction worked, on a week it had never seen
 
-Weeks 01 to 03 all found Jev's score answers running high, and each README
-said to correct for it without ever trying. So I measured the offset on
-the first three weeks only: +0.25 on intent, +0.34 on severity, +0.31 on
-meeting intent, +0.30 pooled over 193 answers. That went into `common/jev.py` as `SCORE_BIAS` in its own
-commit, before this week's run was scored, so the correction couldn't be
-tuned to it. `src/bias.py` reproduces the number.
+Weeks 01 to 03 all found Jev's score answers running high. Week 01 said a
+threshold shift would fix it, and no week had tried one. So I measured the
+offset on the first three weeks only: +0.25 on intent, +0.34 on severity,
++0.31 on meeting intent, +0.30 pooled over 193 answers. That went into
+`common/jev.py` as `SCORE_BIAS` in its own commit, before this week's run
+was scored, so the correction couldn't be tuned to it. `src/bias.py`
+reproduces the number.
 
 Taking 0.30 off every raw score lifted Jev from 74% exact to 84%, past
 Haiku, and cut its overstatements from 33 to 20. It costs nothing, because
 it's the same answers read differently.
 
-## It didn't fix the one that mattered
+## It didn't fix Pinecrest
 
 Jev's false commit is Pinecrest. The summary says the team "would figure out
 next steps internally", which is a decision process mentioned and nothing
@@ -63,14 +64,16 @@ more. Jev scored it 1.83 out of 2, and 1.53 after the correction still
 rounds up. On that one field Jev was 0.83 high, nearly three times its
 average.
 
-A stricter bar for the three forecast fields doesn't save it either. Every
-field that really was established scored 1.96 or more, but Jev also gave
-1.91, 1.92 and a flat 2.00 to fields that weren't. The 2.00 was Graniteworks'
-decision process, and the same call's "99.9% uptime SLA" came back as a
-metric at 1.91, when it's a requirement. There's no raw score that cleanly
-separates right from wrong on the fields that put money in a forecast.
+A stricter bar on the raw scores of the three forecast fields would have
+caught it here. Anything above 1.83 and up to 1.96 forecasts exactly
+Keystone, Redwood and Marlow. I wouldn't trust that bar on the next 16
+calls. Every field that really was established scored 1.96 or more, but Jev
+also gave 1.91, 1.92 and a flat 2.00 to fields that weren't. Two of those
+were Graniteworks: its decision process got the 2.00, and its "99.9% uptime
+SLA" came back as a metric at 1.91, when it's a requirement. Graniteworks
+stayed out of the forecast only because its economic buyer scored 0.92.
 
-## What does fix it
+## A second opinion on the deals Jev marks ready
 
 Let Jev fill every call, and get a second opinion only on the deals it puts
 in the forecast. Jev marked four ready: Pinecrest plus the three real ones.
@@ -81,10 +84,9 @@ Using Sonnet's answers on just those four gives:
 | Sonnet on every call | 0 | 0 | $3.714 |
 | Jev on every call, Sonnet on the four it marks ready | 0 | 0 | **$0.994** |
 
-Sonnet's forecast accuracy for about a quarter of the price. Week 02 landed
-on the same shape: Jev casts the net, and Claude only looks at what it
-catches. `src/score.py` prints this from the two runs, and none of it is a
-new call.
+That's Sonnet's forecast result at about a quarter of its price. Week 02
+landed on the same setup, with Claude reviewing only what Jev flags.
+`src/score.py` prints this from the two runs, and none of it is a new call.
 
 ## What I'd ship
 
@@ -107,7 +109,7 @@ python3 src/bench.py        # Jev, Haiku and Sonnet, about 8 minutes
 python3 src/score.py
 ```
 
-16 calls is a small set. One call is six points on the forecast rows, and
-the whole finding about false commits rests on a single deal. The bias
+16 calls is a small set, and the whole finding about false commits rests
+on a single deal. The bias
 measurement is the sturdier result, because it was fixed from 193 earlier
 answers before this week was scored.

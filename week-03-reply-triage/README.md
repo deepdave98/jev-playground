@@ -29,10 +29,9 @@ that need one, because Jev can't return a date or a name.
 | per 1,000 replies | $0.033 | **$0.024** | $0.699 | $2.018 |
 
 Jev, batched Jev and Sonnet route at least 95% of replies correctly. Haiku
-gets 88%, for a reason covered below. The interesting part is which
-mistakes each one makes.
+gets 88%, for a reason covered below.
 
-## Both opt-out mistakes were coin flips
+## Both opt-out mistakes scored between 0.4 and 0.6
 
 Jev missed one opt-out. It was R31, a reply that just says "STOP", scored
 0.41. Sonnet suppressed someone who never asked. That was R40, a sarcastic
@@ -51,8 +50,8 @@ For six interested replies Haiku put a meeting intent level in the category
 field, answering "curious" or "ready" where it should have said
 "interested". My routing code first let anything it didn't recognise fall
 through to the interested branch, so those six still landed in the right
-place and Haiku scored 98.3%. That was the code being lenient. Unparseable
-answers now go to a person, and Haiku's real number is 88.3%.
+place and Haiku scored 98.3%. Unparseable answers now go to a person, and
+Haiku's real number is 88.3%.
 
 Jev can't make this mistake. A choice question comes back as one of the
 keys it was given.
@@ -63,15 +62,13 @@ Ten replies per request took all 60 from 22 seconds to 3 and cut the cost
 by a quarter. Category accuracy fell from 100% to 95% and exact meeting
 intent from 83% to 73%. Week 02's batching helped because a deal's events
 share context. These replies share nothing, so batching could only cost
-accuracy, and it cost a little. For a high-volume inbox the speed may be
-worth it.
+accuracy. For a high-volume inbox the speed may be worth it.
 
 ## Jev's score answers run high, third week running
 
-Meeting intent is a `score` question. When Jev got it wrong it guessed too
-high every time, 10 times out of 10, and 16 out of 16 when batched. Weeks 01
-and 02 showed the same thing on intent and severity. Claude leans the same
-way far less, with 1 and 2 misses.
+Meeting intent is a `score` question. All 10 of Jev's misses on it were too
+high, and all 16 when batched. Weeks 01 and 02 showed the same thing on
+intent and severity. Haiku and Sonnet missed high too, once and twice.
 
 All ten were not-now or out-of-office replies that should have been `none`.
 Jev read "Try me in January" as open to a meeting. None of the ten changed a
@@ -79,7 +76,7 @@ route, because for those replies the category decides where they go. It
 starts to matter when a threshold sits on the level Jev inflates, which is
 what week 04 tests.
 
-## The step Jev can't do
+## Pulling out return dates and new contacts
 
 Jev routed 17 replies to pause or reroute. Claude read only those and pulled
 out the return date or the new contact.

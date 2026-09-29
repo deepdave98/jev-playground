@@ -49,12 +49,12 @@ Three more are one or two levels short, on purpose:
 
 | call | short on |
 |---|---|
-| C07 Pinecrest | decision process: "we'll figure out next steps internally" |
+| C07 Pinecrest | decision process: "would figure out next steps internally" |
 | C10 Lumen Health | economic buyer: "the CFO will make the final call, though they haven't talked to him yet" |
 | C13 Fairhaven | metrics and economic buyer |
 
 Any model that reads these a level high puts a deal in the forecast that
-isn't ready. That's the error this week is built to catch.
+isn't ready.
 
 ## Distribution
 

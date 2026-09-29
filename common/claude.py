@@ -1,9 +1,9 @@
 """Claude through the `claude` CLI, with the corrections from week 01.
 
 There's no ANTHROPIC_API_KEY on the benchmark machine, so calls go through
-the CLI, and three things keep that fair: thinking is off, the CLI's own
-scaffolding is measured and subtracted from token counts, and cache reads
-are billed at the cache rate. week-01-lead-triage/README.md has how each one
+the CLI, and three things keep that fair: thinking is off unless a week
+turns it on, the CLI's own scaffolding is measured and subtracted from token
+counts, and cache reads are billed at the cache rate. week-01-lead-triage/README.md has how each one
 was found, and what the numbers looked like before.
 """
 
