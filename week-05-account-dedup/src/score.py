@@ -1,0 +1,97 @@
+"""Scores results/raw/*.jsonl against the hand labels.
+
+    python3 src/score.py
+
+A wrong merge is the error that hurts. Two companies collapse into one
+record, and their contacts, deals and history go with it. A missed
+duplicate only means two records live on for a while.
+"""
+
+import json
+import pathlib
+import sys
+
+ROOT = pathlib.Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT.parent))
+sys.path.insert(0, str(ROOT / "src"))
+from common.bench import load  # noqa: E402
+from common.stats import brier, pct  # noqa: E402
+from spec import action  # noqa: E402
+
+ORDER = ["jev", "claude-haiku-4-5", "claude-sonnet-5"]
+
+
+def score(name, truth):
+    labels, calls, failed = load(ROOT / "results/raw" / f"{name}.jsonl")
+    ids = [i for i in truth if i in labels]
+    did = {i: action(labels[i]["relationship"], labels[i]["same_company"]) for i in ids}
+
+    groups = {
+        "world": [i for i in ids if truth[i]["needs_world_knowledge"]],
+        "local": [i for i in ids if not truth[i]["needs_world_knowledge"]],
+        **{rel: [i for i in ids if truth[i]["relationship"] == rel] for rel in ("same", "related", "different")},
+    }
+    same = groups["same"]
+    return {
+        "run": name, "pairs": len(ids), "failed": len(failed),
+        "wrong_merges": sum(did[i] == "merge" and truth[i]["relationship"] != "same" for i in ids),
+        "subsidiaries_merged": sum(did[i] == "merge" and truth[i]["relationship"] == "related" for i in ids),
+        "missed_duplicates": sum(labels[i]["relationship"] != "same" for i in same),
+        "sent_to_review": sum(did[i] == "review" for i in ids),
+        "duplicates": len(same),
+        "relationship": sum(labels[i]["relationship"] == truth[i]["relationship"] for i in ids) / len(ids),
+        "by_group": {g: [sum(labels[i]["relationship"] == truth[i]["relationship"] for i in v), len(v)]
+                     for g, v in groups.items()},
+        "same_company": sum((labels[i]["same_company"] >= 0.5) == truth[i]["same_company"] for i in ids) / len(ids),
+        "brier": brier([(labels[i]["same_company"], truth[i]["same_company"]) for i in ids]),
+        "requests": len(calls),
+        "ms_p50": pct([c["ms"] for c in calls], 50),
+        "ms_p90": pct([c["ms"] for c in calls], 90),
+        "usd_per_1000": sum(c["usd"] for c in calls) / len(ids) * 1000,
+        "tokens_per_pair": sum(c["in"] for c in calls) / len(ids),
+    }
+
+
+def main():
+    truth = {}
+    for line in (ROOT / "data/pairs.jsonl").open():
+        r = json.loads(line)
+        truth[r["id"]] = r["label"]
+
+    have = [n for n in ORDER if (ROOT / "results/raw" / f"{n}.jsonl").exists()]
+    if not have:
+        sys.exit("nothing in results/raw yet, run src/bench.py")
+    results = [score(n, truth) for n in have]
+    (ROOT / "results/results.json").write_text(json.dumps(results, indent=2))
+
+    for r in results:
+        if r["pairs"] + r["failed"] < len(truth):
+            r["run"] += f" (partial {r['pairs']}/{len(truth)})"
+
+    w = 20
+    print(f"{'':32}" + "".join(f"{r['run'][:w - 1]:>{w}}" for r in results))
+
+    def row(label, f):
+        print(f"{label:32}" + "".join(f"{f(r):>{w}}" for r in results))
+
+    row("wrong merges", lambda r: f"{r['wrong_merges']}")
+    row("  of which a subsidiary", lambda r: f"{r['subsidiaries_merged']}")
+    row("duplicates missed", lambda r: f"{r['missed_duplicates']} of {r['duplicates']}")
+    row("sent to a person", lambda r: f"{r['sent_to_review']}")
+    print()
+    row("relationship, all pairs", lambda r: f"{r['relationship'] * 100:.0f}%")
+    for g, label in [("world", "needs world knowledge"), ("local", "records are enough"),
+                     ("same", "really same"), ("related", "really related"), ("different", "really different")]:
+        row(f"  {label}", lambda r, g=g: "{} of {}".format(*r["by_group"][g]))
+    row("same_company", lambda r: f"{r['same_company'] * 100:.0f}%")
+    row("Brier, same_company", lambda r: f"{r['brier']:.3f}")
+    print()
+    row("ms per pair, p50", lambda r: f"{r['ms_p50']:,.0f}")
+    row("ms per pair, p90", lambda r: f"{r['ms_p90']:,.0f}")
+    row("$ per 1,000 pairs", lambda r: f"${r['usd_per_1000']:.3f}")
+    row("input tokens per pair", lambda r: f"{r['tokens_per_pair']:.0f}")
+    row("failed", lambda r: f"{r['failed']}")
+
+
+if __name__ == "__main__":
+    main()
