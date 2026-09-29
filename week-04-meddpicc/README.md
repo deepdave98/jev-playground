@@ -6,7 +6,7 @@ the eight fields: metrics, economic buyer, decision criteria, decision
 process, paper process, pain, champion and competition, each as none,
 mentioned or established.
 
-The number that matters is the forecast. A deal goes in only when metrics,
+The forecast is where a mistake costs money. A deal goes in only when metrics,
 economic buyer and decision process are all established, so a model that
 reads a field one level too high puts an unready deal in the forecast.
 
@@ -56,7 +56,7 @@ Taking 0.30 off every raw score lifted Jev from 74% exact to 84%, past
 Haiku, and cut its overstatements from 33 to 20. It costs nothing, because
 it's the same answers read differently.
 
-## It didn't fix the one that mattered
+## It didn't fix Pinecrest
 
 Jev's false commit is Pinecrest. The summary says the team "would figure out
 next steps internally", which is a decision process mentioned and nothing
@@ -73,7 +73,7 @@ were Graniteworks: its decision process got the 2.00, and its "99.9% uptime
 SLA" came back as a metric at 1.91, when it's a requirement. Graniteworks
 stayed out of the forecast only because its economic buyer scored 0.92.
 
-## What does fix it
+## A second opinion on the deals Jev marks ready
 
 Let Jev fill every call, and get a second opinion only on the deals it puts
 in the forecast. Jev marked four ready: Pinecrest plus the three real ones.
@@ -84,10 +84,9 @@ Using Sonnet's answers on just those four gives:
 | Sonnet on every call | 0 | 0 | $3.714 |
 | Jev on every call, Sonnet on the four it marks ready | 0 | 0 | **$0.994** |
 
-Sonnet's forecast accuracy for about a quarter of the price. Week 02 landed
-on the same shape: Jev casts the net, and Claude only looks at what it
-catches. `src/score.py` prints this from the two runs, and none of it is a
-new call.
+That's Sonnet's forecast result at about a quarter of its price. Week 02
+landed on the same setup, with Claude reviewing only what Jev flags.
+`src/score.py` prints this from the two runs, and none of it is a new call.
 
 ## What I'd ship
 
@@ -110,7 +109,7 @@ python3 src/bench.py        # Jev, Haiku and Sonnet, about 8 minutes
 python3 src/score.py
 ```
 
-16 calls is a small set. One call is six points on the forecast rows, and
-the whole finding about false commits rests on a single deal. The bias
+16 calls is a small set, and the whole finding about false commits rests
+on a single deal. The bias
 measurement is the sturdier result, because it was fixed from 193 earlier
 answers before this week was scored.

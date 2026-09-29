@@ -54,7 +54,7 @@ Three more are one or two levels short, on purpose:
 | C13 Fairhaven | metrics and economic buyer |
 
 Any model that reads these a level high puts a deal in the forecast that
-isn't ready. That's the error this week is built to catch.
+isn't ready.
 
 ## Distribution
 

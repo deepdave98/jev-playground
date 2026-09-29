@@ -2,7 +2,7 @@
 
     python3 src/score.py
 
-Overstating an element is the error that matters here. A field marked
+Overstating an element costs more than understating it. A field marked
 established that wasn't makes a deal look more qualified than it is, and if
 it's one of the three the forecast rule needs, the deal gets committed.
 """
@@ -20,8 +20,8 @@ from common.stats import pct  # noqa: E402
 from spec import ELEMENTS, LEVEL_NAMES, forecast_ready  # noqa: E402
 
 ORDER = ["jev", "jev-corrected", "claude-haiku-4-5", "claude-sonnet-5"]
-# jev-corrected isn't a separate run. It's Jev's own raw scores with
-# SCORE_BIAS, measured on weeks 01 to 03, taken off before rounding.
+# jev-corrected rescores jev.jsonl: SCORE_BIAS, measured on weeks 01 to 03,
+# comes off each raw score before rounding.
 SOURCE = {"jev-corrected": "jev"}
 
 
