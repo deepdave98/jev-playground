@@ -12,6 +12,12 @@ import time
 HOST, PATH = "api.typesafe.ai", "/v1/systemone"
 USD_PER_TOKEN = 42 / 1_000_000_000  # input only, output isn't billed
 
+# Jev's score answers run high. On weeks 01 to 03, three different score
+# questions and 193 answers, the mean signed error was +0.30 of a level
+# (+0.25, +0.34, +0.31). week-04-meddpicc/src/bias.py works it out. Pass
+# shift=SCORE_BIAS to decode() to take it back off before rounding.
+SCORE_BIAS = 0.30
+
 
 class Jev:
     def __init__(self, key=None):
@@ -56,11 +62,11 @@ def levels(q):
     return [c.split(":")[0].strip() for c in q["criteria"]]
 
 
-def decode(answers, questions, prefix=""):
+def decode(answers, questions, prefix="", shift=0.0):
     """Jev's typed answers, in the shape the scorers compare against.
 
     noul comes back as a probability, choice as the chosen key, score as the
-    nearest level name. Keep the raw score too if you care about the bias.
+    nearest level name after taking shift off. The raw score is kept too.
     """
     out = {}
     for name, q in questions.items():
@@ -71,6 +77,6 @@ def decode(answers, questions, prefix=""):
             out[name] = a["choice"]
         else:
             names = levels(q)
-            out[name] = names[max(0, min(len(names) - 1, round(a["score"])))]
+            out[name] = names[max(0, min(len(names) - 1, round(a["score"] - shift)))]
             out[name + "_score"] = a["score"]
     return out
