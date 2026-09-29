@@ -98,6 +98,28 @@ def main():
     row("input tokens per call", lambda r: f"{r['tokens_per_call']:.0f}")
     row("failed", lambda r: f"{r['failed']}")
 
+    if {"jev", "claude-sonnet-5"} <= set(have):
+        print()
+        recheck(truth)
+
+
+def recheck(truth):
+    """Jev fills every call, and Sonnet's answer decides only the ones Jev marks ready.
+
+    Sonnet's answers come from its own full run, so nothing here is re-asked.
+    """
+    jev, jev_calls, _ = load(ROOT / "results/raw/jev.jsonl")
+    son, son_calls, _ = load(ROOT / "results/raw/claude-sonnet-5.jsonl")
+    order = list(truth)
+    flagged = [i for i in order if forecast_ready(jev[i])]
+    final = {i: i in flagged and forecast_ready(son[i]) for i in order}
+    usd = (sum(c["usd"] for c in jev_calls)
+           + sum(son_calls[order.index(i)]["usd"] for i in flagged)) / len(order) * 1000
+    print(f"Jev on every call, Sonnet re-checks the {len(flagged)} Jev marks ready:")
+    print(f"  put in forecast, shouldn't be: {sum(final[i] and not forecast_ready(truth[i]) for i in order)}")
+    print(f"  left out, should be in: {sum(forecast_ready(truth[i]) and not final[i] for i in order)}")
+    print(f"  $ per 1,000 calls: ${usd:.3f}")
+
 
 if __name__ == "__main__":
     main()
