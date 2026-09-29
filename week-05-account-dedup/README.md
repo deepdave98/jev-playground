@@ -1,9 +1,10 @@
 # Week 05: duplicate accounts in a CRM
 
-Every CRM collects duplicate accounts. A list import adds one, a rep adds
-another, and enrichment adds a third under the legal name. Most are easy to
-spot. The ones that cost you look like duplicates and aren't: Instagram and
-Meta Platforms are two companies in one family, and merging them loses one.
+Duplicate accounts pile up in any CRM. List imports, reps and enrichment
+tools all create them, and enrichment tends to use the legal name. Most are
+easy to spot. The ones that cost you look like duplicates and aren't:
+Instagram and Meta Platforms are two companies in one family, and merging
+them loses one.
 
 Each candidate pair gets two questions: are these the same company, related,
 or different, and how likely is it that merging is right. Code turns the
@@ -11,7 +12,7 @@ answers into an action. Same at 0.9 or more merges, same below that goes to
 a person, related gets linked as parent and child, and different is left
 alone.
 
-A wrong merge is the error that matters. It folds two companies' contacts,
+A wrong merge is the mistake to avoid. It folds two companies' contacts,
 deals and history into one record, and it's hard to undo.
 
 50 candidate pairs, labelled by hand against [rubric.md](rubric.md). 14 of

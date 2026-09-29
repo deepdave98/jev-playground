@@ -2,7 +2,7 @@
 
     python3 src/score.py
 
-A wrong merge is the error that hurts. Two companies collapse into one
+A wrong merge costs the most. Two companies collapse into one
 record, and their contacts, deals and history go with it. A missed
 duplicate only means two records live on for a while.
 """
