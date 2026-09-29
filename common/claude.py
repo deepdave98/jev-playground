@@ -27,15 +27,17 @@ def parse(text):
 
 
 class Claude:
-    def __init__(self, model):
+    def __init__(self, model, thinking=False):
         self.model = model
+        self.thinking = thinking
         self.overhead = 0
 
     def call(self, system, user):
+        # Thinking stays off unless a week asks for it. week 01 has why.
         cmd = ["claude", "-p", user, "--model", self.model, "--output-format", "json",
                "--system-prompt", system, "--exclude-dynamic-system-prompt-sections",
-               "--disallowedTools", "*", "--effort", "low"]
-        env = {**os.environ, "MAX_THINKING_TOKENS": "0"}
+               "--disallowedTools", "*", "--effort", "medium" if self.thinking else "low"]
+        env = {**os.environ} if self.thinking else {**os.environ, "MAX_THINKING_TOKENS": "0"}
         t = time.perf_counter()
         proc = subprocess.run(cmd, capture_output=True, text=True, timeout=300, env=env)
         wall = (time.perf_counter() - t) * 1000
