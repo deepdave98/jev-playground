@@ -44,12 +44,13 @@ that. Sonnet's six champion misses split three high and three low.
 
 ## The bias correction worked, on a week it had never seen
 
-Weeks 01 to 03 all found Jev's score answers running high, and each README
-said to correct for it without ever trying. So I measured the offset on
-the first three weeks only: +0.25 on intent, +0.34 on severity, +0.31 on
-meeting intent, +0.30 pooled over 193 answers. That went into `common/jev.py` as `SCORE_BIAS` in its own
-commit, before this week's run was scored, so the correction couldn't be
-tuned to it. `src/bias.py` reproduces the number.
+Weeks 01 to 03 all found Jev's score answers running high. Week 01 said a
+threshold shift would fix it, and no week had tried one. So I measured the
+offset on the first three weeks only: +0.25 on intent, +0.34 on severity,
++0.31 on meeting intent, +0.30 pooled over 193 answers. That went into
+`common/jev.py` as `SCORE_BIAS` in its own commit, before this week's run
+was scored, so the correction couldn't be tuned to it. `src/bias.py`
+reproduces the number.
 
 Taking 0.30 off every raw score lifted Jev from 74% exact to 84%, past
 Haiku, and cut its overstatements from 33 to 20. It costs nothing, because
