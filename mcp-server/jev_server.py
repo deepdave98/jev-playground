@@ -2,7 +2,7 @@
 # requires-python = ">=3.11"
 # dependencies = ["mcp>=2.2,<3"]
 # ///
-"""An MCP server that puts the playground's Jev workflows behind three tools.
+"""An MCP server that puts the playground's Jev workflows behind six tools.
 
     uv run mcp-server/jev_server.py
 
@@ -30,7 +30,7 @@ REPO = pathlib.Path(__file__).resolve().parents[1]
 
 
 def load(name, path):
-    # Both weeks call their module spec.py, so a plain import would hand back
+    # Every week calls its module spec.py, so a plain import would hand back
     # whichever one loaded first.
     s = importlib.util.spec_from_file_location(name, path)
     mod = importlib.util.module_from_spec(s)
@@ -40,6 +40,10 @@ def load(name, path):
 
 w1 = load("week01", REPO / "week-01-lead-triage/src/spec.py")
 w2 = load("week02", REPO / "week-02-deal-risk/src/spec.py")
+w3 = load("week03", REPO / "week-03-reply-triage/src/spec.py")
+w4 = load("week04", REPO / "week-04-meddpicc/src/spec.py")
+w5 = load("week05", REPO / "week-05-account-dedup/src/spec.py")
+jev = load("jev", REPO / "common/jev.py")
 
 LEDGER_DIR = pathlib.Path(os.environ.get("JEV_LEDGER_DIR", REPO / "week-02-deal-risk/data")).resolve()
 
@@ -73,6 +77,30 @@ class DealRisk(TypedDict):
     reasons: list[str]
     summary: str
     events: list[EventLabel]
+    ms: int
+
+
+class Reply(TypedDict):
+    category: str
+    opt_out: bool
+    meeting_intent: str
+    route: str
+    p_opt_out: float
+    ms: int
+
+
+class Meddpicc(TypedDict):
+    elements: dict[str, str]
+    forecast_ready: bool
+    confirm: list[str]
+    gaps: list[str]
+    ms: int
+
+
+class Match(TypedDict):
+    relationship: str
+    p_same: float
+    action: str
     ms: int
 
 
@@ -148,8 +176,10 @@ server = MCPServer(
     instructions=(
         "Typed GTM decisions backed by Jev. They return labels and probabilities, "
         "never prose, so write any email or summary yourself from what comes back. "
-        "Use triage_lead on a new inbound lead, deal_risk on one deal's activity, and "
-        "deals_at_risk to sweep a whole ledger export without reading it yourself."
+        "Use triage_lead on a new inbound lead, deal_risk on one deal's activity, "
+        "deals_at_risk to sweep a whole ledger export without reading it yourself, "
+        "triage_reply on a reply to outbound, meddpicc on a call summary, and "
+        "dedup_pair on two CRM accounts that might be one company."
     ),
 )
 
@@ -233,6 +263,74 @@ async def deals_at_risk(ledger_file: str, today: str = "") -> Sweep:
         "arr_at_risk": sum(r["arr"] or 0 for r in risky),
         "ms": round((time.perf_counter() - t) * 1000),
     }
+
+
+@server.tool()
+async def triage_reply(text: str, sender: str = "", subject: str = "", received: str = "") -> Reply:
+    """Decide what to do with one reply to an outbound sequence.
+
+    Returns week 03's three judgments (category, opt_out, meeting_intent) and
+    the route: suppress, pause, ignore, reroute, snooze, close, send_info,
+    book_meeting or review. A reply that is only an opt-out word, like
+    "STOP", is suppressed in code without asking Jev. When Jev's opt_out
+    probability lands between 0.4 and 0.6 the route is review, so a person
+    decides. sender is the From line, with name, title and company if you
+    have them.
+    """
+    if w3.only_stop_word(text):
+        return {"category": "objection", "opt_out": True, "meeting_intent": "none",
+                "route": "suppress", "p_opt_out": 1.0, "ms": 0}
+    state = {"from": sender, "received": received, "in_reply_to": subject, "text": text}
+    t = time.perf_counter()
+    a = jev.decode((await asyncio.to_thread(ask, state, w3.QUESTIONS))["answers"], w3.QUESTIONS)
+    p = a["opt_out"]
+    lo, hi = w3.UNSURE
+    where = "review" if lo <= p <= hi else w3.route(a["category"], p >= 0.5, a["meeting_intent"])
+    return {"category": a["category"], "opt_out": p >= 0.5, "meeting_intent": a["meeting_intent"],
+            "route": where, "p_opt_out": p, "ms": round((time.perf_counter() - t) * 1000)}
+
+
+@server.tool()
+async def meddpicc(summary: str, account: str = "", stage: str = "") -> Meddpicc:
+    """Fill in MEDDPICC from one call summary.
+
+    Each of the eight elements comes back as none, mentioned or established,
+    with week 04's bias correction applied. forecast_ready is true when
+    metrics, economic_buyer and decision_process are all established. When
+    it is, confirm lists those three: read the summary yourself and check
+    them before the deal goes in the forecast, because Jev on its own put a
+    deal in that wasn't ready. gaps are the elements to ask about on the
+    next call.
+    """
+    state = {"account": account, "stage": stage, "summary": summary}
+    t = time.perf_counter()
+    a = jev.decode((await asyncio.to_thread(ask, state, w4.QUESTIONS))["answers"], w4.QUESTIONS,
+                   shift=jev.SCORE_BIAS)
+    card = {e: a[e] for e in w4.ELEMENTS}
+    ready = w4.forecast_ready(card)
+    return {"elements": card, "forecast_ready": ready,
+            "confirm": list(w4.FORECAST_NEEDS) if ready else [], "gaps": w4.gaps(card),
+            "ms": round((time.perf_counter() - t) * 1000)}
+
+
+@server.tool()
+async def dedup_pair(record_a: dict, record_b: dict) -> Match:
+    """Decide whether two CRM accounts are the same company.
+
+    Give each record what you have of name, domain, country, industry,
+    employees and source. relationship is same, related (one corporate
+    family, like a parent and a subsidiary) or different. action is what
+    week 05's rule does with that: merge, review, link or keep. merge only
+    comes back when Jev is at least 0.9 sure they're one company, and a same
+    below that comes back as review. A parent and its subsidiary are two
+    companies, so never merge a pair this returns as related.
+    """
+    state = {"record_a": record_a, "record_b": record_b}
+    t = time.perf_counter()
+    a = jev.decode((await asyncio.to_thread(ask, state, w5.QUESTIONS))["answers"], w5.QUESTIONS)
+    return {"relationship": a["relationship"], "p_same": a["same_company"],
+            "action": w5.action(a["relationship"], a["same_company"]),
+            "ms": round((time.perf_counter() - t) * 1000)}
 
 
 if __name__ == "__main__":

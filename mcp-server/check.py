@@ -20,6 +20,13 @@ from mcp.client.stdio import StdioServerParameters, stdio_client
 
 HERE = pathlib.Path(__file__).resolve().parent
 LEDGER = HERE.parent / "week-02-deal-risk/data/ledger.jsonl"
+REPLIES = HERE.parent / "week-03-reply-triage/data/replies.jsonl"
+CALLS = HERE.parent / "week-04-meddpicc/data/calls.jsonl"
+PAIRS = HERE.parent / "week-05-account-dedup/data/pairs.jsonl"
+
+
+def find(path, id_):
+    return next(r for r in map(json.loads, path.open()) if r["id"] == id_)
 
 
 def show(result):
@@ -59,6 +66,25 @@ async def main():
             print("\ndeals_at_risk, the whole week 02 ledger")
             print(show(await s.call_tool("deals_at_risk", {
                 "ledger_file": "ledger.jsonl", "today": "2026-09-25"})))
+
+            reply = find(REPLIES, "R01")["reply"]
+            print("\ntriage_reply, R01 from week 03")
+            print(show(await s.call_tool("triage_reply", {
+                "text": reply["text"], "sender": reply["from"],
+                "subject": reply["in_reply_to"], "received": reply["received"]})))
+
+            stop = await s.call_tool("triage_reply", {"text": "STOP"})
+            print("\na bare STOP never reaches Jev:", stop.structured_content)
+            if stop.structured_content["route"] != "suppress":
+                sys.exit("STOP was not suppressed")
+
+            call = find(CALLS, "C07")["call"]
+            print("\nmeddpicc, Pinecrest from week 04")
+            print(show(await s.call_tool("meddpicc", call)))
+
+            pair = find(PAIRS, "P28")["pair"]
+            print("\ndedup_pair, Google LLC and Alphabet from week 05")
+            print(show(await s.call_tool("dedup_pair", pair)))
 
             bad = await s.call_tool("deals_at_risk", {"ledger_file": "../../.env.local"})
             print("\nasking for a file outside the ledger dir is refused:", bad.is_error)

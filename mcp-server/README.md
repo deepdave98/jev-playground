@@ -5,7 +5,7 @@ pipelines behind an MCP server, so an agent that already talks to your GTM
 tools can hand Jev the decisions instead of making them itself.
 
 ```
-jev_server.py       the server, three tools
+jev_server.py       the server, six tools
 check.py            starts it the way an agent would and calls each tool
 mcp.example.json    config to copy
 ```
@@ -20,8 +20,8 @@ worth an AE. Is this deal slipping. Did that email come from someone senior.
 
 Deciding is where the bill goes. Every row the agent looks at is frontier
 model tokens, and most of those decisions are the typed kind Jev does at a
-fraction of the price and a tenth of the latency. Week 01 and week 02 have
-the numbers. This server is how you use them without rewriting your agent.
+fraction of the price and a tenth of the latency. Weeks 01 to 05 have the
+numbers. This server is how you use them without rewriting your agent.
 
 ## Setup
 
@@ -47,26 +47,29 @@ To see it working before you wire it into anything:
 TYPESAFE_API_KEY=your-key uv run mcp-server/check.py
 ```
 
-## The three tools
+## The tools
 
 | tool | give it | get back | time |
 |---|---|---|---|
 | `triage_lead` | company, title, message, and headcount if you have it | disqualify, icp_fit, segment, intent, the queue to route to | 360 ms warm |
 | `deal_risk` | one deal and its events | at risk or not, the reasons, each event's labels | ~360 ms |
 | `deals_at_risk` | the name of a ledger export | only the deals at risk, biggest first, with reasons | ~2 s for 20 deals |
+| `triage_reply` | a reply, and who sent it if you have that | category, opt_out, meeting_intent, the route | ~380 ms |
+| `meddpicc` | one call summary | all eight elements, forecast_ready, what to confirm, the gaps | ~380 ms |
+| `dedup_pair` | two account records | same, related or different, p_same, the action | ~400 ms |
 
 The first call on a fresh connection pays for the TLS handshake. Eight
 `triage_lead` calls in a row through the server came back at 979 ms for the
 first and a median of 360 ms for the rest. Every tool declares an output
 schema, so clients get structured results and not a blob of JSON text.
 
-All three load their questions straight from the week folders. Change a
+Every tool loads its questions straight from the week folders. Change a
 prompt in `week-02-deal-risk/src/spec.py` and the tool changes with it. That
 also means any benchmark number in this repo describes what the tool
 actually does, as long as you re-run the benchmark after changing a prompt.
 
 None of the tools write anything. They return labels and probabilities and
-leave the writing to the agent, which is the split both weeks landed on.
+leave the writing to the agent, which is where every week has ended up.
 
 ## How it fits into a real workflow
 
@@ -113,6 +116,56 @@ made 219 small decisions, and the agent spent its effort on the one call that
 needed judgment.
 
 It never opened the ledger, and that was a design decision in the tool.
+
+### Replies to a sequence
+
+```
+reply lands in the sequencing tool
+  -> triage_reply: category, opt_out, meeting_intent, route
+  -> suppress: sequencing server pulls them from every sequence
+  -> review: a person reads it
+  -> pause or reroute: the agent pulls out the return date or the new contact
+  -> book_meeting or send_info: the agent drafts the answer for the rep
+```
+
+Week 03 had two opt-out mistakes, one from Jev and one from Sonnet, and both
+scored between 0.4 and 0.6. The tool sends that band to review. A reply that
+says nothing but "STOP" is suppressed in code and never reaches Jev.
+
+### After a sales call
+
+```
+call recorder posts the summary
+  -> meddpicc: eight elements, forecast_ready, confirm, gaps
+  -> CRM server: write the elements onto the opportunity
+  -> gaps go to the AE as questions for the next call
+  -> if confirm isn't empty, the agent reads the summary and checks
+     those three fields before the deal moves to commit
+```
+
+`check.py` runs this on Pinecrest, the deal Jev wrongly put in the week 04
+forecast. It still comes back forecast_ready, and confirm tells the agent
+which three fields to check. Week 04 measured that split: Jev on every call
+and a Sonnet check on the deals it marks ready made no false commits, at
+about a quarter of what Sonnet costs on every call.
+
+### Duplicate accounts
+
+```
+a job in code finds candidate pairs: a shared word in the name, a shared domain
+  -> dedup_pair on each
+  -> merge: CRM server merges the two
+  -> link: CRM server sets the parent account
+  -> review: a second look, by a person or by the agent with thinking on
+  -> keep: nothing
+```
+
+In week 05 Jev got 48 of 50 pairs right with no wrong merges. Haiku and
+Sonnet with thinking off both merged Google into Alphabet and were 0.95 sure
+about it. Sonnet with thinking on got all 50, at 468 times Jev's cost. With
+Sonnet taking only Jev's review pile, every real duplicate got merged for
+$2.81 per 1,000 pairs. So if the agent does the review itself, turn
+thinking on.
 
 ## Do the fan-out inside the tool
 
@@ -178,6 +231,9 @@ Per call, from the benchmarks:
 |---|---|---|
 | one lead through `triage_lead` | $0.00004 | $0.0030 |
 | one deal through `deal_risk` | $0.00012 | $0.0040 |
+| one reply through `triage_reply` | $0.00003 | $0.0020 |
+| one call summary through `meddpicc` | $0.00005 | $0.0037 |
+| one pair through `dedup_pair` | $0.00003 | $0.0013 |
 | a million ledger events a day | about $1,255 a month | about $70,500 a month |
 
 The agent's own tokens come on top of that, and they're what the fan-out
@@ -199,3 +255,17 @@ want a small step that reshapes it into that before the sweep.
 The competitor list lives in the prompt, which is Hexline, Corvid and
 Tallyworks, all made up. Put yours in. Week 01 showed Jev won't work out who
 your competitors are on its own.
+
+`STOP_WORDS` in `week-03-reply-triage/src/spec.py` is four phrases, and it
+only fires when the reply says nothing else. Add the ones your own replies
+use.
+
+`meddpicc` returns a champion level like the other seven, but in week 04 Jev
+and Haiku both marked whoever attended the call as the champion. Don't let
+that field drive anything automatic.
+
+`dedup_pair` merges at 0.9, which is `AUTO_MERGE` in
+`week-05-account-dedup/src/spec.py`. On week 05's pairs Jev never scored a
+non-duplicate above 0.29 or a real one below 0.68, so there's room to lower
+it. Wait until your own review pile has agreed with Jev for a while, because
+50 pairs can't pick the number for you.
