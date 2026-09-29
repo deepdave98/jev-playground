@@ -15,13 +15,13 @@ mcp.example.json    config to copy
 A GTM agent in 2026 usually has a handful of MCP servers wired in. One for
 the activity database (AckDB, in my case), one for whatever enrichment tool
 fills in headcount, titles and funding, one for the CRM, one for Slack. The
-agent pulls rows out of those and decides things about them. Is this lead
-worth an AE. Is this deal slipping. Did that email come from someone senior.
+agent pulls rows out of those and decides things about them: whether a lead
+is worth an AE, whether a deal is slipping, whether an email came from
+someone senior.
 
-Deciding is where the bill goes. Every row the agent looks at is frontier
-model tokens, and most of those decisions are the typed kind Jev does at a
-fraction of the price and a tenth of the latency. Weeks 01 to 05 have the
-numbers. This server is how you use them without rewriting your agent.
+Every row the agent decides on costs frontier model tokens, and most of
+those decisions are the typed kind Jev does for 1% to 3% of Sonnet's price,
+at 13% to 18% of its latency. Weeks 01 to 05 have the numbers.
 
 ## Setup
 
@@ -66,10 +66,10 @@ schema, so clients get structured results and not a blob of JSON text.
 Every tool loads its questions straight from the week folders. Change a
 prompt in `week-02-deal-risk/src/spec.py` and the tool changes with it. That
 also means any benchmark number in this repo describes what the tool
-actually does, as long as you re-run the benchmark after changing a prompt.
+does, as long as you re-run the benchmark after changing a prompt.
 
 None of the tools write anything. They return labels and probabilities and
-leave the writing to the agent, which is where every week has ended up.
+leave the writing to the agent.
 
 ## How it fits into a real workflow
 
@@ -84,10 +84,9 @@ form fill lands in the CRM
        the agent writes the first email and drafts it in Slack for the rep
 ```
 
-The enrichment step matters more than it looks. `segment` reads headcount
-directly, so a lead that arrives with headcount filled in gets segmented from
-a number instead of a guess. Run enrichment first and pass the headcount
-through.
+`segment` reads headcount directly, so a lead that arrives with headcount
+filled in gets segmented from a number instead of a guess. Run enrichment
+first and pass the headcount through.
 
 In week 01, 29 of 60 leads earned an email. The other 31 cost about four
 thousandths of a cent each to reject or nurture, and no email tokens at all.
@@ -102,7 +101,7 @@ activity database exports the week's ledger to JEV_LEDGER_DIR
   -> Slack server: post the notes
 ```
 
-Here's what happened when I pointed Claude Code at it with a plain request:
+I gave Claude Code a plain request:
 
 > Which of our open deals are at risk? Our activity database exported this
 > week's ledger to ledger.jsonl. Use 2026-09-25 as today. I want a short list
@@ -111,11 +110,10 @@ Here's what happened when I pointed Claude Code at it with a plain request:
 It called `deals_at_risk` once and came back with all eight at-risk deals
 from the week 02 answer key, $1.145M, correct reasons. Then it added
 something the tool didn't give it: Precision is the smallest deal and the
-most urgent, because it closes in three days. That's the split working. Jev
-made 219 small decisions, and the agent spent its effort on the one call that
-needed judgment.
-
-It never opened the ledger, and that was a design decision in the tool.
+most urgent, because it closes in three days. Jev answered the 219
+questions underneath, three for each of the 73 events, and the point about
+Precision was the agent's own. It never opened the ledger, because
+`deals_at_risk` reads the file itself.
 
 ### Replies to a sequence
 
@@ -162,9 +160,9 @@ a job in code finds candidate pairs: a shared word in the name, a shared domain
 
 In week 05 Jev got 48 of 50 pairs right with no wrong merges. Haiku and
 Sonnet with thinking off both merged Google into Alphabet and were 0.95 sure
-about it. Sonnet with thinking on got all 50, at 468 times Jev's cost. With
-Sonnet taking only Jev's review pile, every real duplicate got merged for
-$2.81 per 1,000 pairs. So if the agent does the review itself, turn
+about it. Sonnet with thinking on got all 50, at about 470 times Jev's cost.
+With Sonnet taking only Jev's review pile, every real duplicate got merged
+for $2.81 per 1,000 pairs. So if the agent does the review itself, turn
 thinking on.
 
 ## Do the fan-out inside the tool
@@ -181,10 +179,9 @@ Measured on the week 02 ledger:
 | the ledger, as the agent would read it | 20,042 bytes |
 | what `deals_at_risk` hands back | 669 bytes |
 
-That's with 20 deals. The ledger grows with the number of events. The answer
-only grows with the number of deals at risk. On a real pipeline the gap gets
-much bigger, and the agent's context stays small enough to leave room for the
-part it's good at.
+That's 30 times less for the agent to read, with 20 deals. The ledger grows
+with the number of events, and the answer only grows with the number of
+deals at risk, so the gap widens on a real pipeline.
 
 So the tool reads the file itself, fans out to Jev on eight threads, applies
 the rule in code, and returns only what someone should act on.
@@ -220,8 +217,8 @@ parsing the text and hid the problem.
 
 **Asking the agent to do date arithmetic.** In week 02, Claude reviewing
 Jev's flags decided an August 15 meeting fell inside a 30 day window ending
-September 25. It was right about everything else. If your agent reviews what these
-tools return, give it the numbers. Don't ask it to count days.
+September 25. It was right about everything else. If your agent reviews
+what these tools return, work out the day counts in code and pass them in.
 
 ## What it costs to run
 
@@ -252,8 +249,8 @@ place changes both. Re-run the week 02 benchmark after you do.
 per line with its events. Whatever your activity database exports, you'll
 want a small step that reshapes it into that before the sweep.
 
-The competitor list lives in the prompt, which is Hexline, Corvid and
-Tallyworks, all made up. Put yours in. Week 01 showed Jev won't work out who
+The competitor list (Hexline, Corvid and Tallyworks, all made up) lives in
+the prompt. Put yours in. Week 01 showed Jev won't work out who
 your competitors are on its own.
 
 `STOP_WORDS` in `week-03-reply-triage/src/spec.py` is four phrases, and it
