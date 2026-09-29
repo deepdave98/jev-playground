@@ -2,7 +2,7 @@
 # requires-python = ">=3.11"
 # dependencies = ["mcp>=2.2,<3"]
 # ///
-"""An MCP server that puts the playground's Jev workflows behind four tools.
+"""An MCP server that puts the playground's Jev workflows behind five tools.
 
     uv run mcp-server/jev_server.py
 
@@ -41,6 +41,7 @@ def load(name, path):
 w1 = load("week01", REPO / "week-01-lead-triage/src/spec.py")
 w2 = load("week02", REPO / "week-02-deal-risk/src/spec.py")
 w3 = load("week03", REPO / "week-03-reply-triage/src/spec.py")
+w4 = load("week04", REPO / "week-04-meddpicc/src/spec.py")
 jev = load("jev", REPO / "common/jev.py")
 
 LEDGER_DIR = pathlib.Path(os.environ.get("JEV_LEDGER_DIR", REPO / "week-02-deal-risk/data")).resolve()
@@ -84,6 +85,14 @@ class Reply(TypedDict):
     meeting_intent: str
     route: str
     p_opt_out: float
+    ms: int
+
+
+class Meddpicc(TypedDict):
+    elements: dict[str, str]
+    forecast_ready: bool
+    confirm: list[str]
+    gaps: list[str]
     ms: int
 
 
@@ -161,7 +170,7 @@ server = MCPServer(
         "never prose, so write any email or summary yourself from what comes back. "
         "Use triage_lead on a new inbound lead, deal_risk on one deal's activity, "
         "deals_at_risk to sweep a whole ledger export without reading it yourself, "
-        "and triage_reply on a reply to outbound."
+        "triage_reply on a reply to outbound, and meddpicc on a call summary."
     ),
 )
 
@@ -270,6 +279,29 @@ async def triage_reply(text: str, sender: str = "", subject: str = "", received:
     where = "review" if lo <= p <= hi else w3.route(a["category"], p >= 0.5, a["meeting_intent"])
     return {"category": a["category"], "opt_out": p >= 0.5, "meeting_intent": a["meeting_intent"],
             "route": where, "p_opt_out": p, "ms": round((time.perf_counter() - t) * 1000)}
+
+
+@server.tool()
+async def meddpicc(summary: str, account: str = "", stage: str = "") -> Meddpicc:
+    """Fill in MEDDPICC from one call summary.
+
+    Each of the eight elements comes back as none, mentioned or established,
+    with week 04's bias correction applied. forecast_ready is true when
+    metrics, economic_buyer and decision_process are all established. When
+    it is, confirm lists those three: read the summary yourself and check
+    them before the deal goes in the forecast, because Jev on its own put a
+    deal in that wasn't ready. gaps are the elements to ask about on the
+    next call.
+    """
+    state = {"account": account, "stage": stage, "summary": summary}
+    t = time.perf_counter()
+    a = jev.decode((await asyncio.to_thread(ask, state, w4.QUESTIONS))["answers"], w4.QUESTIONS,
+                   shift=jev.SCORE_BIAS)
+    card = {e: a[e] for e in w4.ELEMENTS}
+    ready = w4.forecast_ready(card)
+    return {"elements": card, "forecast_ready": ready,
+            "confirm": list(w4.FORECAST_NEEDS) if ready else [], "gaps": w4.gaps(card),
+            "ms": round((time.perf_counter() - t) * 1000)}
 
 
 
