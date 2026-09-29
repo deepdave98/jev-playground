@@ -2425,7 +2425,7 @@
       "node_kind": "heading",
       "norm_label": "after a sales call",
       "source_file": "mcp-server/README.md",
-      "source_location": "L135"
+      "source_location": "L133"
     },
     {
       "id": "mcp_server_readme_do_the_fan_out_inside_the_tool",
@@ -2437,7 +2437,7 @@
       "node_kind": "heading",
       "norm_label": "do the fan-out inside the tool",
       "source_file": "mcp-server/README.md",
-      "source_location": "L170"
+      "source_location": "L168"
     },
     {
       "id": "mcp_server_readme_duplicate_accounts",
@@ -2449,7 +2449,7 @@
       "node_kind": "heading",
       "norm_label": "duplicate accounts",
       "source_file": "mcp-server/README.md",
-      "source_location": "L152"
+      "source_location": "L150"
     },
     {
       "id": "mcp_server_readme_how_it_fits_into_a_real_workflow",
@@ -2473,7 +2473,7 @@
       "node_kind": "heading",
       "norm_label": "limits",
       "source_file": "mcp-server/README.md",
-      "source_location": "L242"
+      "source_location": "L239"
     },
     {
       "id": "mcp_server_readme_replies_to_a_sequence",
@@ -2485,7 +2485,7 @@
       "node_kind": "heading",
       "norm_label": "replies to a sequence",
       "source_file": "mcp-server/README.md",
-      "source_location": "L120"
+      "source_location": "L118"
     },
     {
       "id": "mcp_server_readme_setup",
@@ -2509,7 +2509,7 @@
       "node_kind": "heading",
       "norm_label": "the monday risk sweep",
       "source_file": "mcp-server/README.md",
-      "source_location": "L95"
+      "source_location": "L94"
     },
     {
       "id": "mcp_server_readme_the_tools",
@@ -2533,7 +2533,7 @@
       "node_kind": "heading",
       "norm_label": "things i got wrong the first time",
       "source_file": "mcp-server/README.md",
-      "source_location": "L192"
+      "source_location": "L189"
     },
     {
       "id": "mcp_server_readme_using_this_from_an_agent",
@@ -2557,7 +2557,7 @@
       "node_kind": "heading",
       "norm_label": "what it costs to run",
       "source_file": "mcp-server/README.md",
-      "source_location": "L226"
+      "source_location": "L223"
     },
     {
       "id": "mcp_server_readme_why_bother",
@@ -2681,7 +2681,7 @@
       "node_kind": "heading",
       "norm_label": "haiku and sonnet knew too",
       "source_file": "week-05-account-dedup/README.md",
-      "source_location": "L45"
+      "source_location": "L46"
     },
     {
       "id": "week_05_account_dedup_readme_jev_knew_who_owns_whom",
@@ -2693,7 +2693,7 @@
       "node_kind": "heading",
       "norm_label": "jev knew who owns whom",
       "source_file": "week-05-account-dedup/README.md",
-      "source_location": "L38"
+      "source_location": "L39"
     },
     {
       "id": "week_05_account_dedup_readme_results",
@@ -2705,7 +2705,7 @@
       "node_kind": "heading",
       "norm_label": "results",
       "source_file": "week-05-account-dedup/README.md",
-      "source_location": "L21"
+      "source_location": "L22"
     },
     {
       "id": "week_05_account_dedup_readme_running_it",
@@ -2717,19 +2717,19 @@
       "node_kind": "heading",
       "norm_label": "running it",
       "source_file": "week-05-account-dedup/README.md",
-      "source_location": "L113"
+      "source_location": "L114"
     },
     {
-      "id": "week_05_account_dedup_readme_thinking_fixed_it_at_468_times_the_price",
-      "label": "Thinking fixed it, at 468 times the price",
+      "id": "week_05_account_dedup_readme_thinking_fixed_it_at_about_470_times_the_price",
+      "label": "Thinking fixed it, at about 470 times the price",
       "_origin": "ast",
       "community": 10,
       "community_name": "Week 05: duplicate accounts in a CRM",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "thinking fixed it, at 468 times the price",
+      "norm_label": "thinking fixed it, at about 470 times the price",
       "source_file": "week-05-account-dedup/README.md",
-      "source_location": "L63"
+      "source_location": "L64"
     },
     {
       "id": "week_05_account_dedup_readme_week_05_duplicate_accounts_in_a_crm",
@@ -2753,7 +2753,7 @@
       "node_kind": "heading",
       "norm_label": "what i'd ship",
       "source_file": "week-05-account-dedup/README.md",
-      "source_location": "L85"
+      "source_location": "L86"
     },
     {
       "id": "week_05_account_dedup_readme_whose_confidence_can_gate_a_merge",
@@ -2765,7 +2765,7 @@
       "node_kind": "heading",
       "norm_label": "whose confidence can gate a merge",
       "source_file": "week-05-account-dedup/README.md",
-      "source_location": "L73"
+      "source_location": "L74"
     },
     {
       "id": "week_05_account_dedup_rubric",
@@ -2864,6 +2864,18 @@
       "source_location": "L1"
     },
     {
+      "id": "week_04_meddpicc_readme_a_second_opinion_on_the_deals_jev_marks_ready",
+      "label": "A second opinion on the deals Jev marks ready",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "Week 04: filling in MEDDPICC from call summaries",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "a second opinion on the deals jev marks ready",
+      "source_file": "week-04-meddpicc/README.md",
+      "source_location": "L76"
+    },
+    {
       "id": "week_04_meddpicc_readme_everyone_reads_meddpicc_too_generously",
       "label": "Everyone reads MEDDPICC too generously",
       "_origin": "ast",
@@ -2876,16 +2888,16 @@
       "source_location": "L32"
     },
     {
-      "id": "week_04_meddpicc_readme_it_didn_t_fix_the_one_that_mattered",
-      "label": "It didn't fix the one that mattered",
+      "id": "week_04_meddpicc_readme_it_didn_t_fix_pinecrest",
+      "label": "It didn't fix Pinecrest",
       "_origin": "ast",
       "community": 11,
       "community_name": "Week 04: filling in MEDDPICC from call summaries",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "it didn't fix the one that mattered",
+      "norm_label": "it didn't fix pinecrest",
       "source_file": "week-04-meddpicc/README.md",
-      "source_location": "L58"
+      "source_location": "L59"
     },
     {
       "id": "week_04_meddpicc_readme_results",
@@ -2909,7 +2921,7 @@
       "node_kind": "heading",
       "norm_label": "running it",
       "source_file": "week-04-meddpicc/README.md",
-      "source_location": "L100"
+      "source_location": "L102"
     },
     {
       "id": "week_04_meddpicc_readme_the_bias_correction_worked_on_a_week_it_had_never_seen",
@@ -2936,18 +2948,6 @@
       "source_location": "L1"
     },
     {
-      "id": "week_04_meddpicc_readme_what_does_fix_it",
-      "label": "What does fix it",
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "Week 04: filling in MEDDPICC from call summaries",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "what does fix it",
-      "source_file": "week-04-meddpicc/README.md",
-      "source_location": "L73"
-    },
-    {
       "id": "week_04_meddpicc_readme_what_i_d_ship",
       "label": "What I'd ship",
       "_origin": "ast",
@@ -2957,7 +2957,7 @@
       "node_kind": "heading",
       "norm_label": "what i'd ship",
       "source_file": "week-04-meddpicc/README.md",
-      "source_location": "L89"
+      "source_location": "L91"
     },
     {
       "id": "week_04_meddpicc_rubric",
@@ -3582,12 +3582,12 @@
     },
     {
       "id": "common_stats_rationale_7",
-      "label": "Nearest-rank percentile. Sets here are 60 items, so no interpolation.",
+      "label": "Nearest-rank percentile. The sets here are 16 to 60 items, so no interpolation.",
       "_origin": "ast",
       "community": 3,
       "community_name": "json",
       "file_type": "rationale",
-      "norm_label": "nearest-rank percentile. sets here are 60 items, so no interpolation.",
+      "norm_label": "nearest-rank percentile. the sets here are 16 to 60 items, so no interpolation.",
       "source_file": "common/stats.py",
       "source_location": "L7"
     },
@@ -4699,19 +4699,19 @@
       "node_kind": "heading",
       "norm_label": "batching unrelated replies costs a little accuracy",
       "source_file": "week-03-reply-triage/README.md",
-      "source_location": "L60"
+      "source_location": "L59"
     },
     {
-      "id": "week_03_reply_triage_readme_both_opt_out_mistakes_were_coin_flips",
-      "label": "Both opt-out mistakes were coin flips",
+      "id": "week_03_reply_triage_readme_both_opt_out_mistakes_scored_between_0_4_and_0_6",
+      "label": "Both opt-out mistakes scored between 0.4 and 0.6",
       "_origin": "ast",
       "community": 9,
       "community_name": "Week 03: triaging replies to outbound sequences",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "both opt-out mistakes were coin flips",
+      "norm_label": "both opt-out mistakes scored between 0.4 and 0.6",
       "source_file": "week-03-reply-triage/README.md",
-      "source_location": "L35"
+      "source_location": "L34"
     },
     {
       "id": "week_03_reply_triage_readme_haiku_answered_the_wrong_question_six_times",
@@ -4723,7 +4723,7 @@
       "node_kind": "heading",
       "norm_label": "haiku answered the wrong question six times",
       "source_file": "week-03-reply-triage/README.md",
-      "source_location": "L48"
+      "source_location": "L47"
     },
     {
       "id": "week_03_reply_triage_readme_jev_s_score_answers_run_high_third_week_running",
@@ -4735,7 +4735,19 @@
       "node_kind": "heading",
       "norm_label": "jev's score answers run high, third week running",
       "source_file": "week-03-reply-triage/README.md",
-      "source_location": "L69"
+      "source_location": "L67"
+    },
+    {
+      "id": "week_03_reply_triage_readme_pulling_out_return_dates_and_new_contacts",
+      "label": "Pulling out return dates and new contacts",
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "Week 03: triaging replies to outbound sequences",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "pulling out return dates and new contacts",
+      "source_file": "week-03-reply-triage/README.md",
+      "source_location": "L79"
     },
     {
       "id": "week_03_reply_triage_readme_results",
@@ -4759,19 +4771,7 @@
       "node_kind": "heading",
       "norm_label": "running it",
       "source_file": "week-03-reply-triage/README.md",
-      "source_location": "L107"
-    },
-    {
-      "id": "week_03_reply_triage_readme_the_step_jev_can_t_do",
-      "label": "The step Jev can't do",
-      "_origin": "ast",
-      "community": 9,
-      "community_name": "Week 03: triaging replies to outbound sequences",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "the step jev can't do",
-      "source_file": "week-03-reply-triage/README.md",
-      "source_location": "L82"
+      "source_location": "L104"
     },
     {
       "id": "week_03_reply_triage_readme_week_03_triaging_replies_to_outbound_sequences",
@@ -4795,7 +4795,7 @@
       "node_kind": "heading",
       "norm_label": "what i'd ship",
       "source_file": "week-03-reply-triage/README.md",
-      "source_location": "L97"
+      "source_location": "L94"
     },
     {
       "id": "week_03_reply_triage_rubric",
@@ -4896,6 +4896,7 @@
     {
       "id": "concurrent_futures",
       "label": "concurrent_futures",
+      "_origin": "semantic",
       "community": 1,
       "community_name": "jev_server.py",
       "external": true,
@@ -4907,6 +4908,7 @@
     {
       "id": "importlib_util",
       "label": "importlib_util",
+      "_origin": "semantic",
       "community": 1,
       "community_name": "jev_server.py",
       "external": true,
@@ -4918,6 +4920,7 @@
     {
       "id": "mcp_server_mcpserver",
       "label": "mcp_server_mcpserver",
+      "_origin": "semantic",
       "community": 1,
       "community_name": "jev_server.py",
       "external": true,
@@ -4929,6 +4932,7 @@
     {
       "id": "mcp_server_mcpserver_exceptions",
       "label": "mcp_server_mcpserver_exceptions",
+      "_origin": "semantic",
       "community": 1,
       "community_name": "jev_server.py",
       "external": true,
@@ -4940,6 +4944,7 @@
     {
       "id": "threading",
       "label": "threading",
+      "_origin": "semantic",
       "community": 1,
       "community_name": "jev_server.py",
       "external": true,
@@ -4951,6 +4956,7 @@
     {
       "id": "typing",
       "label": "typing",
+      "_origin": "semantic",
       "community": 1,
       "community_name": "jev_server.py",
       "external": true,
@@ -4962,6 +4968,7 @@
     {
       "id": "asyncio",
       "label": "asyncio",
+      "_origin": "semantic",
       "community": 12,
       "community_name": "check.py",
       "external": true,
@@ -4973,6 +4980,7 @@
     {
       "id": "mcp",
       "label": "mcp",
+      "_origin": "semantic",
       "community": 12,
       "community_name": "check.py",
       "external": true,
@@ -4984,6 +4992,7 @@
     {
       "id": "mcp_client_stdio",
       "label": "mcp_client_stdio",
+      "_origin": "semantic",
       "community": 12,
       "community_name": "check.py",
       "external": true,
@@ -4995,6 +5004,7 @@
     {
       "id": "datetime",
       "label": "datetime",
+      "_origin": "semantic",
       "community": 2,
       "community_name": "week-02-deal-risk/src/bench.py",
       "external": true,
@@ -5006,6 +5016,7 @@
     {
       "id": "collections",
       "label": "collections",
+      "_origin": "semantic",
       "community": 3,
       "community_name": "json",
       "external": true,
@@ -5017,6 +5028,7 @@
     {
       "id": "json",
       "label": "json",
+      "_origin": "semantic",
       "community": 3,
       "community_name": "json",
       "external": true,
@@ -5028,6 +5040,7 @@
     {
       "id": "pathlib",
       "label": "pathlib",
+      "_origin": "semantic",
       "community": 3,
       "community_name": "json",
       "external": true,
@@ -5039,6 +5052,7 @@
     {
       "id": "sys",
       "label": "sys",
+      "_origin": "semantic",
       "community": 3,
       "community_name": "json",
       "external": true,
@@ -5050,6 +5064,7 @@
     {
       "id": "time",
       "label": "time",
+      "_origin": "semantic",
       "community": 4,
       "community_name": "claude_runner.py",
       "external": true,
@@ -5061,6 +5076,7 @@
     {
       "id": "statistics",
       "label": "statistics",
+      "_origin": "semantic",
       "community": 5,
       "community_name": "week-01-lead-triage/src/score.py",
       "external": true,
@@ -5072,6 +5088,7 @@
     {
       "id": "http_client",
       "label": "http_client",
+      "_origin": "semantic",
       "community": 6,
       "community_name": "week-03-reply-triage/src/bench.py",
       "external": true,
@@ -5083,6 +5100,7 @@
     {
       "id": "os",
       "label": "os",
+      "_origin": "semantic",
       "community": 6,
       "community_name": "week-03-reply-triage/src/bench.py",
       "external": true,
@@ -5094,6 +5112,7 @@
     {
       "id": "re",
       "label": "re",
+      "_origin": "semantic",
       "community": 7,
       "community_name": "Claude",
       "external": true,
@@ -5105,6 +5124,7 @@
     {
       "id": "subprocess",
       "label": "subprocess",
+      "_origin": "semantic",
       "community": 7,
       "community_name": "Claude",
       "external": true,
@@ -10698,7 +10718,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "mcp-server/README.md",
-      "source_location": "L120",
+      "source_location": "L118",
       "weight": 1.0
     },
     {
@@ -10709,7 +10729,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "mcp-server/README.md",
-      "source_location": "L135",
+      "source_location": "L133",
       "weight": 1.0
     },
     {
@@ -10720,7 +10740,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "mcp-server/README.md",
-      "source_location": "L152",
+      "source_location": "L150",
       "weight": 1.0
     },
     {
@@ -10742,7 +10762,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "mcp-server/README.md",
-      "source_location": "L95",
+      "source_location": "L94",
       "weight": 1.0
     },
     {
@@ -10764,7 +10784,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "mcp-server/README.md",
-      "source_location": "L170",
+      "source_location": "L168",
       "weight": 1.0
     },
     {
@@ -10775,7 +10795,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "mcp-server/README.md",
-      "source_location": "L192",
+      "source_location": "L189",
       "weight": 1.0
     },
     {
@@ -10786,7 +10806,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "mcp-server/README.md",
-      "source_location": "L226",
+      "source_location": "L223",
       "weight": 1.0
     },
     {
@@ -10797,7 +10817,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "mcp-server/README.md",
-      "source_location": "L242",
+      "source_location": "L239",
       "weight": 1.0
     },
     {
@@ -11820,7 +11840,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "week-03-reply-triage/README.md",
-      "source_location": "L107",
+      "source_location": "L104",
       "weight": 1.0
     },
     {
@@ -11836,13 +11856,13 @@
     },
     {
       "source": "week_03_reply_triage_readme_week_03_triaging_replies_to_outbound_sequences",
-      "target": "week_03_reply_triage_readme_both_opt_out_mistakes_were_coin_flips",
+      "target": "week_03_reply_triage_readme_both_opt_out_mistakes_scored_between_0_4_and_0_6",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "week-03-reply-triage/README.md",
-      "source_location": "L35",
+      "source_location": "L34",
       "weight": 1.0
     },
     {
@@ -11853,7 +11873,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "week-03-reply-triage/README.md",
-      "source_location": "L48",
+      "source_location": "L47",
       "weight": 1.0
     },
     {
@@ -11864,7 +11884,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "week-03-reply-triage/README.md",
-      "source_location": "L60",
+      "source_location": "L59",
       "weight": 1.0
     },
     {
@@ -11875,18 +11895,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "week-03-reply-triage/README.md",
-      "source_location": "L69",
+      "source_location": "L67",
       "weight": 1.0
     },
     {
       "source": "week_03_reply_triage_readme_week_03_triaging_replies_to_outbound_sequences",
-      "target": "week_03_reply_triage_readme_the_step_jev_can_t_do",
+      "target": "week_03_reply_triage_readme_pulling_out_return_dates_and_new_contacts",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "week-03-reply-triage/README.md",
-      "source_location": "L82",
+      "source_location": "L79",
       "weight": 1.0
     },
     {
@@ -11897,7 +11917,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "week-03-reply-triage/README.md",
-      "source_location": "L97",
+      "source_location": "L94",
       "weight": 1.0
     },
     {
@@ -12172,7 +12192,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "week-04-meddpicc/README.md",
-      "source_location": "L100",
+      "source_location": "L102",
       "weight": 1.0
     },
     {
@@ -12210,24 +12230,24 @@
     },
     {
       "source": "week_04_meddpicc_readme_week_04_filling_in_meddpicc_from_call_summaries",
-      "target": "week_04_meddpicc_readme_it_didn_t_fix_the_one_that_mattered",
+      "target": "week_04_meddpicc_readme_it_didn_t_fix_pinecrest",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "week-04-meddpicc/README.md",
-      "source_location": "L58",
+      "source_location": "L59",
       "weight": 1.0
     },
     {
       "source": "week_04_meddpicc_readme_week_04_filling_in_meddpicc_from_call_summaries",
-      "target": "week_04_meddpicc_readme_what_does_fix_it",
+      "target": "week_04_meddpicc_readme_a_second_opinion_on_the_deals_jev_marks_ready",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "week-04-meddpicc/README.md",
-      "source_location": "L73",
+      "source_location": "L76",
       "weight": 1.0
     },
     {
@@ -12238,7 +12258,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "week-04-meddpicc/README.md",
-      "source_location": "L89",
+      "source_location": "L91",
       "weight": 1.0
     },
     {
@@ -12524,7 +12544,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "week-05-account-dedup/README.md",
-      "source_location": "L113",
+      "source_location": "L114",
       "weight": 1.0
     },
     {
@@ -12535,7 +12555,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "week-05-account-dedup/README.md",
-      "source_location": "L21",
+      "source_location": "L22",
       "weight": 1.0
     },
     {
@@ -12546,7 +12566,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "week-05-account-dedup/README.md",
-      "source_location": "L38",
+      "source_location": "L39",
       "weight": 1.0
     },
     {
@@ -12557,18 +12577,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "week-05-account-dedup/README.md",
-      "source_location": "L45",
+      "source_location": "L46",
       "weight": 1.0
     },
     {
       "source": "week_05_account_dedup_readme_week_05_duplicate_accounts_in_a_crm",
-      "target": "week_05_account_dedup_readme_thinking_fixed_it_at_468_times_the_price",
+      "target": "week_05_account_dedup_readme_thinking_fixed_it_at_about_470_times_the_price",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "week-05-account-dedup/README.md",
-      "source_location": "L63",
+      "source_location": "L64",
       "weight": 1.0
     },
     {
@@ -12579,7 +12599,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "week-05-account-dedup/README.md",
-      "source_location": "L73",
+      "source_location": "L74",
       "weight": 1.0
     },
     {
@@ -12590,7 +12610,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "week-05-account-dedup/README.md",
-      "source_location": "L85",
+      "source_location": "L86",
       "weight": 1.0
     },
     {
@@ -14284,7 +14304,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "week-05-account-dedup/README.md",
-      "source_location": "L17",
+      "source_location": "L18",
       "weight": 1.0
     },
     {
@@ -14452,7 +14472,7 @@
       "confidence_score": 0.95,
       "context": "deal_risk",
       "source_file": "mcp-server/README.md",
-      "source_location": "L173",
+      "source_location": "L171",
       "weight": 1.0
     },
     {
@@ -14476,7 +14496,7 @@
       "confidence_score": 0.95,
       "context": "deal_risk",
       "source_file": "mcp-server/README.md",
-      "source_location": "L233",
+      "source_location": "L230",
       "weight": 1.0
     },
     {
@@ -14488,7 +14508,7 @@
       "confidence_score": 0.95,
       "context": "deals_at_risk",
       "source_file": "mcp-server/README.md",
-      "source_location": "L172",
+      "source_location": "L170",
       "weight": 1.0
     },
     {
@@ -14500,7 +14520,7 @@
       "confidence_score": 0.95,
       "context": "deals_at_risk",
       "source_file": "mcp-server/README.md",
-      "source_location": "L251",
+      "source_location": "L248",
       "weight": 1.0
     },
     {
@@ -14524,7 +14544,7 @@
       "confidence_score": 0.95,
       "context": "deals_at_risk",
       "source_file": "mcp-server/README.md",
-      "source_location": "L111",
+      "source_location": "L110",
       "weight": 1.0
     },
     {
@@ -14548,7 +14568,7 @@
       "confidence_score": 0.95,
       "context": "dedup_pair",
       "source_file": "mcp-server/README.md",
-      "source_location": "L267",
+      "source_location": "L264",
       "weight": 1.0
     },
     {
@@ -14572,7 +14592,7 @@
       "confidence_score": 0.95,
       "context": "dedup_pair",
       "source_file": "mcp-server/README.md",
-      "source_location": "L236",
+      "source_location": "L233",
       "weight": 1.0
     },
     {
@@ -14644,7 +14664,7 @@
       "confidence_score": 0.95,
       "context": "triage_lead",
       "source_file": "mcp-server/README.md",
-      "source_location": "L232",
+      "source_location": "L229",
       "weight": 1.0
     },
     {
@@ -14668,7 +14688,7 @@
       "confidence_score": 0.95,
       "context": "triage_reply",
       "source_file": "mcp-server/README.md",
-      "source_location": "L234",
+      "source_location": "L231",
       "weight": 1.0
     },
     {
@@ -14717,5 +14737,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "af3e82f43a0cae3eb9cf871790aca89a1e936e24"
+  "built_at_commit": "3a7db0ed5a8ee74ea93941005e78f4c451367cd3"
 }
