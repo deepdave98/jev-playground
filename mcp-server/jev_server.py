@@ -2,7 +2,7 @@
 # requires-python = ">=3.11"
 # dependencies = ["mcp>=2.2,<3"]
 # ///
-"""An MCP server that puts the playground's Jev workflows behind five tools.
+"""An MCP server that puts the playground's Jev workflows behind six tools.
 
     uv run mcp-server/jev_server.py
 
@@ -42,6 +42,7 @@ w1 = load("week01", REPO / "week-01-lead-triage/src/spec.py")
 w2 = load("week02", REPO / "week-02-deal-risk/src/spec.py")
 w3 = load("week03", REPO / "week-03-reply-triage/src/spec.py")
 w4 = load("week04", REPO / "week-04-meddpicc/src/spec.py")
+w5 = load("week05", REPO / "week-05-account-dedup/src/spec.py")
 jev = load("jev", REPO / "common/jev.py")
 
 LEDGER_DIR = pathlib.Path(os.environ.get("JEV_LEDGER_DIR", REPO / "week-02-deal-risk/data")).resolve()
@@ -93,6 +94,13 @@ class Meddpicc(TypedDict):
     forecast_ready: bool
     confirm: list[str]
     gaps: list[str]
+    ms: int
+
+
+class Match(TypedDict):
+    relationship: str
+    p_same: float
+    action: str
     ms: int
 
 
@@ -170,7 +178,8 @@ server = MCPServer(
         "never prose, so write any email or summary yourself from what comes back. "
         "Use triage_lead on a new inbound lead, deal_risk on one deal's activity, "
         "deals_at_risk to sweep a whole ledger export without reading it yourself, "
-        "triage_reply on a reply to outbound, and meddpicc on a call summary."
+        "triage_reply on a reply to outbound, meddpicc on a call summary, and "
+        "dedup_pair on two CRM accounts that might be one company."
     ),
 )
 
@@ -303,6 +312,25 @@ async def meddpicc(summary: str, account: str = "", stage: str = "") -> Meddpicc
             "confirm": list(w4.FORECAST_NEEDS) if ready else [], "gaps": w4.gaps(card),
             "ms": round((time.perf_counter() - t) * 1000)}
 
+
+@server.tool()
+async def dedup_pair(record_a: dict, record_b: dict) -> Match:
+    """Decide whether two CRM accounts are the same company.
+
+    Give each record what you have of name, domain, country, industry,
+    employees and source. relationship is same, related (one corporate
+    family, like a parent and a subsidiary) or different. action is what
+    week 05's rule does with that: merge, review, link or keep. merge only
+    comes back when Jev is at least 0.9 sure they're one company, and a same
+    below that comes back as review. A parent and its subsidiary are two
+    companies, so never merge a pair this returns as related.
+    """
+    state = {"record_a": record_a, "record_b": record_b}
+    t = time.perf_counter()
+    a = jev.decode((await asyncio.to_thread(ask, state, w5.QUESTIONS))["answers"], w5.QUESTIONS)
+    return {"relationship": a["relationship"], "p_same": a["same_company"],
+            "action": w5.action(a["relationship"], a["same_company"]),
+            "ms": round((time.perf_counter() - t) * 1000)}
 
 
 if __name__ == "__main__":
