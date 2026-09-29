@@ -44,6 +44,10 @@ def score(name, truth):
                      for g, v in groups.items()},
         "same_company": sum((labels[i]["same_company"] >= 0.5) == truth[i]["same_company"] for i in ids) / len(ids),
         "brier": brier([(labels[i]["same_company"], truth[i]["same_company"]) for i in ids]),
+        # If the lowest real duplicate scores above the highest non-duplicate,
+        # some merge bar would have been right on every pair.
+        "lowest_duplicate": min(labels[i]["same_company"] for i in same),
+        "highest_other": max(labels[i]["same_company"] for i in ids if i not in same),
         "requests": len(calls),
         "ms_p50": pct([c["ms"] for c in calls], 50),
         "ms_p90": pct([c["ms"] for c in calls], 90),
@@ -85,6 +89,8 @@ def main():
         row(f"  {label}", lambda r, g=g: "{} of {}".format(*r["by_group"][g]))
     row("same_company", lambda r: f"{r['same_company'] * 100:.0f}%")
     row("Brier, same_company", lambda r: f"{r['brier']:.3f}")
+    row("lowest p on a real duplicate", lambda r: f"{r['lowest_duplicate']:.2f}")
+    row("highest p on anything else", lambda r: f"{r['highest_other']:.2f}")
     print()
     row("ms per pair, p50", lambda r: f"{r['ms_p50']:,.0f}")
     row("ms per pair, p90", lambda r: f"{r['ms_p90']:,.0f}")
