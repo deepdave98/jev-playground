@@ -27,15 +27,22 @@ def parse(text):
 
 
 class Claude:
-    def __init__(self, model):
+    def __init__(self, model, thinking=False):
         self.model = model
+        # Thinking stays off unless a week asks for it, and week 01 has why.
+        # Asking for it means max effort. At medium and high, Sonnet still
+        # answered week 05's pairs without thinking at all.
+        self.thinking = thinking
+        self.effort = "max" if thinking else "low"
         self.overhead = 0
 
     def call(self, system, user):
         cmd = ["claude", "-p", user, "--model", self.model, "--output-format", "json",
                "--system-prompt", system, "--exclude-dynamic-system-prompt-sections",
-               "--disallowedTools", "*", "--effort", "low"]
-        env = {**os.environ, "MAX_THINKING_TOKENS": "0"}
+               "--disallowedTools", "*", "--effort", self.effort]
+        env = {k: v for k, v in os.environ.items() if k != "MAX_THINKING_TOKENS"}
+        if not self.thinking:
+            env["MAX_THINKING_TOKENS"] = "0"
         t = time.perf_counter()
         proc = subprocess.run(cmd, capture_output=True, text=True, timeout=300, env=env)
         wall = (time.perf_counter() - t) * 1000
