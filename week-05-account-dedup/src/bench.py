@@ -1,7 +1,10 @@
 """Runs every setup over the 50 candidate pairs, one request at a time.
 
-    python3 src/bench.py                  # all three
+    python3 src/bench.py                  # all four
     python3 src/bench.py jev              # just this one
+
+Dedup runs as a batch job that nobody waits on, so unlike the earlier weeks
+it's worth seeing what Sonnet does with thinking on.
 """
 
 import json
@@ -17,7 +20,7 @@ from common.jev import USD_PER_TOKEN, Jev, decode  # noqa: E402
 from common.prompt import answer_shape, read, render  # noqa: E402
 from spec import QUESTIONS  # noqa: E402
 
-RUNS = ["jev", "claude-haiku-4-5", "claude-sonnet-5"]
+RUNS = ["jev", "claude-haiku-4-5", "claude-sonnet-5", "claude-sonnet-5-thinking"]
 
 SYSTEM = f"""You clean up duplicate accounts in a CRM. You get two account records that
 look alike. Answer two questions about them.
@@ -69,7 +72,7 @@ def main():
             run(name, items, jev_step(jev), out)
             jev.close()
         else:
-            claude = Claude(name)
+            claude = Claude(name.removesuffix("-thinking"), thinking=name.endswith("-thinking"))
             samples = claude.calibrate()
             print(f"[{name}] CLI overhead {claude.overhead} tokens, subtracted from every call")
             run(name, items, claude_step(claude), out,

@@ -18,7 +18,7 @@ from common.bench import load  # noqa: E402
 from common.stats import brier, pct  # noqa: E402
 from spec import action  # noqa: E402
 
-ORDER = ["jev", "claude-haiku-4-5", "claude-sonnet-5"]
+ORDER = ["jev", "claude-haiku-4-5", "claude-sonnet-5", "claude-sonnet-5-thinking"]
 
 
 def score(name, truth):
@@ -72,7 +72,7 @@ def main():
         if r["pairs"] + r["failed"] < len(truth):
             r["run"] += f" (partial {r['pairs']}/{len(truth)})"
 
-    w = 20
+    w = 26
     print(f"{'':32}" + "".join(f"{r['run'][:w - 1]:>{w}}" for r in results))
 
     def row(label, f):
