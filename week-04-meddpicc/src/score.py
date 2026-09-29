@@ -15,18 +15,30 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT.parent))
 sys.path.insert(0, str(ROOT / "src"))
 from common.bench import load  # noqa: E402
+from common.jev import SCORE_BIAS  # noqa: E402
 from common.stats import pct  # noqa: E402
 from spec import ELEMENTS, LEVEL_NAMES, forecast_ready  # noqa: E402
 
-ORDER = ["jev", "claude-haiku-4-5", "claude-sonnet-5"]
+ORDER = ["jev", "jev-corrected", "claude-haiku-4-5", "claude-sonnet-5"]
+# jev-corrected isn't a separate run. It's Jev's own raw scores with
+# SCORE_BIAS, measured on weeks 01 to 03, taken off before rounding.
+SOURCE = {"jev-corrected": "jev"}
 
 
 def rank(level):
     return LEVEL_NAMES.index(level)
 
 
+def corrected(cards):
+    top = len(LEVEL_NAMES) - 1
+    return {i: {e: LEVEL_NAMES[max(0, min(top, round(c[e + "_score"] - SCORE_BIAS)))] for e in ELEMENTS}
+            for i, c in cards.items()}
+
+
 def score(name, truth):
-    cards, calls, failed = load(ROOT / "results/raw" / f"{name}.jsonl")
+    cards, calls, failed = load(ROOT / "results/raw" / f"{SOURCE.get(name, name)}.jsonl")
+    if name == "jev-corrected":
+        cards = corrected(cards)
     ids = [i for i in truth if i in cards]
     pairs = [(rank(cards[i][e]), rank(truth[i][e]), e) for i in ids for e in ELEMENTS]
 
@@ -55,7 +67,7 @@ def main():
         r = json.loads(line)
         truth[r["id"]] = r["label"]
 
-    have = [n for n in ORDER if (ROOT / "results/raw" / f"{n}.jsonl").exists()]
+    have = [n for n in ORDER if (ROOT / "results/raw" / f"{SOURCE.get(n, n)}.jsonl").exists()]
     if not have:
         sys.exit("nothing in results/raw yet, run src/bench.py")
     results = [score(n, truth) for n in have]
