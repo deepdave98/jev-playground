@@ -98,6 +98,40 @@ def main():
     row("input tokens per pair", lambda r: f"{r['tokens_per_pair']:.0f}")
     row("failed", lambda r: f"{r['failed']}")
 
+    if {"jev", "claude-sonnet-5-thinking"} <= set(have):
+        print()
+        second_look(truth)
+
+
+def usd_by_pair(name):
+    out = {}
+    for line in (ROOT / "results/raw" / f"{name}.jsonl").open():
+        rec = json.loads(line)
+        if "_meta" not in rec:
+            out.update({i: sum(c["usd"] for c in rec["calls"]) / len(rec["ids"]) for i in rec["ids"]})
+    return out
+
+
+def second_look(truth):
+    """Jev decides every pair, and Sonnet with thinking takes Jev's review queue.
+
+    Sonnet's answers come from its own full run, so nothing here is re-asked.
+    """
+    jev, _, _ = load(ROOT / "results/raw/jev.jsonl")
+    son, _, _ = load(ROOT / "results/raw/claude-sonnet-5-thinking.jsonl")
+    did = {i: action(jev[i]["relationship"], jev[i]["same_company"]) for i in truth}
+    queue = [i for i in truth if did[i] == "review"]
+    did.update({i: action(son[i]["relationship"], son[i]["same_company"]) for i in queue})
+
+    jev_usd, son_usd = usd_by_pair("jev"), usd_by_pair("claude-sonnet-5-thinking")
+    usd = (sum(jev_usd.values()) + sum(son_usd[i] for i in queue)) / len(truth) * 1000
+    dupes = [i for i in truth if truth[i]["relationship"] == "same"]
+    print(f"Jev on every pair, Sonnet thinking on the {len(queue)} Jev sends to a person:")
+    print(f"  wrong merges: {sum(did[i] == 'merge' for i in truth if i not in dupes)}")
+    print(f"  duplicates merged: {sum(did[i] == 'merge' for i in dupes)} of {len(dupes)}")
+    print(f"  still sent to a person: {sum(did[i] == 'review' for i in truth)}")
+    print(f"  $ per 1,000 pairs: ${usd:.3f}")
+
 
 if __name__ == "__main__":
     main()
