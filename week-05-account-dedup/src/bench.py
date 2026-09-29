@@ -76,7 +76,8 @@ def main():
             samples = claude.calibrate()
             print(f"[{name}] CLI overhead {claude.overhead} tokens, subtracted from every call")
             run(name, items, claude_step(claude), out,
-                meta={"cli_overhead": claude.overhead, "cli_overhead_samples": samples})
+                meta={"cli_overhead": claude.overhead, "cli_overhead_samples": samples,
+                      "effort": claude.effort})
         print()
 
 
