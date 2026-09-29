@@ -1,0 +1,28 @@
+                                                       jev          claude-haiku-4-5           claude-sonnet-5  claude-sonnet-5-thinking
+wrong merges                                             0                         1                         2                         0
+  of which a subsidiary                                  0                         1                         2                         0
+duplicates missed                                  0 of 18                   0 of 18                   0 of 18                   0 of 18
+sent to a person                                        12                         0                         1                         0
+
+relationship, all pairs                                96%                       92%                       92%                      100%
+  needs world knowledge                           13 of 14                  10 of 14                  10 of 14                  14 of 14
+  records are enough                              35 of 36                  36 of 36                  36 of 36                  36 of 36
+  really same                                     18 of 18                  18 of 18                  18 of 18                  18 of 18
+  really related                                  13 of 14                  10 of 14                  10 of 14                  14 of 14
+  really different                                17 of 18                  18 of 18                  18 of 18                  18 of 18
+same_company                                          100%                       98%                       96%                      100%
+Brier, same_company                                  0.017                     0.022                     0.038                     0.002
+lowest p on a real duplicate                          0.68                      0.95                      0.85                      0.90
+highest p on anything else                            0.29                      0.95                      0.95                      0.15
+
+ms per pair, p50                                       364                     2,803                     2,124                    10,161
+ms per pair, p90                                       403                     4,115                     3,013                    21,455
+$ per 1,000 pairs                                   $0.025                    $0.814                    $1.299                   $11.894
+input tokens per pair                                  605                       351                       436                       444
+failed                                                   0                         0                         0                         0
+
+Jev on every pair, Sonnet thinking on the 12 Jev sends to a person:
+  wrong merges: 0
+  duplicates merged: 18 of 18
+  still sent to a person: 0
+  $ per 1,000 pairs: $2.810

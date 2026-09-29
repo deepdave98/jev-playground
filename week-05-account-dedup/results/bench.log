@@ -18,3 +18,11 @@
 [claude-sonnet-5] 40/50 (314s)
 [claude-sonnet-5] 50/50 (389s)
 
+
+[claude-sonnet-5-thinking] CLI overhead 4292 tokens, subtracted from every call
+[claude-sonnet-5-thinking] 10/50 (139s)
+[claude-sonnet-5-thinking] 20/50 (310s)
+[claude-sonnet-5-thinking] 30/50 (454s)
+[claude-sonnet-5-thinking] 40/50 (617s)
+[claude-sonnet-5-thinking] 50/50 (824s)
+

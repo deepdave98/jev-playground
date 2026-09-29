@@ -1,0 +1,170 @@
+[
+  {
+    "run": "jev",
+    "pairs": 50,
+    "failed": 0,
+    "wrong_merges": 0,
+    "subsidiaries_merged": 0,
+    "missed_duplicates": 0,
+    "sent_to_review": 12,
+    "duplicates": 18,
+    "relationship": 0.96,
+    "by_group": {
+      "world": [
+        13,
+        14
+      ],
+      "local": [
+        35,
+        36
+      ],
+      "same": [
+        18,
+        18
+      ],
+      "related": [
+        13,
+        14
+      ],
+      "different": [
+        17,
+        18
+      ]
+    },
+    "same_company": 1.0,
+    "brier": 0.017107999999999998,
+    "lowest_duplicate": 0.68,
+    "highest_other": 0.29,
+    "requests": 50,
+    "ms_p50": 364.09716604975984,
+    "ms_p90": 403.28108303947374,
+    "usd_per_1000": 0.025394039999999996,
+    "tokens_per_pair": 604.62
+  },
+  {
+    "run": "claude-haiku-4-5",
+    "pairs": 50,
+    "failed": 0,
+    "wrong_merges": 1,
+    "subsidiaries_merged": 1,
+    "missed_duplicates": 0,
+    "sent_to_review": 0,
+    "duplicates": 18,
+    "relationship": 0.92,
+    "by_group": {
+      "world": [
+        10,
+        14
+      ],
+      "local": [
+        36,
+        36
+      ],
+      "same": [
+        18,
+        18
+      ],
+      "related": [
+        10,
+        14
+      ],
+      "different": [
+        18,
+        18
+      ]
+    },
+    "same_company": 0.98,
+    "brier": 0.022468,
+    "lowest_duplicate": 0.95,
+    "highest_other": 0.95,
+    "requests": 50,
+    "ms_p50": 2803.0,
+    "ms_p90": 4115.0,
+    "usd_per_1000": 0.8136600000000002,
+    "tokens_per_pair": 350.66
+  },
+  {
+    "run": "claude-sonnet-5",
+    "pairs": 50,
+    "failed": 0,
+    "wrong_merges": 2,
+    "subsidiaries_merged": 2,
+    "missed_duplicates": 0,
+    "sent_to_review": 1,
+    "duplicates": 18,
+    "relationship": 0.92,
+    "by_group": {
+      "world": [
+        10,
+        14
+      ],
+      "local": [
+        36,
+        36
+      ],
+      "same": [
+        18,
+        18
+      ],
+      "related": [
+        10,
+        14
+      ],
+      "different": [
+        18,
+        18
+      ]
+    },
+    "same_company": 0.96,
+    "brier": 0.038494,
+    "lowest_duplicate": 0.85,
+    "highest_other": 0.95,
+    "requests": 50,
+    "ms_p50": 2124.0,
+    "ms_p90": 3013.0,
+    "usd_per_1000": 1.2987043788793637,
+    "tokens_per_pair": 435.52
+  },
+  {
+    "run": "claude-sonnet-5-thinking",
+    "pairs": 50,
+    "failed": 0,
+    "wrong_merges": 0,
+    "subsidiaries_merged": 0,
+    "missed_duplicates": 0,
+    "sent_to_review": 0,
+    "duplicates": 18,
+    "relationship": 1.0,
+    "by_group": {
+      "world": [
+        14,
+        14
+      ],
+      "local": [
+        36,
+        36
+      ],
+      "same": [
+        18,
+        18
+      ],
+      "related": [
+        14,
+        14
+      ],
+      "different": [
+        18,
+        18
+      ]
+    },
+    "same_company": 1.0,
+    "brier": 0.0019760000000000003,
+    "lowest_duplicate": 0.9,
+    "highest_other": 0.15,
+    "requests": 50,
+    "ms_p50": 10161.0,
+    "ms_p90": 21455.0,
+    "usd_per_1000": 11.894406185884504,
+    "tokens_per_pair": 444.36
+  }
+]
