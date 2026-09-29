@@ -51,7 +51,8 @@ def score(name, truth):
         "opt_outs_missed": sum(got_route[i] != "suppress" for i in opt_in),
         "opt_outs": len(opt_in),
         "false_opt_outs": sum(labels[i]["opt_out"] >= 0.5 for i in ids if not truth[i]["opt_out"]),
-        "interested_lost": sum(got_route[i] not in WANTS_US for i in keen),
+        "interested_lost": sum(got_route[i] not in WANTS_US | {"review"} for i in keen),
+        "to_review": sum(got_route[i] == "review" for i in ids),
         "interested": len(keen),
         "route": sum(got_route[i] == want_route[i] for i in ids) / n,
         "category": sum(labels[i]["category"] == truth[i]["category"] for i in ids) / n,
@@ -95,6 +96,7 @@ def main():
     row("opt-outs still emailed", lambda r: f"{r['opt_outs_missed']} of {r['opt_outs']}")
     row("suppressed, never asked", lambda r: f"{r['false_opt_outs']}")
     row("interested, routed away", lambda r: f"{r['interested_lost']} of {r['interested']}")
+    row("sent to a person", lambda r: f"{r['to_review']}")
     row("route", lambda r: f"{r['route'] * 100:.1f}%")
     print()
     row("category", lambda r: f"{r['category'] * 100:.1f}%")

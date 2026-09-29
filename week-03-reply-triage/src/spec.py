@@ -51,7 +51,8 @@ QUESTIONS = {
     },
 }
 
-ROUTES = ["suppress", "pause", "ignore", "reroute", "snooze", "close", "send_info", "book_meeting"]
+ROUTES = ["suppress", "pause", "ignore", "reroute", "snooze", "close", "send_info",
+          "book_meeting", "review"]
 
 
 def route(category, opt_out, meeting_intent):
@@ -72,4 +73,7 @@ def route(category, opt_out, meeting_intent):
         return "snooze"
     if category == "objection":
         return "close"
+    if category != "interested":
+        # A model answered with something that isn't a category. Don't guess.
+        return "review"
     return "book_meeting" if meeting_intent in ("open", "ready") else "send_info"
