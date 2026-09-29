@@ -77,3 +77,14 @@ def route(category, opt_out, meeting_intent):
         # A model answered with something that isn't a category. Don't guess.
         return "review"
     return "book_meeting" if meeting_intent in ("open", "ready") else "send_info"
+
+
+# Two rules from the write-up that sit around the model, used by the MCP
+# server. A reply that is nothing but an opt-out word never needs a model,
+# and an opt_out answer this close to a coin flip goes to a person.
+STOP_WORDS = {"stop", "unsubscribe", "remove me", "opt out"}
+UNSURE = (0.4, 0.6)
+
+
+def only_stop_word(text):
+    return text.strip().strip(".!").lower() in STOP_WORDS
