@@ -2,7 +2,7 @@
 # requires-python = ">=3.11"
 # dependencies = ["mcp>=2.2,<3"]
 # ///
-"""An MCP server that puts the playground's Jev workflows behind three tools.
+"""An MCP server that puts the playground's Jev workflows behind four tools.
 
     uv run mcp-server/jev_server.py
 
@@ -30,7 +30,7 @@ REPO = pathlib.Path(__file__).resolve().parents[1]
 
 
 def load(name, path):
-    # Both weeks call their module spec.py, so a plain import would hand back
+    # Every week calls its module spec.py, so a plain import would hand back
     # whichever one loaded first.
     s = importlib.util.spec_from_file_location(name, path)
     mod = importlib.util.module_from_spec(s)
@@ -40,6 +40,8 @@ def load(name, path):
 
 w1 = load("week01", REPO / "week-01-lead-triage/src/spec.py")
 w2 = load("week02", REPO / "week-02-deal-risk/src/spec.py")
+w3 = load("week03", REPO / "week-03-reply-triage/src/spec.py")
+jev = load("jev", REPO / "common/jev.py")
 
 LEDGER_DIR = pathlib.Path(os.environ.get("JEV_LEDGER_DIR", REPO / "week-02-deal-risk/data")).resolve()
 
@@ -73,6 +75,15 @@ class DealRisk(TypedDict):
     reasons: list[str]
     summary: str
     events: list[EventLabel]
+    ms: int
+
+
+class Reply(TypedDict):
+    category: str
+    opt_out: bool
+    meeting_intent: str
+    route: str
+    p_opt_out: float
     ms: int
 
 
@@ -148,8 +159,9 @@ server = MCPServer(
     instructions=(
         "Typed GTM decisions backed by Jev. They return labels and probabilities, "
         "never prose, so write any email or summary yourself from what comes back. "
-        "Use triage_lead on a new inbound lead, deal_risk on one deal's activity, and "
-        "deals_at_risk to sweep a whole ledger export without reading it yourself."
+        "Use triage_lead on a new inbound lead, deal_risk on one deal's activity, "
+        "deals_at_risk to sweep a whole ledger export without reading it yourself, "
+        "and triage_reply on a reply to outbound."
     ),
 )
 
@@ -233,6 +245,32 @@ async def deals_at_risk(ledger_file: str, today: str = "") -> Sweep:
         "arr_at_risk": sum(r["arr"] or 0 for r in risky),
         "ms": round((time.perf_counter() - t) * 1000),
     }
+
+
+@server.tool()
+async def triage_reply(text: str, sender: str = "", subject: str = "", received: str = "") -> Reply:
+    """Decide what to do with one reply to an outbound sequence.
+
+    Returns week 03's three judgments (category, opt_out, meeting_intent) and
+    the route: suppress, pause, ignore, reroute, snooze, close, send_info,
+    book_meeting or review. A reply that is only an opt-out word, like
+    "STOP", is suppressed in code without asking Jev. When Jev's opt_out
+    probability lands between 0.4 and 0.6 the route is review, so a person
+    decides. sender is the From line, with name, title and company if you
+    have them.
+    """
+    if w3.only_stop_word(text):
+        return {"category": "objection", "opt_out": True, "meeting_intent": "none",
+                "route": "suppress", "p_opt_out": 1.0, "ms": 0}
+    state = {"from": sender, "received": received, "in_reply_to": subject, "text": text}
+    t = time.perf_counter()
+    a = jev.decode((await asyncio.to_thread(ask, state, w3.QUESTIONS))["answers"], w3.QUESTIONS)
+    p = a["opt_out"]
+    lo, hi = w3.UNSURE
+    where = "review" if lo <= p <= hi else w3.route(a["category"], p >= 0.5, a["meeting_intent"])
+    return {"category": a["category"], "opt_out": p >= 0.5, "meeting_intent": a["meeting_intent"],
+            "route": where, "p_opt_out": p, "ms": round((time.perf_counter() - t) * 1000)}
+
 
 
 if __name__ == "__main__":
