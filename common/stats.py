@@ -4,7 +4,7 @@ import statistics
 
 
 def pct(xs, p):
-    """Nearest-rank percentile. Sets here are 60 items, so no interpolation."""
+    """Nearest-rank percentile. The sets here are 16 to 60 items, so no interpolation."""
     s = sorted(xs)
     return s[max(0, min(len(s) - 1, round(p / 100 * len(s) + 0.5) - 1))]
 
