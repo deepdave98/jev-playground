@@ -63,12 +63,14 @@ more. Jev scored it 1.83 out of 2, and 1.53 after the correction still
 rounds up. On that one field Jev was 0.83 high, nearly three times its
 average.
 
-A stricter bar for the three forecast fields doesn't save it either. Every
-field that really was established scored 1.96 or more, but Jev also gave
-1.91, 1.92 and a flat 2.00 to fields that weren't. The 2.00 was Graniteworks'
-decision process, and the same call's "99.9% uptime SLA" came back as a
-metric at 1.91, when it's a requirement. There's no raw score that cleanly
-separates right from wrong on the fields that put money in a forecast.
+A stricter bar on the raw scores of the three forecast fields would have
+caught it here. Anything above 1.83 and up to 1.96 forecasts exactly
+Keystone, Redwood and Marlow. I wouldn't trust that bar on the next 16
+calls. Every field that really was established scored 1.96 or more, but Jev
+also gave 1.91, 1.92 and a flat 2.00 to fields that weren't. Two of those
+were Graniteworks: its decision process got the 2.00, and its "99.9% uptime
+SLA" came back as a metric at 1.91, when it's a requirement. Graniteworks
+stayed out of the forecast only because its economic buyer scored 0.92.
 
 ## What does fix it
 
