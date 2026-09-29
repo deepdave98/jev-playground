@@ -1,0 +1,40 @@
+Jev routed 17 of 60 replies to pause or reroute.
+
+  claude-haiku-4-5  R21 ok    sarah.chen@northwind.io
+  claude-haiku-4-5  R22 ok    Marcus Webb
+  claude-haiku-4-5  R23 ok    Priya Shah
+  claude-haiku-4-5  R24 ok    maria.lopez@acmelogistics.com
+  claude-haiku-4-5  R25 ok    None
+  claude-haiku-4-5  R26 ok    tom.becker@halvorsen.com
+  claude-haiku-4-5  R27 ok    ops@kettlebridge.com
+  claude-haiku-4-5  R28 ok    vendors@stillwater.co
+  claude-haiku-4-5  R45 ok    2026-10-05
+  claude-haiku-4-5  R46 ok    2027-01-12
+  claude-haiku-4-5  R47 ok    2026-10-08
+  claude-haiku-4-5  R48 ok    2026-10-09
+  claude-haiku-4-5  R49 ok    2026-10-06
+  claude-haiku-4-5  R50 ok    2026-09-30
+  claude-haiku-4-5  R51 ok    2026-11-02
+  claude-haiku-4-5  R52 ok    2026-10-01
+  claude-haiku-4-5  R53 ok    2026-10-13
+  claude-sonnet-5   R21 ok    sarah.chen@northwind.io
+  claude-sonnet-5   R22 ok    Marcus Webb
+  claude-sonnet-5   R23 ok    Priya Shah
+  claude-sonnet-5   R24 ok    maria.lopez@acmelogistics.com
+  claude-sonnet-5   R25 ok    None
+  claude-sonnet-5   R26 ok    tom.becker@halvorsen.com
+  claude-sonnet-5   R27 ok    ops@kettlebridge.com
+  claude-sonnet-5   R28 ok    vendors@stillwater.co
+  claude-sonnet-5   R45 ok    2026-10-05
+  claude-sonnet-5   R46 WRONG jon.park@northgatehq.com
+  claude-sonnet-5   R47 ok    2026-10-08
+  claude-sonnet-5   R48 ok    2026-10-09
+  claude-sonnet-5   R49 ok    2026-10-06
+  claude-sonnet-5   R50 ok    2026-09-30
+  claude-sonnet-5   R51 WRONG revops@clearpath.io
+  claude-sonnet-5   R52 ok    2026-10-01
+  claude-sonnet-5   R53 ok    2026-10-13
+
+claude-haiku-4-5: 17 of 17 right, $0.0062, mean 1970 ms
+
+claude-sonnet-5: 15 of 17 right, $0.0160, mean 2368 ms
