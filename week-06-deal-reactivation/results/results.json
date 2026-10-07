@@ -1,0 +1,46 @@
+[
+  {
+    "model": "jev",
+    "records": 32,
+    "model_calls": 24,
+    "excluded_before_model": 8,
+    "correct": 27,
+    "mismatches": [
+      "R04",
+      "R09",
+      "R13",
+      "R16",
+      "R23"
+    ],
+    "model_correct": 19,
+    "expected_sha256": "05f48c8608dc05f1b36fd2c81ec1b1b05275b0741f444d55f4f20690c392c6a8",
+    "expected_candidates": 10,
+    "candidates_found": 10,
+    "false_candidates": [],
+    "errors": [],
+    "wall_ms_p50": 358,
+    "wall_ms_p95": 906,
+    "wall_ms_total": 11165
+  },
+  {
+    "model": "claude-haiku-4-5",
+    "records": 32,
+    "model_calls": 24,
+    "excluded_before_model": 8,
+    "correct": 29,
+    "mismatches": [
+      "R06",
+      "R09",
+      "R13"
+    ],
+    "model_correct": 21,
+    "expected_sha256": "05f48c8608dc05f1b36fd2c81ec1b1b05275b0741f444d55f4f20690c392c6a8",
+    "expected_candidates": 10,
+    "candidates_found": 10,
+    "false_candidates": [],
+    "errors": [],
+    "wall_ms_p50": 6713,
+    "wall_ms_p95": 9020,
+    "wall_ms_total": 163754
+  }
+]
