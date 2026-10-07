@@ -1,11 +1,4 @@
-"""Re-asks a Claude run about the pairs it got wrong, with a line of reasoning.
-
-    python3 src/why.py claude-sonnet-5
-
-Same system prompt as the benchmark, plus a request for one line saying why
-after the JSON. Nothing here is scored. It's for telling a model that doesn't
-know who owns whom from one that knows and answered before it checked.
-"""
+"""Request new explanations for a saved Claude run's incorrect labels."""
 
 import json
 import pathlib

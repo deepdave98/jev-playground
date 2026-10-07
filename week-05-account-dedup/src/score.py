@@ -1,11 +1,4 @@
-"""Scores results/raw/*.jsonl against the hand labels.
-
-    python3 src/score.py
-
-A wrong merge costs the most. Two companies collapse into one
-record, and their contacts, deals and history go with it. A missed
-duplicate only means two records live on for a while.
-"""
+"""Score saved account relationships and merge decisions."""
 
 import json
 import pathlib
@@ -44,8 +37,6 @@ def score(name, truth):
                      for g, v in groups.items()},
         "same_company": sum((labels[i]["same_company"] >= 0.5) == truth[i]["same_company"] for i in ids) / len(ids),
         "brier": brier([(labels[i]["same_company"], truth[i]["same_company"]) for i in ids]),
-        # If the lowest real duplicate scores above the highest non-duplicate,
-        # some merge bar would have been right on every pair.
         "lowest_duplicate": min(labels[i]["same_company"] for i in same),
         "highest_other": max(labels[i]["same_company"] for i in ids if i not in same),
         "requests": len(calls),
@@ -113,10 +104,7 @@ def usd_by_pair(name):
 
 
 def second_look(truth):
-    """Jev decides every pair, and Sonnet with thinking takes Jev's review queue.
-
-    Sonnet's answers come from its own full run, so nothing here is re-asked.
-    """
+    """Simulate Sonnet thinking on Jev's review queue using saved independent runs."""
     jev, _, _ = load(ROOT / "results/raw/jev.jsonl")
     son, _, _ = load(ROOT / "results/raw/claude-sonnet-5-thinking.jsonl")
     did = {i: action(jev[i]["relationship"], jev[i]["same_company"]) for i in truth}

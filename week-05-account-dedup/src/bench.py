@@ -1,11 +1,4 @@
-"""Runs every setup over the 50 candidate pairs, one request at a time.
-
-    python3 src/bench.py                  # all four
-    python3 src/bench.py jev              # just this one
-
-Dedup runs as a batch job that nobody waits on, so unlike the earlier weeks
-it's worth seeing what Sonnet does with thinking on.
-"""
+"""Benchmark account pairs, including a Sonnet run with thinking enabled."""
 
 import json
 import pathlib
@@ -32,7 +25,7 @@ Answer with JSON only, no fence:
 
 
 def seen(item):
-    """What a model gets: the two records, never the label."""
+    """Return model input without the answer key."""
     return item["pair"]
 
 

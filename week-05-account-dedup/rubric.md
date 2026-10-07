@@ -1,61 +1,34 @@
-# How the answer key was written
+# Account-pair labels
 
-50 candidate pairs, each labelled same, related or different against the
-strings in `src/spec.py`. A record has a name, domain, country, industry,
-headcount and the place it came from, which is roughly what a CRM account
-carries. Labels were set in `src/pairs.py` before any model saw a pair.
+50 fixture pairs with name, domain, country, industry, headcount and source.
+[`spec.py`](src/spec.py) defines the prompt and action rule;
+[`pairs.py`](src/pairs.py) contains the records and answer key.
 
-## The three labels
-
-| label | means | what `spec.action()` does |
+| Relationship | Definition | Action |
 |---|---|---|
-| `same` | one company with two records | merge if the model is at least 0.9 sure, otherwise send to a person |
-| `related` | two companies in one corporate family | link them, keep both |
-| `different` | unrelated | leave both alone |
+| `same` | two records for one company | merge at score >= 0.9; otherwise review |
+| `related` | separate companies in one corporate family | link and retain both |
+| `different` | unrelated companies | retain both |
 
-## Same or related
+The fixture treats renames as `same`: Facebook / Meta Platforms (P09),
+Square / Block (P15). Acquired companies and subsidiaries are `related`:
+Instagram / Meta (P19), YouTube / Google (P25), Google LLC / Alphabet (P28).
 
-A related pair read as same gets merged, and a merge is hard to undo.
+Domains and headcounts provide context, but do not settle identity alone:
 
-A renamed company is the same company: Facebook and Meta Platforms (P09),
-Square and Block (P15). A company another one bought is related to it, even
-when everyone treats them as one: Instagram and Meta (P19), YouTube and
-Google (P25). Google LLC and Alphabet (P28) are related too. Alphabet is the
-parent, and both records show 180,000 people.
+- P07 uses two domains for the same fictional Orbital Freight record.
+- P18 has matching Canadian Framewell records under .com and .ca domains.
+- P30 and P31 are separate regional entities with different headcounts.
+- P32's Dutch and American legal entities share a domain and remain separate.
 
-A second domain doesn't make a second company. Orbital Freight on
-orbitalfreight.com and on orbital.io (P07) has the same headcount in the same
-country, so it's one company. Orbital Freight UK Ltd (P30) is a 60-person
-British entity of a 420-person US one, so it's related. A .ca domain goes
-either way. Framewell (P18) has both records in Canada at 75 people, so it's
-same. Acme Logistics Canada (P31) is a 90-person arm of an 850-person US
-company, so it's related.
+Name overlap alone does not establish a relationship. Examples include
+Delta Air Lines / Delta Faucet and Apple Inc. / Apple Leisure Group.
 
-Sharing a domain doesn't make one company either. Veldt Analytics B.V. and
-Veldt Analytics Inc. (P32) both use veldt.io, but one is Dutch with 180
-people and the other American with 20. That's related.
+The `needs_world_knowledge` group contains 14 pairs: four renames changing
+both name and domain, and ten parent/subsidiary pairs. The remaining 36 use
+record-level clues. The grouping is part of this fixture's answer key.
 
-## Related or different
+The real company relationships are dated examples, not a current ownership
+registry. Labels follow this benchmark's account-retention policy.
 
-Mostly a question of knowing who owns whom. Delta Air Lines and Delta Faucet
-(P33) share a word and nothing else. So do Apple Inc. and Apple Leisure
-Group, Oracle and Oracle Lighting, and Stripe and Stripes.
-
-## Which pairs need world knowledge
-
-14 pairs can't be settled from the records. Four are renames that changed
-both the name and the domain (Facebook, Twitter, Weight Watchers, Square).
-Ten are a parent and a subsidiary with nothing in the records to connect
-them. The other 36 can be judged from domain, legal suffix, country,
-industry and headcount.
-
-Dunkin', Salesforce and Google also renamed, but they kept their domains, so
-the records already say they're one company. They count as records-enough.
-
-Every real relationship here is public and settled. The newest acquisition
-is Slack, which closed in 2021. The newest rename is Twitter to X Corp in
-2023.
-
-## Distribution
-
-50 pairs: 18 same, 14 related, 18 different.
+Distribution: 18 `same`, 14 `related`, 18 `different`.

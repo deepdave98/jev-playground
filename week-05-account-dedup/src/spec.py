@@ -1,10 +1,4 @@
-"""Questions and the merge rule for week 05: duplicate accounts in a CRM.
-
-Each pair was flagged upstream as a possible duplicate, by a shared word in
-the name, a shared domain, or a rep asking for a merge. The models only see
-pairs that already look alike, which is where the hard calls are. Both
-models get these exact strings.
-"""
+"""Shared account-pair prompts and merge rule."""
 
 QUESTIONS = {
     "relationship": {
@@ -36,8 +30,7 @@ QUESTIONS = {
     },
 }
 
-# Merges are hard to undo, so only confident ones happen on their own. The
-# rest go to a person.
+# Lower scores go to review.
 AUTO_MERGE = 0.9
 
 

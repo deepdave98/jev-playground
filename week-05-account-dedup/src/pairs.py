@@ -1,13 +1,4 @@
-"""The answer key: 50 candidate duplicate pairs from a CRM, labelled by hand.
-
-Half the pairs involve real companies, because the hard part of dedup is
-knowing who owns whom: Instagram belongs to Meta, Facebook is Meta, and Delta
-Air Lines has nothing to do with Delta Faucet. The real relationships used
-here are all well established. The made-up companies have to be judged from
-the records alone.
-
-    python3 src/pairs.py
-"""
+"""Account-pair fixtures and labels, using real and fictional company names."""
 
 import json
 import pathlib
@@ -134,11 +125,7 @@ PAIRS = [
 
 FIELDS = ("name", "domain", "country", "industry", "employees", "source")
 
-# Pairs the records can't settle. You have to know who renamed to what or who
-# owns whom: the four renames that changed both name and domain, and all ten
-# parent and subsidiary pairs. Dunkin', Salesforce and Google kept their
-# domain, and the lookalikes differ in domain and industry, so the other 36
-# can be judged from the records.
+# Four renames changing both name and domain, plus ten parent/subsidiary pairs.
 WORLD = {"P09", "P10", "P12", "P15", *(f"P{n}" for n in range(19, 29))}
 
 
