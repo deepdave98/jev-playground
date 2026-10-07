@@ -117,7 +117,8 @@ class ReactivationTests(unittest.TestCase):
             self.queue([self.record])
 
     def test_non_iso_dates_and_future_contact_are_rejected(self):
-        for key, value in (("lost_on", "2026-1-01"), ("last_contacted_on", "2026-10-08")):
+        for key, value in (("lost_on", "2026-1-01"), ("lost_on", "2026-W41-3"),
+                           ("last_contacted_on", "2026-10-08")):
             with self.subTest(key=key):
                 with self.assertRaises(ValueError):
                     prepare({**self.record, key: value}, TODAY)

@@ -6,7 +6,10 @@ from datetime import date
 def day(value):
     if not isinstance(value, str) or len(value) != 10:
         raise ValueError("dates must use YYYY-MM-DD")
-    return date.fromisoformat(value)
+    parsed = date.fromisoformat(value)
+    if parsed.isoformat() != value:
+        raise ValueError("dates must use YYYY-MM-DD")
+    return parsed
 
 
 def prepare(record, as_of):
