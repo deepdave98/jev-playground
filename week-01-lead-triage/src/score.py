@@ -1,16 +1,4 @@
-"""Scores results/raw/*.jsonl into results/results.json and a printed table.
-
-Metrics:
-  per-step accuracy   how often each judgment matched the hand-written key
-  route accuracy      how often the whole workflow put the lead in the right
-                      queue, which is the only number a GTM team feels
-  latency             p50 / p90 / p99 per lead
-  cost                dollars per 1,000 leads at published list prices
-  Brier + ECE         whether the confidence number means anything
-
-Route is computed with spec.route() from each runner's four judgments, the
-same function applied to the answer key. No model is asked to route.
-"""
+"""Score saved responses against reference labels and write results/results.json."""
 
 import json
 import pathlib
@@ -79,16 +67,14 @@ def score_file(path: pathlib.Path) -> dict:
     lat = [r["latency_ms"] for r in ok]
     usd = [r["billed_usd"] for r in ok]
 
-    # Calibration is only meaningful on the two probability questions.
+    # Score the probabilities returned by the two noul questions.
     cal = {}
     for f in ["disqualify", "icp_fit"]:
         pairs = [(float(r["confidence"][f]), bool(r["labels"][f])) for r in ok]
         cal[f] = ({"brier": brier(pairs), "ece": ece(pairs)} if pairs
                   else {"brier": float("nan"), "ece": float("nan")})
 
-    # The two errors a GTM team actually feels. Accuracy treats every mistake
-    # the same; these do not. Binning a funded buyer costs revenue, and handing
-    # a competitor a demo costs something worse.
+    # Count rejected AE leads and disqualified leads admitted.
     buyers_binned = sum(1 for r in ok
                         if route(**r["labels"]) == "ae_now"
                         and route(**r["prediction"]) == "reject")
@@ -97,7 +83,6 @@ def score_file(path: pathlib.Path) -> dict:
                  if r["labels"]["disqualify"] and not r["prediction"]["disqualify"])
     should_reject = sum(1 for r in ok if r["labels"]["disqualify"])
 
-    # Confusion detail: which routes the workflow got wrong, and into what.
     confusion: dict[str, dict[str, int]] = {}
     for r in ok:
         t, p = route(**r["labels"]), route(**r["prediction"])
@@ -159,7 +144,7 @@ def main() -> None:
         row("all four correct", lambda r: f"{r['all_four_correct']*100:.1f}%")
         row("ROUTE ACCURACY", lambda r: f"{r['route_accuracy']*100:.1f}%")
         print()
-        row("funded buyers binned",
+        row("AE leads rejected",
             lambda r: f"{r['buyers_binned']['n']}/{r['buyers_binned']['of']}")
         row("disqualified leaked",
             lambda r: f"{r['competitors_leaked']['n']}/{r['competitors_leaked']['of']}")

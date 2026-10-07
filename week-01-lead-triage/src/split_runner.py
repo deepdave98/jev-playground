@@ -1,20 +1,4 @@
-"""One Claude call per question, instead of one call for all four.
-
-This exists to answer the obvious objection to the headline result. In the
-main benchmark Claude answers all four questions in a single JSON response,
-and Haiku's errors turned out to be correlated: it decides a lead is bad,
-sets disqualify high, and then collapses icp_fit to match. Every one of its
-29 icp_fit errors ran in that direction.
-
-That could be an artifact of the format rather than the model, so this runner
-removes the format. Each question goes in its own call with its own system
-prompt and no knowledge of the others, which is the most favourable
-arrangement Claude can get. It is also 4x the calls, 4x the prompt overhead
-and 4x the latency, which is the part nobody mentions when they suggest it.
-
-  python3 src/split_runner.py claude-haiku-4-5
-  python3 src/split_runner.py claude-haiku-4-5 --resume   # finish a part-done run
-"""
+"""Run one Claude call per lead question. Use --resume to continue a saved run."""
 
 import json
 import pathlib
@@ -111,7 +95,6 @@ def main() -> None:
     runner = ClaudeSplitRunner(model)
     out = ROOT / "results" / "raw" / f"{runner.name}.jsonl"
 
-    # 4 calls per lead is slow enough that losing a part-done run hurts.
     done: set[str] = set()
     if resume and out.exists():
         for line in out.open():

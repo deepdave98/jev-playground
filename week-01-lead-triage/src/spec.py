@@ -1,11 +1,4 @@
-"""Single source of truth for the triage workflow.
-
-Both runners build their prompts from the constants in this file. Jev gets the
-criteria as typed questions, Claude gets the same strings pasted into a text
-prompt. Neither model sees wording the other did not see. If you change a
-rubric line here it changes on both sides at once, which is the only way the
-accuracy numbers mean anything.
-"""
+"""Shared lead questions and routing rules."""
 
 PRODUCT_CONTEXT = (
     "We sell a GTM data and workflow platform to B2B SaaS revenue teams. "
@@ -14,8 +7,7 @@ PRODUCT_CONTEXT = (
     "data, or teams under 50 people."
 )
 
-# Jev question definitions. The Claude prompt is generated from these same
-# dicts in claude_runner.py, so the criteria text is byte-identical.
+# claude_runner.py renders these same criteria into text.
 QUESTIONS = {
     "disqualify": {
         "type": "noul",
@@ -80,12 +72,7 @@ QUESTIONS = {
 INTENT_LEVELS = ["none", "researching", "evaluating", "ready_to_buy"]
 SEGMENTS = ["enterprise", "mid_market", "smb"]
 
-# Round 1 told both models to disqualify "a direct competitor" and never said
-# who that is. Haiku read it broadly and threw out Workday, Atlassian,
-# ServiceNow and Oracle on the grounds that they also sell software. That is a
-# fair complaint about the prompt, not only about the model, so round 2 adds
-# this one sentence to the disqualify question and changes nothing else.
-# Both models get it. The delta between rounds is in results/RESULTS.md.
+# v2 adds this clarification to both runners.
 COMPETITOR_CLARIFICATION = (
     " Direct competitors are companies selling GTM data, sales engagement or "
     "lead routing tools, for example Clay, Apollo, ZoomInfo, Outreach and "
@@ -95,11 +82,7 @@ COMPETITOR_CLARIFICATION = (
 
 
 def build_questions(variant: str = "v1") -> dict:
-    """Returns the question set for a benchmark round.
-
-    v1: as originally written.
-    v2: v1 plus COMPETITOR_CLARIFICATION on the disqualify question.
-    """
+    """Return v1, or v2 with the explicit competitor list."""
     import copy
 
     q = copy.deepcopy(QUESTIONS)
@@ -114,8 +97,6 @@ def build_questions(variant: str = "v1") -> dict:
         raise ValueError(f"unknown variant {variant!r}")
     return q
 
-# Step 5. Routing is a rule, not a judgment, so it runs in code on both sides
-# from the four judgments above. Same function, same inputs, no model involved.
 ROUTES = ["reject", "ae_now", "sdr_sequence", "self_serve", "nurture"]
 
 

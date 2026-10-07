@@ -1,30 +1,4 @@
-"""Claude side of the benchmark.
-
-The rubric text is generated from spec.build_questions(), the same dicts Jev
-receives as typed questions, so neither model gets wording the other did not
-get.
-
-Calls go through the `claude` CLI in print mode because no ANTHROPIC_API_KEY
-was available on the benchmark machine. That costs Claude something, and the
-cost is measured rather than assumed:
-
-  - The CLI prepends its own system prompt. `--system-prompt` plus
-    `--exclude-dynamic-system-prompt-sections` replaces most of it, and
-    calibrate() measures what is left so it can be subtracted from the token
-    counts.
-  - `duration_api_ms` from the CLI is the API call itself, excluding process
-    startup. That is the number used for Claude's latency, which is more
-    generous to Claude than wall clock.
-  - The CLI turns extended thinking on. Left alone, Haiku burned ~1800
-    thinking tokens and 22 seconds deciding whether a resume was a resume.
-    MAX_THINKING_TOKENS=0 turns it off, which takes the same call to under a
-    second. Nobody would ship lead triage with thinking on, and benchmarking
-    against a config nobody would ship is how you get a fake result.
-
-Every one of those adjustments favours Claude. They are applied anyway,
-because a benchmark that only corrects in one direction is not worth
-publishing.
-"""
+"""Run shared lead questions through the Claude CLI with thinking disabled."""
 
 import json
 import os
@@ -35,10 +9,7 @@ import time
 from spec import INTENT_LEVELS, SEGMENTS, build_questions
 
 # https://docs.claude.com/en/docs/about-claude/pricing
-# Cache writes bill at 1.25x the base input rate, cache reads at 0.1x. The CLI
-# caches the system prompt, which is a real saving a production deployment
-# would also get, so Claude is given credit for it rather than being charged
-# list price on every cached token.
+# Recorded benchmark rates: cache writes 1.25x input, reads 0.1x.
 PRICING = {
     "claude-haiku-4-5": {"input": 1.00 / 1_000_000, "output": 5.00 / 1_000_000},
     "claude-sonnet-5": {"input": 2.00 / 1_000_000, "output": 10.00 / 1_000_000},
@@ -48,12 +19,7 @@ CACHE_READ_MULTIPLIER = 0.10
 
 
 def input_cost(usage: dict, model: str, overhead_tokens: int) -> tuple[float, int]:
-    """Cache-aware input cost, with CLI scaffolding removed.
-
-    Tokens land in three buckets at three prices. Blend them into one
-    effective rate, then charge that rate for only the tokens our own prompt
-    is responsible for.
-    """
+    """Blend input and cache rates, then subtract measured CLI overhead."""
     base = PRICING[model]["input"]
     plain = usage.get("input_tokens", 0)
     written = usage.get("cache_creation_input_tokens", 0)
@@ -150,22 +116,14 @@ class ClaudeRunner:
         return json.loads(proc.stdout), wall_ms
 
     def calibrate(self, samples: int = 5) -> dict:
-        """Measures the input tokens the CLI adds on top of our own prompt.
-
-        Sends an empty system prompt and a one-character user message. Whatever
-        input tokens come back is scaffolding we did not write and would not
-        pay for through the API, so it is subtracted from every measurement.
-        The count moves around a little between runs, so take the median.
-        """
+        """Measure median input overhead with an empty system prompt."""
         import statistics
 
         counts = []
         for _ in range(samples):
             data, _ = self._invoke("", ".")
             u = data["usage"]
-            # Sonnet's CLI caches the prompt, so input_tokens reads 2 and the
-            # real count sits in the cache buckets. Sum all three or the
-            # overhead measures as zero and Claude gets billed for scaffolding.
+            # Cached tokens also contribute to CLI overhead.
             counts.append(u.get("input_tokens", 0)
                           + u.get("cache_creation_input_tokens", 0)
                           + u.get("cache_read_input_tokens", 0))

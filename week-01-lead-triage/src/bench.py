@@ -1,12 +1,4 @@
-"""Runs the benchmark and writes results/raw/<runner>.jsonl.
-
-Sequential on purpose. Running the calls concurrently would finish sooner and
-make every latency number meaningless, because they would all be queued behind
-each other.
-
-  python3 src/bench.py                 # all runners
-  python3 src/bench.py jev             # one runner
-"""
+"""Run each benchmark sequentially and save responses to results/raw/."""
 
 import json
 import pathlib

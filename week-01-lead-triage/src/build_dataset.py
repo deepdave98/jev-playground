@@ -1,17 +1,4 @@
-"""Builds leads.jsonl.
-
-Every lead below was written and labelled by hand against rubric.md. No model
-produced any label. That matters: if Claude had written the answer key, then
-scoring Claude against it would measure agreement with itself.
-
-Labels are the four judgments. Nothing stores a route. spec.route() computes
-it from the labels, so the answer key and the models go through the same
-function.
-
-Roughly a third of these are deliberately awkward. Real inbound is mostly
-awkward, and a test set of obvious cases would put every model at 100% and
-tell you nothing.
-"""
+"""Build the synthetic leads and reference labels defined below."""
 
 import json
 import pathlib
@@ -19,7 +6,7 @@ import pathlib
 # (id, company, headcount, title, email, source, message, activity,
 #  disqualify, icp_fit, segment, intent)
 LEADS = [
-    # --- disqualify: job applicants -------------------------------------
+    # disqualify: job applicants
     ("L001", "Segment", 1200, "Account Executive", "marcus.boyle@gmail.com", "contact_form",
      "Hi, I saw the Enterprise AE opening on your careers page. 6 years closing GTM software, "
      "president's club twice. Resume attached. Who should I send this to?",
@@ -39,7 +26,7 @@ LEADS = [
      "Requesting a demo for a class project on sales automation. We have no budget, this is coursework.",
      "1 page view: /demo", True, False, "enterprise", "researching"),
 
-    # --- disqualify: vendors and agencies -------------------------------
+    # disqualify: vendors and agencies
     ("L005", "GrowthLabs Digital", 24, "Head of Partnerships", "sam@growthlabsdigital.io", "contact_form",
      "We help B2B SaaS companies rank #1 for high-intent keywords. I ran an audit on your site and "
      "found 34 technical SEO issues. 15 minutes to walk you through them?",
@@ -60,7 +47,7 @@ LEADS = [
      "open to a referral partnership? We'd also like to pitch you on our own RevOps managed service.",
      "4 page views: /integrations/salesforce, /partners", True, True, "mid_market", "researching"),
 
-    # --- disqualify: competitors ----------------------------------------
+    # disqualify: competitors
     ("L009", "Clay", 180, "RevOps Manager", "n.fischer@clay.com", "demo_request",
      "Interested in seeing how your waterfall enrichment compares. Can we get a demo and a copy of "
      "your coverage benchmarks?",
@@ -71,7 +58,7 @@ LEADS = [
      "to understand your architecture?",
      "7 page views: /product, /changelog x4", True, True, "mid_market", "researching"),
 
-    # --- disqualify: spam ------------------------------------------------
+    # disqualify: spam
     ("L011", "N/A", None, "N/A", "backlinks.outreach9931@mail.ru", "contact_form",
      "Dear Sir/Madam, We have high DA 70+ sites available for guest posting. Permanent do-follow links. "
      "Payment via crypto. Price list attached.",
@@ -82,7 +69,7 @@ LEADS = [
      "Funds in 24 hours. Reply YES to claim.",
      "1 page view: /", True, False, "smb", "none"),
 
-    # --- enterprise, ready to buy ---------------------------------------
+    # enterprise, ready to buy
     ("L013", "Siemens", 320000, "Director of Revenue Operations", "k.brandt@siemens.com", "demo_request",
      "We've shortlisted three vendors and need to close by end of Q1. 400 seats. Our security team "
      "needs SOC 2 Type II and a completed VPAT before we can move to paper. Who handles procurement?",
@@ -98,14 +85,14 @@ LEADS = [
      "response to a security questionnaire and pricing for 250 seats.",
      "14 page views: /security, /pricing, /api-docs", False, True, "enterprise", "ready_to_buy"),
 
-    # tricky: real enterprise buyer using a personal email address
+    # enterprise buyer using a personal email address
     ("L016", "Cisco", 84000, "Head of Sales Strategy", "mreilly1978@gmail.com", "demo_request",
      "Writing from my personal address because our firewall blocks vendor forms. I run sales strategy "
      "for the Americas at Cisco. We have budget allocated and want to pilot with 120 reps in Q2. "
      "Reach me at this address or on LinkedIn.",
      "6 page views: /pricing, /enterprise", False, True, "enterprise", "ready_to_buy"),
 
-    # --- enterprise, evaluating -----------------------------------------
+    # enterprise, evaluating
     ("L017", "Atlassian", 12000, "RevOps Lead", "s.vandenberg@atlassian.com", "demo_request",
      "Comparing you against two other platforms for our outbound data layer. Can we see a demo focused "
      "on CRM sync and how you handle duplicate accounts?",
@@ -120,7 +107,7 @@ LEADS = [
      "What does pricing look like for around 80 seats? Also need to know if you support SSO via Okta.",
      "4 page views: /pricing x2, /security", False, True, "enterprise", "evaluating"),
 
-    # --- enterprise, low intent -----------------------------------------
+    # enterprise, low intent
     ("L020", "Oracle", 140000, "Sales Operations Analyst", "greg.tolliver@oracle.com", "newsletter",
      "Enjoyed the post on routing rules. Do you publish anything on territory design?",
      "2 page views: /blog/routing-rules", False, True, "enterprise", "researching"),
@@ -130,7 +117,7 @@ LEADS = [
      "Growth plan. Who do I talk to about this?",
      "3 page views: /docs/errors, /support", False, True, "enterprise", "none"),
 
-    # tricky: huge headcount but consumer business, so not ICP
+    # huge headcount but consumer business, so not ICP
     ("L022", "Chipotle", 110000, "Director of Loyalty Marketing", "b.santos@chipotle.com", "demo_request",
      "We're looking at tools to segment our rewards members and trigger offers. We have about 40 "
      "million app users. Is that something you handle?",
@@ -140,7 +127,7 @@ LEADS = [
      "Interested in understanding passenger booking behaviour across channels. Do you have travel data?",
      "2 page views: /data-coverage", False, False, "enterprise", "researching"),
 
-    # --- mid-market, ready to buy ---------------------------------------
+    # mid-market, ready to buy
     ("L024", "Gusto", 900, "VP Revenue Operations", "amelia.k@gusto.com", "demo_request",
      "Our contract with our current provider ends in 45 days and we don't want to renew. We need 60 "
      "seats live before then. What does onboarding look like?",
@@ -155,7 +142,7 @@ LEADS = [
      "Ready to start a paid pilot. 25 SDRs. Need it running before our sales kickoff on the 14th.",
      "7 page views: /pricing", False, True, "mid_market", "ready_to_buy"),
 
-    # --- mid-market, evaluating -----------------------------------------
+    # mid-market, evaluating
     ("L027", "Linear", 250, "Head of Revenue Operations", "mira.s@linear.app", "demo_request",
      "Evaluating three options for enrichment and routing. Can we get a trial with our own data so we "
      "can measure match rates ourselves?",
@@ -174,7 +161,7 @@ LEADS = [
      "Interested in a demo. We're mapping out our 2027 stack and want to understand what's possible.",
      "4 page views: /product", False, True, "mid_market", "evaluating"),
 
-    # --- mid-market, low intent -----------------------------------------
+    # mid-market, low intent
     ("L031", "Figma", 800, "Revenue Operations Analyst", "p.kowalski@figma.com", "newsletter",
      "Signed up for the newsletter. Curious how other companies structure their RevOps team. Any "
      "resources?",
@@ -188,7 +175,7 @@ LEADS = [
      "One of our accounts asked whether you integrate with us. Just checking on your side.",
      "1 page view: /integrations", False, True, "enterprise", "none"),
 
-    # --- smb but in ICP (50+ employees, B2B) ----------------------------
+    # smb but in ICP (50+ employees, B2B)
     ("L034", "Cal.com", 90, "Head of Sales", "t.mendez@cal.com", "demo_request",
      "We just raised a Series A and are hiring 8 reps. Need to get data and routing sorted before they "
      "start on the 1st. Budget is set aside.",
@@ -209,7 +196,7 @@ LEADS = [
      "or is it subscription only?",
      "6 page views: /pricing, /product", False, True, "smb", "evaluating"),
 
-    # --- smb, not in ICP (under 50 employees) ---------------------------
+    # smb, not in ICP (under 50 employees)
     ("L038", "Kiteline", 12, "Founder", "ravi@kiteline.io", "pricing_page",
      "Two person sales team. Do you have a starter plan? We'd want to buy today if the price works.",
      "5 page views: /pricing x3", False, False, "smb", "ready_to_buy"),
@@ -228,7 +215,7 @@ LEADS = [
      "Just browsing, saw you on a podcast. What does the product actually do?",
      "2 page views: /", False, False, "smb", "researching"),
 
-    # --- not ICP: consumer / wrong role ---------------------------------
+    # not ICP: consumer / wrong role
     ("L042", "Strava", 600, "Community Manager", "j.paulsen@strava.com", "contact_form",
      "We want to reach out to running clubs and gyms. Would your data cover those?",
      "3 page views: /data-coverage", False, False, "mid_market", "evaluating"),
@@ -237,7 +224,7 @@ LEADS = [
      "Looking at tools to personalise our member communications. We have 6 million subscribers.",
      "4 page views: /product", False, False, "enterprise", "evaluating"),
 
-    # tricky: big B2B company, but the role has nothing to do with revenue
+    # big B2B company, but the role has nothing to do with revenue
     ("L044", "Salesforce", 75000, "Facilities Coordinator", "d.brennan@salesforce.com", "contact_form",
      "Trying to find a vendor list for our office in Dublin. Is this the right form?",
      "1 page view: /contact", False, False, "enterprise", "none"),
@@ -247,7 +234,7 @@ LEADS = [
      "legal entity name?",
      "4 page views: /engineering-blog x3", False, False, "enterprise", "researching"),
 
-    # --- existing customers / support ------------------------------------
+    # existing customers / support
     ("L046", "Datadog", 5000, "Revenue Operations Manager", "l.fortier@datadoghq.com", "contact_form",
      "We're already on the Scale plan. Our January invoice looks wrong, it's double what we expected. "
      "Can someone from billing call me?",
@@ -262,7 +249,7 @@ LEADS = [
      "Escalating here.",
      "6 page views: /support, /docs/webhooks", False, True, "enterprise", "none"),
 
-    # --- ambiguous / short messages --------------------------------------
+    # ambiguous / short messages
     ("L049", "Braze", 1500, "VP Revenue Operations", "k.ahmadi@braze.com", "demo_request",
      "Demo please.",
      "1 page view: /demo", False, True, "enterprise", "evaluating"),
@@ -280,7 +267,7 @@ LEADS = [
      "the conversation going for next year's planning.",
      "3 page views: /product/routing", False, True, "enterprise", "researching"),
 
-    # --- more mid-market and smb spread ----------------------------------
+    # more mid-market and smb spread
     ("L053", "Loom", 400, "Director of Demand Generation", "s.eriksen@loom.com", "demo_request",
      "We're spending a lot on a data vendor with poor match rates. Want to run a head to head test "
      "against our current provider on 2000 records this month.",

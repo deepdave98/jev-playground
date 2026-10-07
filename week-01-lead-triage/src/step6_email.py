@@ -1,18 +1,4 @@
-"""Step 6: write the first-touch email.
-
-This is the step Jev cannot do, and the reason the repo is not a Jev
-advertisement. Jev returns a choice, a score, or a probability. There is no
-primitive that returns prose. Running `--prove` shows that against the live
-API rather than asserting it.
-
-So the workflow is not "Jev instead of Claude". It is Jev deciding which leads
-are worth a Claude call, and Claude writing to those. Emails are only written
-for leads that routed to ae_now or sdr_sequence, which is where the saving
-actually comes from.
-
-  python3 src/step6_email.py --prove      # ask Jev for prose, show the error
-  python3 src/step6_email.py              # write emails for qualified leads
-"""
+"""Draft emails for leads routed to ae_now or sdr_sequence."""
 
 import json
 import pathlib
@@ -67,8 +53,6 @@ def prove_jev_cannot_write() -> None:
     resp = conn.getresponse()
     print(f"asking Jev for a `text` question type -> HTTP {resp.status}")
     print(resp.read().decode()[:600])
-    print("\nJev exposes choice, score and noul. There is no text primitive, so "
-          "step 6 is Claude's whether you like it or not.")
 
 
 def main() -> None:
@@ -88,7 +72,7 @@ def main() -> None:
                  if not r.get("error")
                  and route(**r["prediction"]) in ("ae_now", "sdr_sequence")]
 
-    print(f"{len(qualified)} of {len(rows)} leads earned an email "
+    print(f"{len(qualified)} of {len(rows)} leads routed for an email "
           f"({len(qualified)/len(rows)*100:.0f}%). Writing those.\n")
 
     runner = ClaudeRunner(MODEL)

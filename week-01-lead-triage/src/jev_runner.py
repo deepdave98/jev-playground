@@ -1,9 +1,4 @@
-"""Jev side of the benchmark.
-
-One HTTP request per lead carrying all four typed questions. The connection is
-reused across leads, because opening a fresh TLS session costs about 600ms from
-this machine and that has nothing to do with the model.
-"""
+"""Send four typed questions per lead over a reused HTTP connection."""
 
 import http.client
 import json
@@ -14,7 +9,7 @@ HOST = "api.typesafe.ai"
 PATH = "/v1/systemone"
 MODEL = "jev-latest"
 
-# Published rate, input only. Output tokens are not billed.
+# Benchmark rate, input only. Output tokens are not billed.
 # https://www.typesafe.ai/  ("$42 per billion input tokens")
 USD_PER_INPUT_TOKEN = 42.0 / 1_000_000_000
 
@@ -45,11 +40,7 @@ class JevRunner:
         self.conn = http.client.HTTPSConnection(HOST, timeout=60)
 
     def measure_connect_cost(self, samples: int = 5) -> float:
-        """Median wall time of a cold TCP+TLS handshake, in ms.
-
-        Reported alongside the results so the network floor is visible instead
-        of being quietly folded into the model's number.
-        """
+        """Return the median cold TCP/TLS handshake time in milliseconds."""
         import socket
         import ssl
         import statistics
@@ -141,8 +132,7 @@ def _intent_label(answer: dict) -> str:
     idx = int(round(answer["score"]))
     idx = max(0, min(len(INTENT_LEVELS) - 1, idx))
     if legend:
-        # The legend maps index to the criteria string we sent; prefer it so a
-        # future reordering on their side cannot silently shift the mapping.
+        # Prefer the returned legend if the API reorders criteria.
         label = legend.get(str(idx), "")
         for level in INTENT_LEVELS:
             if label.startswith(level):
