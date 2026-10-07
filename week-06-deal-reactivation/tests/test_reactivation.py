@@ -63,6 +63,20 @@ class ReactivationTests(unittest.TestCase):
         self.assertEqual(len(result["queue"]), 1)
         self.assertEqual(result["decisions"][1]["reason"], "duplicate_account")
 
+    def test_other_stage_recent_contact_blocks_account(self):
+        other = {**self.record, "id": "other", "stage": "open", "last_contacted_on": "2026-10-01"}
+        self.assertEqual(self.queue([self.record, other])["queue"], [])
+
+    def test_malformed_records_and_empty_export_date_are_rejected(self):
+        for records, as_of in (([None], TODAY), ([], "not-a-date")):
+            with self.subTest(records=records):
+                with self.assertRaises(ValueError):
+                    build_queue(records, as_of, lambda *_: self.fail("unexpected model call"))
+        for value in (False, 0, [], {}, ""):
+            with self.subTest(value=value):
+                with self.assertRaises(ValueError):
+                    prepare({**self.record, "last_contacted_on": value}, TODAY)
+
     def test_bad_evidence_never_enters_queue(self):
         for labels in ({"blocker": "cleared", "evidence": "made-up"},
                        {"blocker": "cleared", "evidence": "none"},

@@ -12,6 +12,8 @@ def day(value):
 def prepare(record, as_of):
     """Apply CRM exclusions before sending any text to a model."""
     today = day(as_of)
+    if not isinstance(record, dict):
+        raise ValueError("each record must be an object")
     for key in ("id", "account_id", "owner", "loss_reason"):
         if not isinstance(record.get(key), str) or not record[key].strip():
             raise ValueError(f"{key} must be a nonempty string")
@@ -21,7 +23,8 @@ def prepare(record, as_of):
     lost = day(record["lost_on"])
     if lost > today:
         raise ValueError("lost_on is after as_of")
-    contacted = day(record["last_contacted_on"]) if record.get("last_contacted_on") else None
+    contact_date = record.get("last_contacted_on")
+    contacted = day(contact_date) if contact_date is not None else None
     if contacted and contacted > today:
         raise ValueError("last_contacted_on is after as_of")
     updates = record.get("updates")
@@ -43,10 +46,10 @@ def prepare(record, as_of):
     for key in ("opt_out", "customer", "open_opportunity"):
         if record[key]:
             return None, key
-    if record.get("stage") != "closed_lost":
-        return None, "not_closed_lost"
     if contacted and (today - contacted).days < 30:
         return None, "contacted_within_30_days"
+    if record.get("stage") != "closed_lost":
+        return None, "not_closed_lost"
     if not eligible:
         return None, "no_recent_release"
     return {"loss_reason": record["loss_reason"], "updates": eligible}, None
@@ -99,12 +102,15 @@ def decide(record, as_of, labels=None):
 
 def build_queue(records, as_of, judge):
     """Return one evidenced candidate per account plus every decision for audit."""
+    day(as_of)
     records = list(records)
+    if any(not isinstance(r, dict) for r in records):
+        raise ValueError("each record must be an object")
+    # Validate the full export before incurring API costs.
+    prepared = [prepare(r, as_of) for r in records]
     ids = [r.get("id") for r in records]
     if len(ids) != len(set(ids)):
         raise ValueError("opportunity ids must be unique")
-    # Validate the full export before incurring API costs.
-    prepared = [prepare(r, as_of) for r in records]
     blocked = {}
     for record, (_, reason) in zip(records, prepared):
         if reason in {"opt_out", "customer", "open_opportunity", "contacted_within_30_days"}:
