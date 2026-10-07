@@ -23,6 +23,7 @@ LEDGER = HERE.parent / "week-02-deal-risk/data/ledger.jsonl"
 REPLIES = HERE.parent / "week-03-reply-triage/data/replies.jsonl"
 CALLS = HERE.parent / "week-04-meddpicc/data/calls.jsonl"
 PAIRS = HERE.parent / "week-05-account-dedup/data/pairs.jsonl"
+REACTIVATION = HERE.parent / "week-06-deal-reactivation/data/deals.jsonl"
 
 
 def find(path, id_):
@@ -85,6 +86,23 @@ async def main():
             pair = find(PAIRS, "P28")["pair"]
             print("\ndedup_pair, Google LLC and Alphabet from week 05")
             print(show(await s.call_tool("dedup_pair", pair)))
+
+            print("\nreactivation_queue, a released feature and an opted-out account")
+            queue = await s.call_tool("reactivation_queue", {
+                "records": [find(REACTIVATION, "R01"), find(REACTIVATION, "R25")],
+                "as_of": "2026-10-07"})
+            print(show(queue))
+            data = queue.structured_content
+            if len(data["queue"]) != 1 or data["queue"][0]["evidence"]["id"] != "u1":
+                sys.exit("reactivation evidence check failed")
+            if data["decisions"][1]["reason"] != "opt_out":
+                sys.exit("opted-out account reached the queue")
+
+            invalid = find(REACTIVATION, "R01")
+            invalid["opt_out"] = "false"
+            rejected = await s.call_tool("reactivation_queue", {"records": [invalid], "as_of": "2026-10-07"})
+            if not rejected.is_error:
+                sys.exit("reactivation input validation failed")
 
             bad = await s.call_tool("deals_at_risk", {"ledger_file": "../../.env.local"})
             print("\nasking for a file outside the ledger dir is refused:", bad.is_error)

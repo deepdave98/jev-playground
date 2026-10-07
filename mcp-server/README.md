@@ -35,8 +35,9 @@ TYPESAFE_API_KEY=your-key uv run mcp-server/check.py
 | `triage_reply` | Reply text, optional sender and subject | Category, opt-out probability, meeting intent, route |
 | `meddpicc` | Call summary | Eight qualification levels, forecast readiness, fields to confirm |
 | `dedup_pair` | Two account records | Same, related or different; suggested action |
+| `reactivation_queue` | Closed-lost records, releases, `as_of` date | One candidate per account with release evidence; all exclusions |
 
-Each tool uses its week's `spec.py`. See the [weekly benchmarks](../README.md)
+Each tool uses its week's questions. See the [weekly benchmarks](../README.md)
 for measured results. Rerun that week's benchmark after changing its prompt.
 
 ## Pipeline review
@@ -66,5 +67,11 @@ Pass today's date for your own export; the example date matches the fixture.
 - **Deduplication:** `merge` is a suggestion at `p_same >= 0.9`. Validate the
   threshold on your records before applying merges. `related` means link the
   records; a parent and subsidiary remain separate accounts.
+
+For [deal reactivation](../week-06-deal-reactivation/), fetch closed-lost
+opportunities and current account flags from your CRM, then attach recent
+product releases. Pass up to 100 records to `reactivation_queue`. Review
+`queue` with the owner; check `decisions` for missing evidence or API errors.
+Persist reviewed opportunity/release pairs in your CRM to avoid repeat tasks.
 
 No tool writes to your CRM or sends messages.

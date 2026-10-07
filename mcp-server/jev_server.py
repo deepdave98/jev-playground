@@ -35,6 +35,7 @@ w2 = load("week02", REPO / "week-02-deal-risk/src/spec.py")
 w3 = load("week03", REPO / "week-03-reply-triage/src/spec.py")
 w4 = load("week04", REPO / "week-04-meddpicc/src/spec.py")
 w5 = load("week05", REPO / "week-05-account-dedup/src/spec.py")
+w6 = load("week06", REPO / "week-06-deal-reactivation/src/reactivation.py")
 jev = load("jev", REPO / "common/jev.py")
 
 LEDGER_DIR = pathlib.Path(os.environ.get("JEV_LEDGER_DIR", REPO / "week-02-deal-risk/data")).resolve()
@@ -109,6 +110,13 @@ class Sweep(TypedDict):
     ms: int
 
 
+class ReactivationQueue(TypedDict):
+    as_of: str
+    checked: int
+    queue: list[dict]
+    decisions: list[dict]
+
+
 def ask(state, questions):
     """One Jev request. Each thread keeps its own warm connection."""
     conn = getattr(_local, "conn", None)
@@ -165,12 +173,12 @@ def judge_deal(deal, events, today):
 server = MCPServer(
     name="jev-gtm",
     instructions=(
-        "Typed GTM decisions backed by Jev. They return labels and probabilities, "
-        "never prose, so write any email or summary yourself from what comes back. "
+        "GTM decisions backed by Jev. Review the returned evidence before acting. "
         "Use triage_lead on a new inbound lead, deal_risk on one deal's activity, "
         "deals_at_risk to sweep a whole ledger export without reading it yourself, "
         "triage_reply on a reply to outbound, meddpicc on a call summary, and "
-        "dedup_pair on two CRM accounts that might be one company."
+        "dedup_pair on two CRM accounts that might be one company, and "
+        "reactivation_queue on closed-lost opportunities and recent product releases."
     ),
 )
 
@@ -296,6 +304,26 @@ async def dedup_pair(record_a: dict, record_b: dict) -> Match:
     return {"relationship": a["relationship"], "p_same": a["same_company"],
             "action": w5.action(a["relationship"], a["same_company"]),
             "ms": round((time.perf_counter() - t) * 1000)}
+
+
+@server.tool()
+async def reactivation_queue(records: list[dict], as_of: str) -> ReactivationQueue:
+    """Find closed-lost deals whose product blocker may have cleared.
+
+    Each record needs id, account_id, owner, stage, lost_on, loss_reason,
+    customer, open_opportunity, opt_out, and updates (id, published_on, text).
+    last_contacted_on is optional. Dates use YYYY-MM-DD. Use current CRM
+    flags for every account. Returns a review queue with source text and
+    every excluded or uncertain decision. Sends no messages or CRM writes.
+    """
+    if len(records) > 100:
+        raise ToolError("Pass at most 100 opportunities per call")
+    def judge(state, questions):
+        return jev.decode(ask(state, questions)["answers"], questions)
+    try:
+        return await asyncio.to_thread(w6.build_queue, records, as_of, judge)
+    except (ValueError, TypeError, KeyError) as exc:
+        raise ToolError(str(exc)) from exc
 
 
 if __name__ == "__main__":
