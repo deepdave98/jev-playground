@@ -1,10 +1,10 @@
-"""The two numbers every week's scorer needs."""
+"""Percentiles and probability scoring."""
 
 import statistics
 
 
 def pct(xs, p):
-    """Nearest-rank percentile. The sets here are 16 to 60 items, so no interpolation."""
+    """Percentile from the sorted observations without interpolation."""
     s = sorted(xs)
     return s[max(0, min(len(s) - 1, round(p / 100 * len(s) + 0.5) - 1))]
 

@@ -1,11 +1,4 @@
-"""Claude through the `claude` CLI, with the corrections from week 01.
-
-There's no ANTHROPIC_API_KEY on the benchmark machine, so calls go through
-the CLI, and three things keep that fair: thinking is off unless a week
-turns it on, the CLI's own scaffolding is measured and subtracted from token
-counts, and cache reads are billed at the cache rate. week-01-lead-triage/README.md has how each one
-was found, and what the numbers looked like before.
-"""
+"""Claude CLI runner with calibrated input overhead and cache-aware costs."""
 
 import json
 import os
@@ -29,9 +22,7 @@ def parse(text):
 class Claude:
     def __init__(self, model, thinking=False):
         self.model = model
-        # Thinking stays off unless a week asks for it, and week 01 has why.
-        # Asking for it means max effort. At medium and high, Sonnet still
-        # answered week 05's pairs without thinking at all.
+        # Week 05 triggered thinking only at max effort.
         self.thinking = thinking
         self.effort = "max" if thinking else "low"
         self.overhead = 0

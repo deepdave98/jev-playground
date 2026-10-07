@@ -1,8 +1,4 @@
-"""Jev over HTTP, with the connection kept warm between calls.
-
-Weeks 01 and 02 keep their own copies of this, so their published numbers
-reproduce exactly as they were run. Week 03 onward use this one.
-"""
+"""Persistent HTTP client used by weeks 03 onward."""
 
 import http.client
 import json
@@ -12,10 +8,8 @@ import time
 HOST, PATH = "api.typesafe.ai", "/v1/systemone"
 USD_PER_TOKEN = 42 / 1_000_000_000  # input only, output isn't billed
 
-# Jev's score answers run high. On weeks 01 to 03, three different score
-# questions and 193 answers, the mean signed error was +0.30 of a level
-# (+0.25, +0.34, +0.31). week-04-meddpicc/src/bias.py works it out. Pass
-# shift=SCORE_BIAS to decode() to take it back off before rounding.
+# Mean score error across weeks 01 to 03; see week-04-meddpicc/src/bias.py.
+# decode(shift=SCORE_BIAS) subtracts this before rounding.
 SCORE_BIAS = 0.30
 
 
@@ -41,7 +35,7 @@ class Jev:
                     raise RuntimeError(f"HTTP {resp.status}: {raw[:200]!r}")
                 return json.loads(raw), ms
             except (http.client.HTTPException, OSError, RuntimeError):
-                # keep-alive connections get dropped now and then
+                # Reconnect after a dropped connection or failed response.
                 self.conn.close()
                 self.conn = None
                 if attempt == 2:
@@ -49,7 +43,7 @@ class Jev:
                 time.sleep(1 + attempt)
 
     def warm(self):
-        """Pay the TLS handshake before anything is timed."""
+        """Open the TLS connection before timed requests."""
         self.ask({"warm": True}, {"q": {"type": "noul", "instructions": "Is this a warmup?"}})
 
     def close(self):
@@ -63,11 +57,7 @@ def levels(q):
 
 
 def decode(answers, questions, prefix="", shift=0.0):
-    """Jev's typed answers, in the shape the scorers compare against.
-
-    noul comes back as a probability, choice as the chosen key, score as the
-    nearest level name after taking shift off. The raw score is kept too.
-    """
+    """Decode probabilities, choice keys and rounded levels; retain raw scores."""
     out = {}
     for name, q in questions.items():
         a = answers[prefix + name]

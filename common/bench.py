@@ -1,8 +1,4 @@
-"""The loop every week's benchmark runs, one request at a time.
-
-Sequential on purpose. Run the requests together and every latency number
-measures the queue instead of the model.
-"""
+"""Sequential benchmark requests, with labels, costs and failures saved as JSONL."""
 
 import json
 import pathlib

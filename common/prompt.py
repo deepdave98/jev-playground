@@ -1,10 +1,4 @@
-"""One set of typed questions, written out for both models.
-
-Jev takes the questions as they are. Claude gets them as text from render(),
-with every instruction and criterion string copied across, so neither model
-sees wording the other didn't. read() turns Claude's JSON back into the shape
-jev.decode() produces, which lets one scorer handle both.
-"""
+"""Render Jev questions for Claude and normalize its answers for shared scoring."""
 
 from common.jev import levels
 

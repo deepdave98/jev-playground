@@ -2,14 +2,7 @@
 # requires-python = ">=3.11"
 # dependencies = ["mcp>=2.2,<3"]
 # ///
-"""An MCP server that puts the playground's Jev workflows behind six tools.
-
-    uv run mcp-server/jev_server.py
-
-The tools load their questions straight from each week's spec.py, so what
-an agent gets here is exactly what the benchmarks measured. If you tune a
-prompt, tune it in the week folder and re-run the benchmark first.
-"""
+"""MCP tools backed by the weekly Jev specs. Run with uv run."""
 
 import asyncio
 import http.client
@@ -30,8 +23,7 @@ REPO = pathlib.Path(__file__).resolve().parents[1]
 
 
 def load(name, path):
-    # Every week calls its module spec.py, so a plain import would hand back
-    # whichever one loaded first.
+    # Give each week's spec.py a distinct module name.
     s = importlib.util.spec_from_file_location(name, path)
     mod = importlib.util.module_from_spec(s)
     s.loader.exec_module(mod)
@@ -50,8 +42,7 @@ LEDGER_DIR = pathlib.Path(os.environ.get("JEV_LEDGER_DIR", REPO / "week-02-deal-
 _local = threading.local()
 
 
-# Typed returns give each tool an output schema. With a bare dict the SDK
-# sends the result as JSON text and clients get no structured content.
+# TypedDict returns provide MCP output schemas.
 class Lead(TypedDict):
     disqualify: bool
     icp_fit: bool
@@ -187,13 +178,9 @@ server = MCPServer(
 @server.tool()
 async def triage_lead(company: str, title: str, message: str, headcount: int | None = None,
                       email: str = "", recent_activity: str = "", form: str = "") -> Lead:
-    """Decide what to do with one inbound lead.
-
-    Returns the four judgments from week 01 of the playground (disqualify,
-    icp_fit, segment, intent) with Jev's probabilities, and the queue the lead
-    should go to: reject, ae_now, sdr_sequence, self_serve or nurture. About
-    360 ms once warm. Fill in headcount if you have it from enrichment, since
-    segment reads it directly.
+    """Classify an inbound lead and return reject, ae_now, sdr_sequence,
+    self_serve or nurture. Pass enriched headcount to determine segment.
+    Includes disqualification and ICP-fit probabilities.
     """
     state = {"company": company, "employee_headcount": headcount, "job_title": title,
              "email": email, "form": form, "message": message,
@@ -215,14 +202,10 @@ async def triage_lead(company: str, title: str, message: str, headcount: int | N
 
 @server.tool()
 async def deal_risk(deal: dict, events: list[dict], today: str = "") -> DealRisk:
-    """Check one open deal for risk from its activity ledger.
-
-    deal needs arr, close_date and champion (for example "Dana Whitfield,
-    Director of RevOps"); account and stage help. Each event needs id, ts,
-    source and text, the way an activity database exports them. Every event is
-    judged in a single Jev request, then the week 02 rule turns those judgments
-    into reasons such as competitor, escalations, champion_left, stalled,
-    no_exec_30d and closing_with_issues. today defaults to the real date.
+    """Check one deal's activity for risk. deal needs arr, close_date and
+    champion; events need id, ts, source and text. Returns event labels and
+    risk reasons computed by week 02's rules. today defaults to the current
+    date; pass YYYY-MM-DD to review a historical export.
     """
     t = time.perf_counter()
     out = await asyncio.to_thread(judge_deal, deal, events, today or date.today().isoformat())
@@ -231,18 +214,14 @@ async def deal_risk(deal: dict, events: list[dict], today: str = "") -> DealRisk
 
 @server.tool()
 async def deals_at_risk(ledger_file: str, today: str = "") -> Sweep:
-    """Sweep a whole ledger export and return only the deals at risk.
-
-    Pass just the file name, like "ledger.jsonl". This server opens it from
-    its own ledger folder, so there's no need to find, open or check the
-    file first, and reading it yourself defeats the point of the tool. Deals
-    are checked in parallel and only the ones that need attention come back,
-    biggest first, each with the reason.
+    """Return risky deals from a ledger export, sorted by ARR with reasons.
+    Pass just the filename, such as "ledger.jsonl"; the server opens it from
+    its configured folder. Do not search for or read the file first.
+    today accepts YYYY-MM-DD and defaults to the current date.
     """
     path = (LEDGER_DIR / ledger_file).resolve()
     if not path.is_relative_to(LEDGER_DIR) or not path.is_file():
-        # ToolError, so the agent sees why and can fix the path. Anything else
-        # reaches it as a blank failure.
+        # ToolError exposes the refusal to the client.
         raise ToolError(f"{ledger_file} is not a file under {LEDGER_DIR}")
 
     rows = [json.loads(line) for line in path.open() if line.strip()]
@@ -267,15 +246,10 @@ async def deals_at_risk(ledger_file: str, today: str = "") -> Sweep:
 
 @server.tool()
 async def triage_reply(text: str, sender: str = "", subject: str = "", received: str = "") -> Reply:
-    """Decide what to do with one reply to an outbound sequence.
-
-    Returns week 03's three judgments (category, opt_out, meeting_intent) and
-    the route: suppress, pause, ignore, reroute, snooze, close, send_info,
-    book_meeting or review. A reply that is only an opt-out word, like
-    "STOP", is suppressed in code without asking Jev. When Jev's opt_out
-    probability lands between 0.4 and 0.6 the route is review, so a person
-    decides. sender is the From line, with name, title and company if you
-    have them.
+    """Classify an outbound reply and return its route. Bare opt-out phrases
+    such as "STOP" are suppressed without a model call. An opt-out probability
+    from 0.4 to 0.6 routes to review. sender is the From line; include title
+    and company when known.
     """
     if w3.only_stop_word(text):
         return {"category": "objection", "opt_out": True, "meeting_intent": "none",
@@ -292,15 +266,10 @@ async def triage_reply(text: str, sender: str = "", subject: str = "", received:
 
 @server.tool()
 async def meddpicc(summary: str, account: str = "", stage: str = "") -> Meddpicc:
-    """Fill in MEDDPICC from one call summary.
-
-    Each of the eight elements comes back as none, mentioned or established,
-    with week 04's bias correction applied. forecast_ready is true when
-    metrics, economic_buyer and decision_process are all established. When
-    it is, confirm lists those three: read the summary yourself and check
-    them before the deal goes in the forecast, because Jev on its own put a
-    deal in that wasn't ready. gaps are the elements to ask about on the
-    next call.
+    """Score eight MEDDPICC elements as none, mentioned or established.
+    forecast_ready requires established metrics, economic_buyer and
+    decision_process. Check the fields in confirm against the summary
+    before accepting a forecast-ready result. gaps lists missing evidence.
     """
     state = {"account": account, "stage": stage, "summary": summary}
     t = time.perf_counter()
@@ -315,15 +284,11 @@ async def meddpicc(summary: str, account: str = "", stage: str = "") -> Meddpicc
 
 @server.tool()
 async def dedup_pair(record_a: dict, record_b: dict) -> Match:
-    """Decide whether two CRM accounts are the same company.
-
-    Give each record what you have of name, domain, country, industry,
-    employees and source. relationship is same, related (one corporate
-    family, like a parent and a subsidiary) or different. action is what
-    week 05's rule does with that: merge, review, link or keep. merge only
-    comes back when Jev is at least 0.9 sure they're one company, and a same
-    below that comes back as review. A parent and its subsidiary are two
-    companies, so never merge a pair this returns as related.
+    """Compare two CRM accounts using available name, domain, country,
+    industry, employees and source. Returns same, related or different and
+    a suggested action. merge requires same with p_same >= 0.9; lower scores
+    go to review. Related accounts, including parent/subsidiary pairs,
+    should stay separate.
     """
     state = {"record_a": record_a, "record_b": record_b}
     t = time.perf_counter()
