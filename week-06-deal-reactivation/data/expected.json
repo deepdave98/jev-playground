@@ -1,0 +1,146 @@
+{
+  "R01": {
+    "blocker": "cleared",
+    "evidence": "u1",
+    "reason": "blocker_cleared"
+  },
+  "R02": {
+    "blocker": "unchanged",
+    "evidence": "none",
+    "reason": "blocker_unchanged"
+  },
+  "R03": {
+    "blocker": "cleared",
+    "evidence": "u1",
+    "reason": "blocker_cleared"
+  },
+  "R04": {
+    "blocker": "unchanged",
+    "evidence": "none",
+    "reason": "blocker_unchanged"
+  },
+  "R05": {
+    "blocker": "cleared",
+    "evidence": "u1",
+    "reason": "blocker_cleared"
+  },
+  "R06": {
+    "blocker": "unchanged",
+    "evidence": "none",
+    "reason": "blocker_unchanged"
+  },
+  "R07": {
+    "blocker": "partial",
+    "evidence": "none",
+    "reason": "blocker_partial"
+  },
+  "R08": {
+    "blocker": "cleared",
+    "evidence": "u1",
+    "reason": "blocker_cleared"
+  },
+  "R09": {
+    "blocker": "unchanged",
+    "evidence": "none",
+    "reason": "blocker_unchanged"
+  },
+  "R10": {
+    "blocker": "cleared",
+    "evidence": "u1",
+    "reason": "blocker_cleared"
+  },
+  "R11": {
+    "blocker": "unchanged",
+    "evidence": "none",
+    "reason": "blocker_unchanged"
+  },
+  "R12": {
+    "blocker": "cleared",
+    "evidence": "u1",
+    "reason": "blocker_cleared"
+  },
+  "R13": {
+    "blocker": "unchanged",
+    "evidence": "none",
+    "reason": "blocker_unchanged"
+  },
+  "R14": {
+    "blocker": "cleared",
+    "evidence": "u1",
+    "reason": "blocker_cleared"
+  },
+  "R15": {
+    "blocker": "cleared",
+    "evidence": "u1",
+    "reason": "blocker_cleared"
+  },
+  "R16": {
+    "blocker": "unclear",
+    "evidence": "none",
+    "reason": "insufficient_evidence"
+  },
+  "R17": {
+    "blocker": "unclear",
+    "evidence": "none",
+    "reason": "insufficient_evidence"
+  },
+  "R18": {
+    "blocker": "unchanged",
+    "evidence": "none",
+    "reason": "blocker_unchanged"
+  },
+  "R19": {
+    "blocker": "cleared",
+    "evidence": "u1",
+    "reason": "blocker_cleared"
+  },
+  "R20": {
+    "blocker": "unchanged",
+    "evidence": "none",
+    "reason": "blocker_unchanged"
+  },
+  "R21": {
+    "blocker": "cleared",
+    "evidence": "u1",
+    "reason": "blocker_cleared"
+  },
+  "R22": {
+    "blocker": "partial",
+    "evidence": "none",
+    "reason": "blocker_partial"
+  },
+  "R23": {
+    "blocker": "unclear",
+    "evidence": "none",
+    "reason": "insufficient_evidence"
+  },
+  "R24": {
+    "blocker": "unchanged",
+    "evidence": "none",
+    "reason": "blocker_unchanged"
+  },
+  "R25": {
+    "reason": "opt_out"
+  },
+  "R26": {
+    "reason": "customer"
+  },
+  "R27": {
+    "reason": "open_opportunity"
+  },
+  "R28": {
+    "reason": "contacted_within_30_days"
+  },
+  "R29": {
+    "reason": "no_recent_release"
+  },
+  "R30": {
+    "reason": "no_recent_release"
+  },
+  "R31": {
+    "reason": "not_closed_lost"
+  },
+  "R32": {
+    "reason": "no_recent_release"
+  }
+}
