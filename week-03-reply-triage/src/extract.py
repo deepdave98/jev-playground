@@ -1,12 +1,4 @@
-"""The step Jev can't do: pull the return date or the new contact out of a reply.
-
-Jev answers with a choice, a score or a probability, never a date or a name.
-So after Jev triages, Claude reads only the replies it routed to pause (out
-of office) or reroute (wrong person) and extracts what the next step needs.
-Both Haiku and Sonnet run it, to see whether the cheap model is enough.
-
-    python3 src/extract.py
-"""
+"""Extract dates and contacts from replies Jev routed to pause or reroute."""
 
 import json
 import pathlib
@@ -61,7 +53,7 @@ def main():
             elif label["category"] == "wrong_person":
                 ok = contact_matches(contact, label["referral"])
             else:
-                ok = False  # Jev routed it here by mistake, so nothing right to extract
+                ok = False  # Incorrect triage is also an extraction failure.
             results.append({"model": model, "id": i, "category": label["category"],
                             "return_date": date, "contact": contact, "correct": ok,
                             "ms": ms, "usd": usd, "tokens_in": tokens_in, "tokens_out": tokens_out})

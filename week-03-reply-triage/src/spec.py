@@ -1,8 +1,4 @@
-"""Questions and the routing rule for week 03: replies to outbound sequences.
-
-Both models get these exact strings. Jev takes them as typed questions and
-Claude reads the text common.prompt.render() makes from them.
-"""
+"""Shared reply-classification prompts and routing rules."""
 
 QUESTIONS = {
     "category": {
@@ -56,11 +52,7 @@ ROUTES = ["suppress", "pause", "ignore", "reroute", "snooze", "close", "send_inf
 
 
 def route(category, opt_out, meeting_intent):
-    """Where a reply goes next. Runs in code on every model's answers.
-
-    An opt-out beats everything else. Emailing someone who asked you to stop
-    is the one mistake here with a legal cost.
-    """
+    """Apply opt-out suppression before category routing."""
     if opt_out:
         return "suppress"
     if category == "out_of_office":
@@ -74,14 +66,11 @@ def route(category, opt_out, meeting_intent):
     if category == "objection":
         return "close"
     if category != "interested":
-        # A model answered with something that isn't a category. Don't guess.
         return "review"
     return "book_meeting" if meeting_intent in ("open", "ready") else "send_info"
 
 
-# Two rules from the write-up that sit around the model, used by the MCP
-# server. A reply that is nothing but an opt-out word never needs a model,
-# and an opt_out answer this close to a coin flip goes to a person.
+# MCP-only guards; the benchmark scores model answers without these checks.
 STOP_WORDS = {"stop", "unsubscribe", "remove me", "opt out"}
 UNSURE = (0.4, 0.6)
 

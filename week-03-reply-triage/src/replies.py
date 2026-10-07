@@ -1,15 +1,4 @@
-"""The answer key: 60 replies to an outbound sequence, every label by hand.
-
-Each reply is what came back after we emailed someone cold. Prospects,
-companies and contacts are all made up. Replies arrived between September 24
-and 28, 2026, which matters for the out of office dates.
-
-The labels are category, opt_out and meeting_intent. Out of office replies
-also carry the return date, and wrong_person replies the contact they point
-to, so the extraction step has something to be scored against.
-
-    python3 src/replies.py
-"""
+"""Synthetic reply fixtures and labels. Timestamps determine relative return dates."""
 
 import json
 import pathlib

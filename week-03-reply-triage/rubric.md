@@ -1,83 +1,49 @@
-# How the answer key was written
+# Reply labels
 
-60 replies to a cold outbound sequence, labelled by hand against the strings
-in `src/spec.py`. Every prospect and company is made up.
+60 synthetic replies. [`spec.py`](src/spec.py) contains the prompt strings
+and routing function; [`replies.py`](src/replies.py) contains the fixtures.
 
-## category
-
-| category | means |
+| Category | Definition |
 |---|---|
-| `interested` | wants to talk, see a demo, or learn more |
+| `interested` | wants to talk, see a demo or learn more |
 | `not_now` | open to it later, or the timing is wrong |
 | `wrong_person` | points to someone else, or has left the company |
-| `objection` | a no, with or without a reason |
-| `out_of_office` | an automatic away message |
-| `auto_reply` | any other automatic message |
+| `objection` | declines, with or without a reason |
+| `out_of_office` | automatic away message |
+| `auto_reply` | other automatic message |
 
-The hard cases:
+Away messages with backup contacts stay `out_of_office` (R46, R51).
+Machine-generated address changes are `auto_reply` (R54, R60). R41 says the
+sender took over the territory and declines, so it is an `objection`.
+R43's lack of need also makes it an `objection`.
 
-- R41 sounds like a wrong-person reply ("Dana moved to a different role") but
-  the sender took over the territory and says no. `objection`.
-- R46 and R51 are away messages that name a backup contact. Still
-  `out_of_office`, because the prospect is coming back.
-- R54 and R60 give a new address, but a machine sent them. `auto_reply`.
-- R43 says no budget and no need. The "no need" makes it an `objection` and
-  not a `not_now`.
+`opt_out` requires the sender to request that their own email, sequence
+membership or stored data be removed. R04 requests removal of a colleague;
+R37 declines; R40 complains without requesting removal. Those are false.
+R19 asks to leave the sequence despite suggesting contact next year: true.
 
-## opt_out
+| Meeting intent | Definition |
+|---|---|
+| `none` | no interest in talking |
+| `curious` | asks questions or requests material |
+| `open` | agrees to talk without a time |
+| `ready` | proposes or accepts a time, or asks for a calendar link |
 
-Did the sender ask, about themselves, to stop being emailed, to come off a
-list, or to have their data deleted? Nine replies say yes, in English,
-French, German, and one GDPR Article 17 request.
+Categories other than `interested` and `not_now` have intent `none`.
 
-- R37, "Not interested.", is a no and not an opt-out. The sequence stops
-  either way, but only a real opt-out goes on the suppression list.
-- R40 is sarcasm about getting five emails. It's a complaint, with no
-  request in it.
-- R04 is interested and asks you to stop emailing a colleague. The sender
-  didn't opt out.
-- R19 says "maybe next year" and then asks to come off the sequence. It
-  looks like a snooze and has to be treated as an opt-out.
+`route()` checks opt-out first, then category. Unknown categories go to
+`review`. It maps away messages to `pause`, automatic replies to `ignore`,
+wrong contacts to `reroute`, bad timing to `snooze`, and objections to
+`close`. Interested replies with intent `open` or `ready` go to
+`book_meeting`; the remaining interested replies go to `send_info`.
 
-## meeting_intent
+The extraction key stores return dates for away messages and contacts for
+referrals. It interprets R47's "10/08" as October 8 using US month/day and
+R49's "the 6th" as October 6 after its September 28 timestamp. R25 names no
+contact, so its referral is null.
 
-`none`, `curious`, `open`, `ready`. Curious wants material first. Open
-agrees to talk without a time. Ready names a time, accepts one, or asks for
-a calendar link. Anything that isn't interested or not_now is `none`.
-
-## Routing
-
-`spec.route()` runs over the answer key and over every model's answers.
-
-```
-opt_out                             -> suppress
-out_of_office                       -> pause
-auto_reply                          -> ignore
-wrong_person                        -> reroute
-not_now                             -> snooze
-objection                           -> close
-interested, open or ready           -> book_meeting
-interested, curious                 -> send_info
-```
-
-Opt-out is checked first on purpose. A reply can be a snooze and an opt-out
-at once, and only one of those has a legal cost if you get it wrong.
-
-A model answer whose category isn't one of the six goes to `review`. The
-answer key never produces it.
-
-## For the extraction step
-
-Out of office replies carry the return date and wrong-person replies the
-contact they point to. R47 says "back on 10/08", which is October 8 in a US
-inbox. R49 says "out until the 6th" and arrived September 28, so it means
-October 6. R25 names nobody, so the right answer there is no contact.
-
-## Distribution
-
-| label | counts |
+| Field | Distribution |
 |---|---|
 | category | 16 objection, 12 interested, 9 out_of_office, 8 not_now, 8 wrong_person, 7 auto_reply |
 | opt_out | 9 true, 51 false |
 | meeting_intent | 46 none, 6 open, 4 curious, 4 ready |
-| route | 9 suppress, 9 pause, 8 reroute, 8 close, 8 book_meeting, 7 snooze, 7 ignore, 4 send_info |

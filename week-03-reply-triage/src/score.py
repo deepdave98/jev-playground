@@ -1,11 +1,4 @@
-"""Scores results/raw/*.jsonl against the hand labels.
-
-    python3 src/score.py
-
-The three rows at the top are the ones that cost money: opt-outs that kept
-getting email, people suppressed who never asked, and interested replies
-sent somewhere other than a meeting or a reply.
-"""
+"""Score saved reply classifications and routing decisions."""
 
 import json
 import pathlib

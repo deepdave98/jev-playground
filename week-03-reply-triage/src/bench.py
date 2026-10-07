@@ -1,12 +1,4 @@
-"""Runs every setup over the 60 replies, one request at a time.
-
-    python3 src/bench.py                      # all four
-    python3 src/bench.py jev jev-batched      # just these
-
-jev-batched puts ten replies in one request. Replies don't share context the
-way week 02's events did, so batching can't help accuracy here. It tests
-whether Jev keeps ten unrelated items apart when they arrive together.
-"""
+"""Benchmark reply classification, including batches of ten for Jev."""
 
 import json
 import pathlib
@@ -34,7 +26,7 @@ Answer with JSON only, no fence:
 
 
 def seen(item):
-    """What a model gets: the reply and its envelope, never the label."""
+    """Return model input without the answer key."""
     return item["reply"]
 
 
