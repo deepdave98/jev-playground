@@ -20,7 +20,7 @@ untracked.
 - Give models the same evidence and rubric. Record fixes that affect a
   comparison, including cost, timing and token accounting.
 - Keep thresholds, date arithmetic and counts in code.
-- MCP tools load each week's `spec.py`. Rerun the affected benchmark when
+- MCP tools load each week's workflow module. Rerun the affected benchmark when
   a prompt changes. `uv run mcp-server/check.py` checks the live tools.
 
 ## Writing and commits

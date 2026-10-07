@@ -23,7 +23,8 @@ beyond the supplied records. [Label rules](rubric.md).
 | cost per 1,000 pairs | $0.025 | $0.814 | $1.299 | $11.894 |
 
 [Metrics](results/results.json) and [raw runs](results/raw/).
-Costs are extrapolated from these runs. Thinking uses max effort; the other
+Costs are extrapolated from these runs. Jev latency is request wall time;
+Claude latency is the CLI-reported API duration. Thinking uses max effort; the other
 Claude runs disable thinking. A duplicate sent to review counts as found.
 
 Haiku merged Google with Alphabet. Sonnet without thinking merged that pair
@@ -41,7 +42,7 @@ merge under the benchmark rule.
 
 ## Run
 
-From the repository root, with dependencies from `requirements.txt` installed:
+From the repository root (Python 3.10+, no Python packages needed):
 
 ```bash
 cd week-05-account-dedup

@@ -4,11 +4,7 @@
     git config core.hooksPath .githooks                 # once per clone
     python3 .githooks/pre-commit --fix <file> [...]     # clean generated files
 
-The repo keeps a no-dash rule, and it has to cover files nobody hand-writes.
-graphify's report and HTML templates put em dashes in every regenerated
-graph, and the first push of this repo shipped eight of them that way.
---fix is only for generated output. In prose, a dash usually means the
-sentence wants rewriting, and a mechanical swap won't do that.
+Use --fix only on generated files. Edit prose by hand.
 """
 
 import re

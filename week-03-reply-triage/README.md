@@ -23,7 +23,8 @@ interested prospects. [Labels and routing rules](rubric.md).
 | cost per 1,000 replies | $0.033 | $0.024 | $0.699 | $2.018 |
 
 [Metrics](results/results.json) and [raw runs](results/raw/).
-Costs are extrapolated from these runs.
+Costs are extrapolated from these runs. Jev latency is request wall time;
+Claude latency is the CLI-reported API duration.
 
 Jev missed the reply "STOP" at an opt-out score of 0.41. Sonnet treated
 sarcasm about five emails as an opt-out at 0.50. The MCP tool handles exact
@@ -41,7 +42,7 @@ backup contact instead of a return date for two away messages.
 
 ## Run
 
-From the repository root, with dependencies from `requirements.txt` installed:
+From the repository root (Python 3.10+, no Python packages needed):
 
 ```bash
 cd week-03-reply-triage

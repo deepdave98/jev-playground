@@ -20,7 +20,8 @@ meet the forecast rule. [Label definitions](rubric.md).
 | cost per 1,000 calls | $0.055 | $0.055 | $1.599 | $3.714 |
 
 [Metrics](results/results.json) and [raw runs](results/raw/).
-Costs are extrapolated from these runs.
+Costs are extrapolated from these runs. Jev latency is request wall time;
+Claude latency is the CLI-reported API duration.
 
 The correction subtracts 0.30 from each Jev score before rounding. It comes
 from the mean signed error of 193 saved answers across weeks 01 to 03;
@@ -42,7 +43,7 @@ simulation using the independent runs; the combined workflow was not run.
 
 ## Run
 
-From the repository root, with dependencies from `requirements.txt` installed:
+From the repository root (Python 3.10+, no Python packages needed):
 
 ```bash
 cd week-04-meddpicc
