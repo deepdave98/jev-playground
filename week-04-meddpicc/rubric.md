@@ -1,62 +1,40 @@
-# How the answer key was written
+# MEDDPICC labels
 
-16 call summaries, each labelled on all eight MEDDPICC elements against the
-strings in `src/spec.py`. I set the labels first and then wrote each
-summary to carry them, so every label points at a sentence you can find.
+16 synthetic call summaries with eight labels each.
+[`spec.py`](src/spec.py) contains the shared prompt strings and forecast
+rule; [`calls.py`](src/calls.py) contains the fixtures.
 
-## Three levels, the same for every element
-
-| level | means |
+| Level | Definition |
 |---|---|
-| `none` | not discussed on this call |
-| `mentioned` | came up, without specifics |
-| `established` | stated specifically: a number, a named person and their role, named steps or dates, a named alternative |
+| `none` | absent from the call |
+| `mentioned` | raised without specifics |
+| `established` | supported by a number, a named person and role, named steps or dates, or a named alternative |
 
-The line that decides most labels is between mentioned and established.
-"They'd decide sometime this quarter" is mentioned. "Leadership meets on
-October 14, shortlists two vendors and decides by November 1" is
-established.
+"Decide sometime this quarter" is `mentioned`. Named decision steps with
+owners and dates are `established`.
 
-## Where each element gets hard
+- **Metrics:** the measurable result the customer wants. A costed problem
+  establishes pain; it does not supply a target. C02 has pain without metrics.
+- **Economic buyer:** a named person confirmed to control the budget. C02
+  names only a title; C13 guesses who approves. Both are `mentioned`.
+  C14 confirms the named CFO's authority even though he missed the call.
+- **Decision criteria:** specific vendor requirements.
+- **Decision process:** steps, participants and timing for choosing a vendor.
+- **Paper process:** steps between the decision and a signature.
+- **Pain:** a specific business problem with its cost or consequence.
+- **Champion:** a named person acting internally for the purchase. C07's
+  contact arranges meetings and writes the business case. C15's enthusiasm
+  without involvement in buying is `mentioned`.
+- **Competition:** a named alternative under consideration. An internal
+  build or doing nothing counts; C16 explicitly weighs waiting another year.
 
-**Economic buyer** needs a name and a confirmed hold on the money. "Budget
-would come from the COO's side" (C02) is mentioned. So is Fairhaven (C13),
-where Nikhil thinks the CEO signs anything over $50K but isn't sure. Marlow
-(C14) is established even though the CFO wasn't on the call, because the
-champion named him and confirmed he owns the budget.
+The forecast rule requires metrics, economic buyer and decision process to
+be `established`. C11 Keystone, C12 Redwood and C14 Marlow qualify.
 
-**Champion** needs someone doing things for the deal. Jonah at Pinecrest
-(C07) booked time with the sales managers and is writing the business case.
-Leo at Cascade (C15) loved the demo and isn't involved in buying, so he's
-mentioned.
-
-**Competition** counts an in-house build or doing nothing when the customer
-is really weighing it. Wrenfield's COO (C16) said the real alternative is
-living with it for another year. That's established.
-
-**Metrics and pain** are easy to mix up. Pain is the problem and what it
-costs: "$180K of ARR lost to churn". Metrics is the target they want to
-hit: "first response under one hour". A call can have one without the
-other. Tidepool (C02) has a costed problem and no target.
-
-## The forecast rule
-
-`spec.forecast_ready()` puts a deal in the forecast only when metrics,
-economic buyer and decision process are all established. Three calls meet
-it: Keystone, Redwood and Marlow.
-
-Three more are one or two levels short, on purpose:
-
-| call | short on |
+| Near miss | Missing evidence |
 |---|---|
-| C07 Pinecrest | decision process: "would figure out next steps internally" |
-| C10 Lumen Health | economic buyer: "the CFO will make the final call, though they haven't talked to him yet" |
-| C13 Fairhaven | metrics and economic buyer |
+| C07 Pinecrest | specific decision process |
+| C10 Lumen Health | confirmed economic buyer |
+| C13 Fairhaven | metrics and confirmed economic buyer |
 
-Any model that reads these a level high puts a deal in the forecast that
-isn't ready.
-
-## Distribution
-
-128 labels: 48 established, 47 none, 33 mentioned. Discovery calls sit
-mostly at none and mentioned, commercial calls mostly at established.
+Distribution: 48 `established`, 47 `none`, 33 `mentioned`.

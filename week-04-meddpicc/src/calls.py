@@ -1,15 +1,4 @@
-"""The answer key: 16 call summaries, each labelled on all eight MEDDPICC elements.
-
-Summaries are written the way a call recorder writes them. Companies and
-people are made up. I planned the labels first and wrote each summary to
-carry them, so every label can be traced to a sentence.
-
-Labels run in MEDDPICC order: metrics, economic_buyer, decision_criteria,
-decision_process, paper_process, identify_pain, champion, competition.
-0 is none, 1 mentioned, 2 established.
-
-    python3 src/calls.py
-"""
+"""Synthetic call summaries. Label order follows MEDDPICC; levels are 0, 1, 2."""
 
 import json
 import pathlib

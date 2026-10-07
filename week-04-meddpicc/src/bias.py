@@ -1,14 +1,4 @@
-"""How far Jev's score answers run high, measured on weeks 01 to 03 only.
-
-    python3 src/bias.py
-
-Every week so far, Jev's score questions have missed high: intent in week
-01, severity in week 02, meeting intent in week 03. This works out the mean
-signed error of Jev's raw score against the hand label on those three weeks,
-one request per item. The result is fixed as common.jev.SCORE_BIAS before
-week 04's results are looked at, so week 04 tests the correction instead of
-tuning it.
-"""
+"""Measure mean signed score error from saved Jev runs for weeks 01 to 03."""
 
 import json
 import pathlib

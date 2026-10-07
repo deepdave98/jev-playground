@@ -1,11 +1,4 @@
-"""Scores results/raw/*.jsonl against the hand labels.
-
-    python3 src/score.py
-
-Overstating an element costs more than understating it. A field marked
-established that wasn't makes a deal look more qualified than it is, and if
-it's one of the three the forecast rule needs, the deal gets committed.
-"""
+"""Score saved qualification fields and forecast decisions."""
 
 import json
 import pathlib
@@ -20,8 +13,7 @@ from common.stats import pct  # noqa: E402
 from spec import ELEMENTS, LEVEL_NAMES, forecast_ready  # noqa: E402
 
 ORDER = ["jev", "jev-corrected", "claude-haiku-4-5", "claude-sonnet-5"]
-# jev-corrected rescores jev.jsonl: SCORE_BIAS, measured on weeks 01 to 03,
-# comes off each raw score before rounding.
+# Corrected scores reuse the raw Jev run.
 SOURCE = {"jev-corrected": "jev"}
 
 
@@ -104,10 +96,7 @@ def main():
 
 
 def recheck(truth):
-    """Jev fills every call, and Sonnet's answer decides only the ones Jev marks ready.
-
-    Sonnet's answers come from its own full run, so nothing here is re-asked.
-    """
+    """Simulate Sonnet review of Jev-ready deals using saved independent runs."""
     jev, jev_calls, _ = load(ROOT / "results/raw/jev.jsonl")
     son, son_calls, _ = load(ROOT / "results/raw/claude-sonnet-5.jsonl")
     order = list(truth)

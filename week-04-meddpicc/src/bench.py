@@ -1,11 +1,4 @@
-"""Runs every setup over the 16 call summaries, one request at a time.
-
-    python3 src/bench.py                  # all three
-    python3 src/bench.py jev              # just this one
-
-Each call is one request with all eight MEDDPICC questions in it, for Jev
-and for Claude alike.
-"""
+"""Benchmark all eight MEDDPICC fields in one request per call."""
 
 import json
 import pathlib
@@ -33,7 +26,7 @@ Answer with JSON only, no fence:
 
 
 def seen(item):
-    """What a model gets: the account, the stage and the summary, never the label."""
+    """Return model input without the answer key."""
     return item["call"]
 
 

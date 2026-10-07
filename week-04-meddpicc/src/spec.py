@@ -1,8 +1,4 @@
-"""Questions and the forecast rule for week 04: MEDDPICC from call summaries.
-
-Eight score questions per call, one for each MEDDPICC element, all with the
-same three levels. Both models get these exact strings.
-"""
+"""Shared MEDDPICC prompts and forecast rule."""
 
 LEVELS = [
     "none: not discussed on this call.",
@@ -61,9 +57,7 @@ QUESTIONS = {
 ELEMENTS = list(QUESTIONS)
 LEVEL_NAMES = [x.split(":")[0] for x in LEVELS]
 
-# A deal goes in the forecast only when these three are established. Plenty
-# of teams use some version of this rule, and it's the one place in this week
-# where a model rating things too high costs real money.
+# All three fields must be established.
 FORECAST_NEEDS = ("metrics", "economic_buyer", "decision_process")
 
 
