@@ -20,7 +20,7 @@ opportunity/account IDs, owner, stage, loss date/reason, current CRM flags,
 optional last-contact date, and up to 20 releases with IDs, dates and text.
 Missing contact dates mean no known contact. Required flags must be booleans.
 
-The output contains `queue` for evidenced candidates and `decisions` for every
+The output contains `queue` for candidates with release evidence and `decisions` for every
 record, including exclusions, uncertainty and API failures. It keeps one
 candidate per account, in input order. Exit code 1 means a model call or
 answer failed; 2 means invalid input. Review the evidence before contacting anyone.
@@ -46,8 +46,8 @@ Jev marked two vague updates as unchanged; the reference labels call them
 unclear. Both models also confused partial progress with an unchanged blocker.
 These cases test review-queue behavior, not conversion or revenue impact.
 
-Times include HTTP connection setup and Claude subprocess startup. Haiku ran through the Claude CLI
-with thinking disabled; Jev used HTTP. No warmup or overhead subtraction.
+Times include HTTP connection setup and Claude subprocess startup. Haiku ran
+with thinking disabled. No warmup or overhead subtraction.
 This is the latency of these two integrations. [Raw responses](results/raw/)
 and [scores](results/results.json) include all misses. Account-wide exclusions
 and deduplication are covered by local tests, separately from the model run.
@@ -59,7 +59,8 @@ python3 week-06-deal-reactivation/src/bench.py claude-haiku-4-5 --output /tmp/ha
 python3 week-06-deal-reactivation/src/score.py week-06-deal-reactivation/results/raw/*.jsonl
 ```
 
-The matcher requires one release that supports every stated requirement.
-Evidence spread across several releases goes to review without entering the
-candidate queue. Release text and CRM flags must be current; the tool cannot
-verify them. A private beta or a roadmap promise does not establish availability.
+The prompt asks for one release supporting every requirement. A cleared
+answer without a selected release stays out of the candidate queue. Review
+cases that need several releases together separately. The tool cannot verify
+that release text and CRM flags are current. A private beta or roadmap promise
+does not establish availability.
