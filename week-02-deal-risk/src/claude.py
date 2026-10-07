@@ -1,17 +1,4 @@
-"""Claude calls for week 02, through the `claude` CLI.
-
-Same three corrections as week 01, since the CLI hasn't changed: thinking off,
-the CLI's own scaffolding measured and subtracted from token counts, and cache
-reads billed at the cache rate. week-01-lead-triage/README.md has the story of
-how each one was found.
-
-Three shapes:
-  per_event  one call per event, same three judgments Jev makes
-  per_deal   one call per deal, every event judged in a single response
-  ledger     one call per deal, the whole ledger, asked straight out whether
-             the deal is at risk and why. This is how most people would use
-             Claude for this, so it gets its own run.
-"""
+"""Claude CLI runners for individual events, whole deals and direct risk verdicts."""
 
 import json
 import os

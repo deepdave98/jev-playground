@@ -1,17 +1,4 @@
-"""The last step: Claude reviews what Jev flagged and writes to the deal owner.
-
-Jev can't write the note (week 01 has the HTTP 400 that proves it), and it
-would be a waste to have Claude read every deal. So Claude only sees the deals
-Jev flagged, with the full ledger and Jev's reasons, and does two things: says
-whether the flag holds up, and writes the owner a short note with a next step.
-
-    python3 src/brief.py              # Claude gets the ledger and the reasons
-    python3 src/brief.py --facts      # plus the dates, worked out in code
-
-The first version let Claude do its own date arithmetic, and it decided an
-August 15 meeting was inside a 30 day window ending September 25. --facts
-hands it the day counts so it only has to make judgment calls.
-"""
+"""Review flagged deals and draft owner notes. --facts adds computed day counts."""
 
 import json
 import pathlib
@@ -51,7 +38,7 @@ No em dashes. Answer with JSON only, no fence:
 
 
 def facts(deal, events, labels):
-    """The arithmetic, done once in code, from Jev's own event labels."""
+    """Compute value and date checks from Jev event labels."""
     execs = [e for e in events if labels[e["id"]]["exec_engaged"]]
     last = max(execs, key=lambda e: e["ts"]) if execs else None
     return {

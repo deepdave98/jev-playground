@@ -1,11 +1,4 @@
-"""Runs every configuration over the ledger, one after another.
-
-    python3 src/bench.py                       # all six
-    python3 src/bench.py jev jev-per-deal      # just these
-
-Sequential on purpose, same as week 01: run them together and every latency
-number measures the queue instead of the model.
-"""
+"""Run the selected ledger benchmarks sequentially and save responses."""
 
 import json
 import pathlib
@@ -48,8 +41,7 @@ def run(name, ledger):
         fh.write(json.dumps({"_meta": meta}) + "\n")
         for i, row in enumerate(ledger, 1):
             deal, events = row["deal"], row["events"]
-            # The answer lives next to the deal, never inside it. Everything
-            # in `deal` and `seen` goes to a model.
+            # Keep reference labels out of model inputs.
             assert "label" not in deal
             seen = [visible(e) for e in events]
             rec = {"deal": deal["id"], "calls": [], "error": None}

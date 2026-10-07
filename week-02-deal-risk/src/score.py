@@ -1,14 +1,4 @@
-"""Scores results/raw/*.jsonl against the hand labels.
-
-    python3 src/score.py
-
-Deal level, for every run:
-  at-risk deals caught, false alarms, and the ARR sitting in missed deals,
-  which is the number a revenue leader actually cares about.
-Event level, for runs that label events:
-  signal, severity and exec_engaged accuracy, plus the Brier score on
-  exec_engaged, which is the probability the no_exec_30d rule leans on.
-"""
+"""Score saved event labels and deal verdicts against the reference dataset."""
 
 import json
 import pathlib
@@ -90,8 +80,7 @@ def main():
     results = [score(n, truth, events) for n in have]
     (ROOT / "results/results.json").write_text(json.dumps(results, indent=2))
 
-    # A run still in flight scores as if it were finished. Week 01 nearly
-    # published one of those, so say so in the header instead.
+    # Mark incomplete runs in the printed table.
     for r in results:
         if r["deals"] + r["failed"] < len(truth):
             r["run"] = f"{r['run']} (partial {r['deals']}/{len(truth)})"

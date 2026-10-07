@@ -1,23 +1,15 @@
-"""Questions, definitions and the deal risk rule for week 02.
-
-Every model gets these exact strings. The Claude prompts are rendered from
-the same dicts Jev receives, so a wording change here lands on both sides.
-"""
+"""Shared event questions, thresholds and deal risk rules."""
 
 from datetime import date
 
 AS_OF = "2026-09-25"
 
-# The three numbers in the risk rule. They feed both assess() and the
-# RISK_RULES text Claude reads in the ledger run, so change them here and the
-# two can't drift apart. Set them for your own pipeline before trusting a flag.
+# Shared by assess() and the direct-verdict prompt.
 EXEC_MIN_ARR = 100_000
 EXEC_WINDOW_DAYS = 30
 CLOSING_SOON_DAYS = 7
 
-# Made up, so nobody's real product ends up in a synthetic loss report. Both
-# models are told the names up front. Week 01 showed Jev can't be expected to
-# know who a company's competitors are, and this week isn't testing that.
+# Fictional competitors used in the synthetic ledger.
 COMPETITORS = ["Hexline", "Corvid", "Tallyworks"]
 
 SIGNALS = {
@@ -92,8 +84,7 @@ EVENT_QUESTIONS = {
     },
 }
 
-# The same rule written out in words, for the run where Claude reads the whole
-# ledger and judges the deal directly instead of labelling events.
+# Prompt for the direct-verdict comparison.
 RISK_RULES = f"""A deal is at risk if any of these hold. Use the keys in brackets.
 
 - [competitor] two or more events show the account considering or trialling a
@@ -119,12 +110,7 @@ def days(a: str, b: str) -> int:
 
 
 def assess(deal: dict, judged: list[dict], as_of: str = AS_OF) -> list[str]:
-    """Risk reasons for a deal, from its events once they have been judged.
-
-    Runs on the hand labels and on every model's labels, so the answer key and
-    the models go through the same function. An empty list means healthy.
-    as_of is fixed for the benchmark. The MCP server passes the real date.
-    """
+    """Return risk reasons from event labels; an empty list means no rule fired."""
     sev = lambda e: SEV.index(e["severity"])  # noqa: E731
     out = []
 
@@ -142,8 +128,6 @@ def assess(deal: dict, judged: list[dict], as_of: str = AS_OF) -> list[str]:
     if any(e["signal"] == "stall" and sev(e) >= 2 for e in judged):
         out.append("stalled")
 
-    # A missing exec is the one reason no single event can show. It only exists
-    # across the whole ledger, which is why it lives here and not in a question.
     if deal["arr"] >= EXEC_MIN_ARR:
         if not any(e["exec_engaged"] and days(e["ts"], as_of) <= EXEC_WINDOW_DAYS for e in judged):
             out.append("no_exec_30d")

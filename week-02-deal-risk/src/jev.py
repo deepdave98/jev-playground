@@ -1,10 +1,4 @@
-"""Jev calls for week 02, in two shapes.
-
-per_event: one request per event, three questions each.
-per_deal:  one request per deal. The whole ledger goes in as state and every
-           event gets its own three questions, keyed by event id. 73 events
-           become 20 round trips.
-"""
+"""Jev runners for individual events and whole deals."""
 
 import http.client
 import json

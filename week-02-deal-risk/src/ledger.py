@@ -1,21 +1,4 @@
-"""The ledger: 20 open deals, 73 events, every label written by hand.
-
-Events follow the AckDB ledger format: subject first, a typed prefix on
-anything that isn't a person doing something, raw timestamps left raw, and
-the provider in brackets at the end.
-
-The first five deals are the ones on AckDB's at-risk demo (Datacore,
-Cloudmark, Ironbridge, Precision, Vantage), rebuilt as full ledgers so the
-reasons on that screen have to be earned from events. Everything else is
-made up, including every person.
-
-Each event is (id, timestamp, source, text, signal, severity, exec_engaged).
-`expect` is the risk verdict I meant each deal to have. main() checks the
-rule in spec.py agrees before writing anything, so a labelling slip fails
-loudly here instead of quietly moving a benchmark number.
-
-    python3 src/ledger.py
-"""
+"""Build 20 synthetic deal ledgers and check their expected risk labels."""
 
 import json
 import pathlib
