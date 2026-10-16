@@ -1,6 +1,6 @@
 # jev playground
 
-Practical GTM workflows with [Jev](https://www.typesafe.ai/), tested against Claude.
+GTM workflows with [Jev](https://www.typesafe.ai/), tested against Claude.
 
 - [Lead triage and routing](week-01-lead-triage/)
 - [Deal risk](week-02-deal-risk/)
