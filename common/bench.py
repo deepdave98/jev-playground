@@ -38,12 +38,13 @@ def run(name, items, step, out_dir, batch=1, meta=None):
 def load(path):
     """Per-item labels and every call, from a run file."""
     labels, calls, failed = {}, [], []
-    for line in pathlib.Path(path).open():
-        rec = json.loads(line)
-        if "_meta" in rec:
-            continue
-        calls += rec["calls"]
-        if rec["error"]:
-            failed += rec["ids"]
-        labels.update(rec["labels"] or {})
+    with pathlib.Path(path).open() as source:
+        for line in source:
+            rec = json.loads(line)
+            if "_meta" in rec:
+                continue
+            calls += rec["calls"]
+            if rec["error"]:
+                failed += rec["ids"]
+            labels.update(rec["labels"] or {})
     return labels, calls, failed

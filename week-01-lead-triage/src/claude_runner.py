@@ -2,10 +2,14 @@
 
 import json
 import os
+import pathlib
 import re
 import subprocess
+import sys
 import time
 
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[2]))
+from common.prompt import pick as _coerce
 from spec import INTENT_LEVELS, SEGMENTS, build_questions
 
 # https://docs.claude.com/en/docs/about-claude/pricing
@@ -185,14 +189,3 @@ def _parse_json(text: str) -> dict:
         if brace:
             text = brace.group(0)
     return json.loads(text)
-
-
-def _coerce(value: str, allowed: list[str]) -> str:
-    """Accept a near-miss label rather than scoring a formatting slip as wrong."""
-    v = str(value).strip().lower().replace("-", "_").replace(" ", "_")
-    if v in allowed:
-        return v
-    for a in allowed:
-        if v.startswith(a) or a.startswith(v):
-            return a
-    return v

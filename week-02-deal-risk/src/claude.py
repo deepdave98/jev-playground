@@ -2,11 +2,15 @@
 
 import json
 import os
+import pathlib
 import re
 import statistics
 import subprocess
+import sys
 import time
 
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[2]))
+from common.prompt import pick
 from spec import AS_OF, EVENT_QUESTIONS, REASON_KEYS, RISK_RULES, SEV, SIGNALS
 
 PRICE = {  # per token, list price
@@ -56,14 +60,6 @@ reasons lists every key that applies, and is empty if none do."""
 def parse(text):
     m = re.search(r"\{.*\}", text, re.S)
     return json.loads(m.group(0) if m else text)
-
-
-def pick(value, allowed):
-    """Accept a near miss like "Momentum" or "champion exit"."""
-    v = str(value).strip().lower().replace(" ", "_").replace("-", "_")
-    if v in allowed:
-        return v
-    return next((a for a in allowed if v.startswith(a) or a.startswith(v)), v)
 
 
 def labels_from(obj):

@@ -28,11 +28,13 @@ def answer_shape(questions):
 
 
 def pick(value, allowed):
-    """Accept a near miss like "Out of office" for out_of_office."""
-    v = str(value).strip().lower().replace(" ", "_").replace("-", "_")
-    if v in allowed:
-        return v
-    return next((a for a in allowed if v.startswith(a) or a.startswith(v)), v)
+    """Normalize label formatting; reject missing or unknown answers."""
+    if not isinstance(value, str):
+        raise ValueError("label must be a string")
+    v = value.strip().lower().replace(" ", "_").replace("-", "_")
+    if not v or v not in allowed:
+        raise ValueError(f"unknown label: {value!r}")
+    return v
 
 
 def read(obj, questions):
